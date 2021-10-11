@@ -1,0 +1,94 @@
+<!-- <section>
+  <div class="example-label">Raised</div>
+  <div class="example-button-row">
+    <button mat-raised-button>Basic</button>
+    <button mat-raised-button color="primary">Primary</button>
+    <button mat-raised-button color="accent">Accent</button>
+    <button mat-raised-button color="warn">Warn</button>
+    <button mat-raised-button disabled>Disabled</button>
+    <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a>
+  </div>
+</section> -->
+
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <mat-list>
+      <mat-list-item *ngFor="let snapshot of snapshotsLinks">
+        <img src="{{ snapshot }}" alt="" srcset="" />
+      </mat-list-item>
+    </mat-list>
+
+    <!-- <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+    <button (click)="showFiller = !showFiller" mat-raised-button>
+      Toggle extra text
+    </button> -->
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <mat-accordion *ngFor="let case of testCases">
+      <mat-expansion-panel
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <button
+              id="drawer_toggle"
+              (click)="drawer.toggle()"
+              mat-icon-button
+              class="example-icon"
+              color="basic"
+              aria-label="Example icon-button with share icon"
+            >
+              <mat-icon>add_photo_alternate</mat-icon>
+            </button>
+
+            <!-- <button type="button" mat-button (click)="drawer.toggle()">
+              Toggle sidenav
+            </button> -->
+            {{ case.title }}
+          </mat-panel-title>
+
+          <mat-panel-description>
+            {{ case.description }}; Currently I am
+            {{ panelOpenState ? "open" : "closed" }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <hr />
+        <div class="hidden-part" *ngFor="let step of case.steps; let i = index">
+          <p></p>
+          <p>[{{ i + 1 }}] {{ step }}</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div>{{ case.outcome }}</div>
+          <div>
+            <mat-radio-group
+              value="{{ case.result }}"
+              aria-label="Select an option"
+              (change)="case.result = $event.value"
+            >
+              <mat-radio-button
+                color="warn"
+                [class.yellow]="case.result == 0"
+                value="0"
+                >pending</mat-radio-button
+              >
+              <mat-radio-button
+                color="accent"
+                [class.red]="case.result == 1"
+                value="1"
+                >failed</mat-radio-button
+              >
+              <mat-radio-button
+                color="primary"
+                [class.green]="case.result == 2"
+                value="2"
+                >success</mat-radio-button
+              >
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</mat-drawer-container>
