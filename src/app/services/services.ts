@@ -23,8 +23,7 @@ export class TestCaseService {
 
   getSnapshotLinks(id: number) {
     if (!this.testCases[id].imageLinks) return this.getSnapshotsLinksAll();
-    return this.snapshots.filter((link) =>
-      this.testCases[id].imageLinks?.includes(link)
-    );
+    const uniq = [...new Set(this.snapshots)];
+    return uniq.filter((link) => this.testCases[id].imageLinks?.includes(link));
   }
 }

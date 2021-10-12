@@ -16,3 +16,8 @@ body {
 button {
   margin: 5px;
 }
+.mat-dialog-container {
+  resize: both !important;
+  overflow: auto !important;
+  border: 2px solid;
+}

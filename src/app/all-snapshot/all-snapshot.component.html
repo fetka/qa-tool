@@ -1,3 +1,12 @@
-<div class="example-button-row">
+<div class="example-button-row mat-expansion-panel">
   <a routerLink="/"> <button mat-raised-button color="warn">home</button></a>
+</div>
+<div class="container mat-expansion-panel">
+  <div
+    class="image-container"
+    *ngFor="let snapshot of snapshotsLinks; let i = index"
+  >
+    <span>{{ snapshot }}</span>
+    <img [src]="snapshot" alt="" srcset="" (click)="openDialog(i)" />
+  </div>
 </div>

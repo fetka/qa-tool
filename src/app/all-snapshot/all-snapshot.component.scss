@@ -2,8 +2,33 @@
   display: block;
   width: 100%;
   padding: 3px;
-  background-color: rgb(48, 48, 48);
+  // background-color: rgb(48, 48, 48);
 }
 button {
   margin-right: 3px;
+}
+
+img {
+  width: 250px;
+  margin-bottom: 15px;
+
+  border: 1px solid black;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-end;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+.image-container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  //   height: 15%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }

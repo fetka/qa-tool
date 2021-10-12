@@ -7,21 +7,16 @@
     Toggle All Snapshots
   </button>
   <a routerLink="/all-snapshot">
-    <button (click)="navigate()" mat-raised-button color="warn">
-      Navigate to All Snapshots
-    </button></a
+    <button mat-raised-button color="warn">Navigate to All Snapshots</button></a
   >
 </div>
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <mat-list>
-      <mat-list-item *ngFor="let snapshot of filteredSnapshotsLinks">
-        <img
-          (click)="openDialog(snapshot)"
-          src="{{ snapshot }}"
-          alt=""
-          srcset=""
-        />
+      <mat-list-item
+        *ngFor="let snapshot of filteredSnapshotsLinks; let i = index"
+      >
+        <img (click)="openDialog(i)" src="{{ snapshot }}" alt="" srcset="" />
       </mat-list-item>
     </mat-list>
   </mat-drawer>

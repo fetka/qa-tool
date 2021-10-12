@@ -37,8 +37,6 @@ export class HomeComponent implements OnInit {
     this.testCases = this.testCaseService.getTestCasesAll();
   }
 
-  navigate() {}
-
   changed(ev: any, result: any) {
     console.log('radio button change event', ev.value, result);
   }
@@ -57,10 +55,10 @@ export class HomeComponent implements OnInit {
     return `( ${count} )`;
   }
 
-  openDialog(link: string): void {
+  openDialog(id: number): void {
     const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '250px',
-      data: { snapshotLink: link },
+      data: { snapshotLinks: this.filteredSnapshotsLinks, initial: id },
     });
 
     // dialogRef.afterClosed().subscribe(result => {
