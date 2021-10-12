@@ -18,14 +18,20 @@ export const TEST_CASES: TestCase[] = [
     steps: ['step 1', 'step 2', 'step 3'],
   },
   {
-    title: 'title 3',
+    title: 'title 3 title 3 title 3 title 3 title 3 title 3 title 3 title 3',
     id: 'T3',
     description: ` description 3 description 3 description 3 description 3 description 3
+       description 3 description 3 description 3 description 3 description 3 description 3 description 3
        description 3 description 3 description 3 description 3
         description 3 description 3 description 3 description 3 description 3`,
     outcome: 'outcome 3',
     result: Result.Failed,
-    steps: ['step 1', 'step 2', 'step 3'],
+    steps: [
+      'step 1 step 1 step 1 step 1 step 1 step 1',
+      'step 2step 1 step 1step 1 step 1step 1 step 1',
+      'step 3',
+    ],
+    imageLinks: ['../../assets/snapshots/IMG_0094.PNG'],
   },
   {
     title: 'title 4',

@@ -1,4 +1,11 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable comma-dangle */
+/* eslint-disable function-paren-newline */
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 
 import { TestCase } from '../models/test-case';
 import { TestCaseService } from '../services/services';
@@ -17,14 +24,48 @@ export class HomeComponent implements OnInit {
 
   snapshotsLinks!: string[];
 
-  constructor(private testCaseService: TestCaseService) {}
+  filteredSnapshotsLinks!: string[];
+
+  selectedCase!: TestCase;
+
+  constructor(
+    private testCaseService: TestCaseService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.testCases = this.testCaseService.getTestCasesAll();
-    this.snapshotsLinks = this.testCaseService.getSnapshotsLinksAll();
   }
+
+  navigate() {}
 
   changed(ev: any, result: any) {
     console.log('radio button change event', ev.value, result);
+  }
+
+  selectTestCase(index: any) {
+    if (index === 'all') {
+      this.filteredSnapshotsLinks = this.testCaseService.getSnapshotsLinksAll();
+    } else {
+      this.filteredSnapshotsLinks =
+        this.testCaseService.getSnapshotLinks(index);
+    }
+  }
+
+  getSnapshotCount(idx: number) {
+    const count = this.testCases[idx].imageLinks?.length || 'all';
+    return `( ${count} )`;
+  }
+
+  openDialog(link: string): void {
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
+      width: '250px',
+      data: { snapshotLink: link },
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   this.animal = result;
+    // });
   }
 }

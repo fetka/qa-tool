@@ -10,6 +10,7 @@ export interface TestCase {
   steps: string[];
   outcome: string;
   result: Result;
+  imageLinks?: string[];
 }
 export enum Result {
   Pending = 0,

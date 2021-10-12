@@ -8,9 +8,11 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material/material.module';
 import { TestCaseService } from './services/services';
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
+import { AllSnapshotComponent } from './all-snapshot/all-snapshot.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, ImageDialogComponent, AllSnapshotComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

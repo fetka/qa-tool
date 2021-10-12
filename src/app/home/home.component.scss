@@ -27,9 +27,12 @@ mat-accordion {
 mat-panel-title,
 mat-panel-description {
   align-items: center;
+  color: white !important;
+  letter-spacing: 0.5px;
+  // width: 100%;
 }
 img {
-  width: 400px;
+  width: 250px;
   margin-bottom: 15px;
 
   border: 1px solid black;
@@ -37,7 +40,6 @@ img {
 .mat-drawer-container {
   height: 95%;
 }
-
 .mat-list-base .mat-list-item,
 .mat-list-base .mat-list-option {
   display: contents;
@@ -49,7 +51,7 @@ img {
 }
 
 mat-accordion {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 .hidden-part {
   padding: 5px 24px 6px 24px;
@@ -58,7 +60,11 @@ hr {
   border: rgb(48, 48, 48) 1px solid;
 }
 .mat-radio-button ~ .mat-radio-button {
-  margin-left: 16px;
+  margin-left: 10px;
+}
+
+.mat-radio-button {
+  letter-spacing: 0.7px;
 }
 .yellow {
   color: yellow;
@@ -68,4 +74,17 @@ hr {
 }
 .green {
   color: green;
+}
+.gray {
+  color: gray;
+}
+
+.example-button-row {
+  display: block;
+  width: 100%;
+  padding: 3px;
+  background-color: rgb(48, 48, 48);
+}
+button {
+  margin-right: 3px;
 }
