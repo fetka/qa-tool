@@ -31,7 +31,7 @@ export const TEST_CASES: TestCase[] = [
       'step 2step 1 step 1step 1 step 1step 1 step 1',
       'step 3',
     ],
-    imageLinks: ['../../assets/snapshots/IMG_0094.PNG'],
+    imageLinks: ['../../assets/screenshots/IMG_0094.PNG'],
   },
   {
     title: 'title 4',
@@ -60,14 +60,14 @@ export const TEST_CASES: TestCase[] = [
 ];
 
 export const SNAPSHOTS_LINKS = [
-  '../../assets/snapshots/IMG_0094.PNG',
-  '../../assets/snapshots/IMG_0095.PNG',
-  '../../assets/snapshots/IMG_0093.PNG',
-  '../../assets/snapshots/IMG_0096.PNG',
-  '../../assets/snapshots/IMG_0098.PNG',
-  '../../assets/snapshots/IMG_0094.PNG',
-  '../../assets/snapshots/IMG_0095.PNG',
-  '../../assets/snapshots/IMG_0093.PNG',
-  '../../assets/snapshots/IMG_0096.PNG',
-  '../../assets/snapshots/IMG_0098.PNG',
+  '../../assets/screenshots/IMG_0094.PNG',
+  '../../assets/screenshots/IMG_0095.PNG',
+  '../../assets/screenshots/IMG_0093.PNG',
+  '../../assets/screenshots/IMG_0096.PNG',
+  '../../assets/screenshots/IMG_0098.PNG',
+  '../../assets/screenshots/IMG_0094.PNG',
+  '../../assets/screenshots/IMG_0095.PNG',
+  '../../assets/screenshots/IMG_0093.PNG',
+  '../../assets/screenshots/IMG_0096.PNG',
+  '../../assets/screenshots/IMG_0098.PNG',
 ];

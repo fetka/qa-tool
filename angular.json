@@ -38,7 +38,10 @@
               "src/styles.scss",
               "src/customTheme.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/app/helpers/nextElement.js"
+              
+            ]
           },
           "configurations": {
             "production": {
