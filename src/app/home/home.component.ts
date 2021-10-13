@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
   openDialog(id: number): void {
     const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '250px',
-      data: { snapshotLinks: this.filteredSnapshotsLinks, initial: id },
+      data: { snapshotLinks: this.filteredSnapshotsLinks, pointer: id },
     });
 
     // dialogRef.afterClosed().subscribe(result => {

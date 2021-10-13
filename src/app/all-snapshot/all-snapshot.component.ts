@@ -24,7 +24,7 @@ export class AllSnapshotComponent implements OnInit {
   openDialog(id: number): void {
     const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '250px',
-      data: { snapshotLinks: this.snapshotsLinks, initial: id },
+      data: { snapshotLinks: this.snapshotsLinks, pointer: id },
     });
 
     // dialogRef.afterClosed().subscribe(result => {

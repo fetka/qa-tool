@@ -17,3 +17,8 @@ export enum Result {
   Failed = 1,
   Success = 2,
 }
+
+export enum Direction {
+  LEFT = -1,
+  RIGHT = 1,
+}
