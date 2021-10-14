@@ -70,4 +70,6 @@ export const SNAPSHOTS_LINKS = [
   '../../assets/screenshots/IMG_0093.PNG',
   '../../assets/screenshots/IMG_0096.PNG',
   '../../assets/screenshots/IMG_0098.PNG',
+  '../../assets/screenshots/AUTT1857.MP4',
+  '../../assets/screenshots/AUTT1857.MP4',
 ];

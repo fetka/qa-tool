@@ -11,7 +11,6 @@ function getNextPointer(arrLength, oldPointer, direction) {
 
   function initQueue() {
     if (arrayLength === 1) return;
-    //   const LEN = LEN;
     for (let i = 0; i <= pointer; i++) {
       const firstElement = pointerQueue.shift() || 0;
       pointerQueue.push(firstElement);
@@ -35,13 +34,17 @@ function getNextPointer(arrLength, oldPointer, direction) {
     }
     return lastElement;
   }
+
   initQueue();
+
   if (direction > 0) {
     return dequeue();
   }
   if (direction < 0) {
+    // pointerQueue = pointerQueue.reverse();
     return enqueue();
   }
+
   return BAD_REQUEST;
 }
 const selfTest = () => {

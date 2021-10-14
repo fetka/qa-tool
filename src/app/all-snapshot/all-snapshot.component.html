@@ -1,12 +1,33 @@
 <div class="example-button-row mat-expansion-panel">
-  <a routerLink="/"> <button mat-raised-button color="warn">home</button></a>
+  <a routerLink="/"> <button mat-raised-button color="warn">Home</button></a>
+  <!-- <button mat-raised-button color="warn">Show only video</button> -->
+  <mat-slide-toggle color="warn" (change)="showOnlyVideo()"
+    >Video only</mat-slide-toggle
+  >
+  <mat-slide-toggle color="warn" (change)="showOnlyScreenshot()"
+    >Screenshot only</mat-slide-toggle
+  >
 </div>
-<div class="container mat-expansion-panel">
+<div *ngIf="!showVideo" class="container mat-expansion-panel">
   <div
     class="image-container"
-    *ngFor="let snapshot of snapshotsLinks; let i = index"
+    *ngFor="let screenshot of screenshotLinks; let i = index"
   >
-    <span>{{ snapshot }}</span>
-    <img [src]="snapshot" alt="" srcset="" (click)="openDialog(i)" />
+    <span>{{ screenshot }}</span>
+    <img
+      [src]="screenshot"
+      alt=""
+      srcset=""
+      (click)="openDialogWithScreenshots(i)"
+    />
+  </div>
+</div>
+<div *ngIf="!showScreenshot" class="container mat-expansion-panel">
+  <div class="image-container" *ngFor="let video of videoLinks; let i = index">
+    <span>{{ video }}</span>
+
+    <video (click)="openDialogWithVideo(i)" muted>
+      <source [src]="video" type="video/mp4" />
+    </video>
   </div>
 </div>

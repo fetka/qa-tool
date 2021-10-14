@@ -30,7 +30,12 @@ mat-panel-description {
   // color: white !important;
   letter-spacing: 0.5px;
   // width: 100%;
+  font-size: 1rem;
 }
+.darkMode .mat-expansion-panel-header-title {
+  margin-right: 10px;
+}
+
 img {
   width: 250px;
   margin-bottom: 15px;
@@ -56,8 +61,12 @@ mat-accordion {
 .hidden-part {
   padding: 5px 24px 6px 24px;
 }
-hr {
-  border: rgb(48, 48, 48) 1px solid;
+.discription__section {
+  border: #6b6b6b 1px solid;
+  padding: 8px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border-radius: 5px;
 }
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 10px;
@@ -87,4 +96,7 @@ hr {
 }
 button {
   margin-right: 3px;
+}
+.step__index {
+  color: rgba(255, 255, 255, 0.5);
 }

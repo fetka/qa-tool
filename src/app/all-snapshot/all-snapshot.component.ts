@@ -10,7 +10,13 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./all-snapshot.component.scss'],
 })
 export class AllSnapshotComponent implements OnInit {
-  snapshotsLinks!: string[];
+  screenshotLinks!: string[];
+
+  videoLinks!: string[];
+
+  showVideo: boolean = false;
+
+  showScreenshot: boolean = false;
 
   constructor(
     private testCaseService: TestCaseService,
@@ -18,18 +24,37 @@ export class AllSnapshotComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.snapshotsLinks = this.testCaseService.getSnapshotsLinksAll();
+    const links = this.testCaseService.getSnapshotsLinksAll();
+    this.screenshotLinks = links.filter(
+      (link) => link.endsWith('PNG') || link.endsWith('JPG')
+    );
+    this.videoLinks = links.filter((link) => link.endsWith('MP4'));
   }
 
-  openDialog(id: number): void {
+  openDialogWithScreenshots(id: number): void {
     const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '250px',
-      data: { snapshotLinks: this.snapshotsLinks, pointer: id },
+      data: { screenshotLinks: this.screenshotLinks, pointer: id },
     });
 
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log('The dialog was closed');
     //   this.animal = result;
     // });
+  }
+
+  openDialogWithVideo(id: number) {
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
+      width: '250px',
+      data: { screenshotLinks: this.videoLinks, pointer: id },
+    });
+  }
+
+  showOnlyVideo() {
+    this.showVideo = !this.showVideo;
+  }
+
+  showOnlyScreenshot() {
+    this.showScreenshot = !this.showScreenshot;
   }
 }

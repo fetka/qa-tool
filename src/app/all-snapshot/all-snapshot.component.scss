@@ -8,7 +8,8 @@ button {
   margin-right: 3px;
 }
 
-img {
+img,
+video {
   width: 250px;
   margin-bottom: 15px;
 
@@ -31,4 +32,7 @@ img {
   margin: 10px;
   //   height: 15%;
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+mat-slide-toggle {
+  margin: auto 10px;
 }

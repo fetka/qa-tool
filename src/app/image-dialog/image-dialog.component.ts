@@ -15,40 +15,40 @@ declare const getNextPointer: any;
   styleUrls: ['./image-dialog.component.scss'],
 })
 export class ImageDialogComponent implements OnInit {
-  link!: string;
+  screenshotLink!: string;
 
-  snapshotLinks!: string[];
+  screenshotLinks!: string[];
 
   pointer!: number;
 
   constructor(
     public dialogRef: MatDialogRef<ImageDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    private data: { snapshotLinks: string[]; pointer: number }
+    private data: { screenshotLinks: string[]; pointer: number }
   ) {}
 
   ngOnInit(): void {
     this.pointer = this.data.pointer;
-    this.snapshotLinks = this.data.snapshotLinks;
-    this.link = this.data.snapshotLinks[this.pointer];
+    this.screenshotLinks = this.data.screenshotLinks;
+    this.screenshotLink = this.data.screenshotLinks[this.pointer];
   }
 
   showNextImage(event: KeyboardEvent) {
-    if (this.snapshotLinks.length === 1) return;
+    if (this.screenshotLinks.length === 1) return;
     if (event.key === 'ArrowLeft') {
       this.pointer = getNextPointer(
-        this.snapshotLinks.length,
+        this.screenshotLinks.length,
         this.pointer,
         Direction.LEFT
       );
     }
     if (event.key === 'ArrowRight') {
       this.pointer = getNextPointer(
-        this.snapshotLinks.length,
+        this.screenshotLinks.length,
         this.pointer,
         Direction.RIGHT
       );
     }
-    this.link = this.snapshotLinks[this.pointer];
+    this.screenshotLink = this.screenshotLinks[this.pointer];
   }
 }

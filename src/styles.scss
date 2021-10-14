@@ -21,3 +21,16 @@ button {
   overflow: auto !important;
   border: 2px solid;
 }
+.cdk-overlay-pane {
+  &.mat-tooltip-panel {
+    .mat-tooltip {
+      color: #68c4f7;
+      background-color: rgb(46, 46, 46);
+      border: 1px solid #eeeeee;
+      border-radius: 5px;
+      font-size: 1rem;
+      padding: 5px;
+      letter-spacing: 0.5px;
+    }
+  }
+}

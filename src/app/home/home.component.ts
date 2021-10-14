@@ -2,14 +2,20 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 /* eslint-disable function-paren-newline */
-import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
 
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { TestCase } from '../models/test-case';
 import { TestCaseService } from '../services/services';
 
+/** Custom options the configure the tooltip's default show/hide delays. */
+export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
+  showDelay: 100,
+  hideDelay: 1000,
+  touchendHideDelay: 100,
+};
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',

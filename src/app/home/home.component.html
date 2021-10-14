@@ -29,15 +29,16 @@
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <u>{{ case.title }}</u
-            >; {{ case.description }}
+            <span [matTooltip]="case.description" matTooltipPosition="above">{{
+              case.title
+            }}</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <hr />
+        <!-- <hr /> -->
+        <div class="discription__section">{{ case.description }}</div>
         <div class="hidden-part" *ngFor="let step of case.steps; let i = index">
-          <p></p>
           <p>
-            <span style="color: rgba(255, 255, 255, 0.5)">[{{ i + 1 }}]</span>
+            <span class="step__index">[{{ i + 1 }}]</span>
             {{ step }}
           </p>
         </div>
