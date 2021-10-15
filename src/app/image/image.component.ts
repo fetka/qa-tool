@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
 import { Screenshot, Direction, MediaType } from '../models/test-case';
 import {
@@ -7,6 +9,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'image',
@@ -31,6 +34,10 @@ export class ImageComponent {
 
   @Output('flowDirection') flowDirection = new EventEmitter();
 
+  copiedUrl!: string;
+
+  constructor(private _snackBar: MatSnackBar) {}
+
   nextImage(event: any) {
     // console.log(event);
     if (event.key === 'ArrowLeft') {
@@ -43,6 +50,15 @@ export class ImageComponent {
 
   copyTitle(text: string): void {
     navigator.clipboard.writeText(text);
-    console.log(text);
+    const msg = `${text} is copied to clipboard!!! 🍕`;
+    this._snackBar.open(msg, '', {
+      duration: 2100,
+      // panelClass: ['example-pizza-party'],
+    });
+    this.copiedUrl = msg;
+    // this._snackBar.openFromComponent(SnackBarComponent, {
+    //   duration: 2 * 1000,
+    //   announcementMessage: msg,
+    // });
   }
 }

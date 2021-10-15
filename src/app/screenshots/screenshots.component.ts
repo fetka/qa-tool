@@ -12,19 +12,19 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./screenshots.component.scss'],
 })
 export class ScreenshotsComponent implements OnInit {
-  screenshotsOnly!: Screenshot[];
+  screenshots!: Screenshot[];
 
   filteredScreenshots!: Screenshot[];
 
-  screenshots!: Screenshot[];
+  screenshotsOnly!: Screenshot[];
 
   videosOnly!: Screenshot[];
 
-  showVideo: boolean = false;
+  showVideo: boolean = true;
 
-  showScreenshot: boolean = false;
+  showScreenshot: boolean = true;
 
-  toggleState: string = 'all';
+  // toggleState: string = 'all';
 
   constructor(
     private testCaseService: TestCaseService,
@@ -66,21 +66,14 @@ export class ScreenshotsComponent implements OnInit {
     this.filterSelector();
   }
 
-  filterSelector() {
-    if (
-      (this.showVideo && this.showScreenshot) ||
-      (!this.showVideo && !this.showScreenshot)
-    ) {
-      this.toggleState = 'all';
-    } else if (!this.showVideo && this.showScreenshot) {
-      this.toggleState = 'onlyScreenshot';
-    } else {
-      this.toggleState = 'onlyVideo';
+  filterSelector(): void {
+    let toggleState: string = 'all_default';
+    if (this.showScreenshot && !this.showVideo) {
+      toggleState = 'onlyScreenshot';
+    } else if (this.showVideo && !this.showScreenshot) {
+      toggleState = 'onlyVideo';
     }
-    switch (this.toggleState) {
-      case 'all':
-        this.filteredScreenshots = this.screenshots;
-        break;
+    switch (toggleState) {
       case 'onlyVideo':
         this.filteredScreenshots = this.screenshots.filter(
           (shots) => shots.type === MediaType.VIDEO
@@ -92,6 +85,7 @@ export class ScreenshotsComponent implements OnInit {
         );
         break;
       default:
+        this.filteredScreenshots = this.screenshots;
         break;
     }
   }

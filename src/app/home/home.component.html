@@ -24,7 +24,11 @@
           alt=""
           srcset=""
         /> -->
-        <image [screenshot]="screenshot" (click)="openDialog(i)"></image>
+        <image
+          style="width: 300px"
+          [screenshot]="screenshot"
+          (click)="openDialog(i)"
+        ></image>
       </mat-list-item>
     </mat-list>
   </mat-drawer>

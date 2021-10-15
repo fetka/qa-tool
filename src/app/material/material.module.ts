@@ -13,12 +13,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import {
-  MatRadioModule,
   MAT_RADIO_DEFAULT_OPTIONS,
+  MatRadioModule,
 } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -36,6 +37,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     MatButtonModule,
     MatNativeDateModule,
+    MatSnackBarModule,
     MatDatepickerModule,
     MatSelectModule,
     MatRadioModule,

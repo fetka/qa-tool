@@ -40,6 +40,11 @@ export const TEST_CASES: TestCase[] = [
         link: '../../assets/screenshots/IMG_0094.PNG',
         type: MediaType.IMAGE,
       },
+      {
+        title: '../../assets/screenshots/AUTT1857.MP4',
+        link: '../../assets/screenshots/AUTT1857.MP4',
+        type: MediaType.VIDEO,
+      },
     ],
   },
   {
@@ -71,21 +76,6 @@ export const TEST_CASES: TestCase[] = [
   },
 ];
 
-export const SNAPSHOTS_LINKS = [
-  '../../assets/screenshots/IMG_0094.PNG',
-  '../../assets/screenshots/IMG_0095.PNG',
-  '../../assets/screenshots/IMG_0093.PNG',
-  '../../assets/screenshots/IMG_0096.PNG',
-  '../../assets/screenshots/IMG_0098.PNG',
-  '../../assets/screenshots/IMG_0094.PNG',
-  '../../assets/screenshots/IMG_0095.PNG',
-  '../../assets/screenshots/IMG_0093.PNG',
-  '../../assets/screenshots/IMG_0096.PNG',
-  '../../assets/screenshots/IMG_0098.PNG',
-  '../../assets/screenshots/AUTT1857.MP4',
-  '../../assets/screenshots/AUTT1857.MP4',
-];
-
 export const SCREENSHOT_LIST: Screenshot[] = [
   {
     title: '../../assets/screenshots/IMG_0094.PNG',
@@ -112,4 +102,19 @@ export const SCREENSHOT_LIST: Screenshot[] = [
     link: '../../assets/screenshots/IMG_0096.PNG',
     type: MediaType.IMAGE,
   },
+];
+
+export const SCREENSHOT_LINKS = [
+  '../../assets/screenshots/IMG_0094.PNG',
+  '../../assets/screenshots/IMG_0095.PNG',
+  '../../assets/screenshots/IMG_0093.PNG',
+  '../../assets/screenshots/IMG_0096.PNG',
+  '../../assets/screenshots/IMG_0098.PNG',
+  '../../assets/screenshots/IMG_0094.PNG',
+  '../../assets/screenshots/IMG_0095.PNG',
+  '../../assets/screenshots/IMG_0093.PNG',
+  '../../assets/screenshots/IMG_0096.PNG',
+  '../../assets/screenshots/IMG_0098.PNG',
+  '../../assets/screenshots/AUTT1857.MP4',
+  '../../assets/screenshots/AUTT1857.MP4',
 ];

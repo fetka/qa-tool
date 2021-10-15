@@ -15,7 +15,16 @@
   [ngSwitch]="screenshot.type"
 >
   <ng-container *ngSwitchCase="'video'">
-    <p class="title__text">{{ screenshot.title | shortText }}</p>
+    <span (click)="copyTitle(screenshot.title)" class="title__text"
+      >{{ screenshot.title | shortText }}
+      <button
+        *ngIf="copyButtonDisplayed"
+        mat-icon-button
+        aria-label="copyTitle icon"
+      >
+        <mat-icon class="icon-display">content_copy</mat-icon>
+      </button>
+    </span>
     <video [controls]="controls" [muted]="muted">
       <source [src]="screenshot.link" type="video/mp4" />
     </video>
@@ -36,3 +45,4 @@
 
   <ng-container *ngSwitchDefault> </ng-container>
 </ng-container>
+<!-- <snack-bar [url]="copiedUrl"></snack-bar> -->

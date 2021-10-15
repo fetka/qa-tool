@@ -1,5 +1,5 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, HostBinding, HostListener } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({

@@ -1,10 +1,16 @@
 <div class="example-button-row mat-expansion-panel">
   <a routerLink="/"> <button mat-raised-button color="warn">Home</button></a>
   <!-- <button mat-raised-button color="warn">Show only video</button> -->
-  <mat-slide-toggle color="warn" (change)="showOnlyVideo()"
+  <mat-slide-toggle
+    color="warn"
+    [checked]="showVideo"
+    (change)="showOnlyVideo()"
     >Video only</mat-slide-toggle
   >
-  <mat-slide-toggle color="warn" (change)="showOnlyScreenshot()"
+  <mat-slide-toggle
+    color="warn"
+    [checked]="showScreenshot"
+    (change)="showOnlyScreenshot()"
     >Screenshot only</mat-slide-toggle
   >
 </div>
