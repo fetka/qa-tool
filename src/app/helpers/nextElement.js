@@ -88,4 +88,4 @@ const selfTest = () => {
   console.log(`${badCount} - bad`.red);
 };
 
-selfTest();
+// selfTest();

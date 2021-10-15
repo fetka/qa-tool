@@ -1,3 +1,4 @@
+import { DialogData, Screenshot, TestCase } from '../models/test-case';
 /* eslint-disable operator-linebreak */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
@@ -7,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
 
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
-import { TestCase } from '../models/test-case';
+
 import { TestCaseService } from '../services/services';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
@@ -30,7 +31,7 @@ export class HomeComponent implements OnInit {
 
   snapshotsLinks!: string[];
 
-  filteredSnapshotsLinks!: string[];
+  filteredScreenshots: Screenshot[] = [];
 
   selectedCase!: TestCase;
 
@@ -49,22 +50,23 @@ export class HomeComponent implements OnInit {
 
   selectTestCase(index: any) {
     if (index === 'all') {
-      this.filteredSnapshotsLinks = this.testCaseService.getSnapshotsLinksAll();
+      this.filteredScreenshots = this.testCaseService.getScreenshotsAll();
     } else {
-      this.filteredSnapshotsLinks =
-        this.testCaseService.getSnapshotLinks(index);
+      this.filteredScreenshots = this.testCaseService.getScreenshot(index);
     }
   }
 
-  getSnapshotCount(idx: number) {
-    const count = this.testCases[idx].imageLinks?.length || 'all';
+  getSnapshotCount(index: number) {
+    const count = this.testCases[index].screenshots?.length || 'all';
     return `( ${count} )`;
   }
 
   openDialog(id: number): void {
+    console.log(id);
+    const data: DialogData = { list: this.filteredScreenshots, pointer: id };
     const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '250px',
-      data: { snapshotLinks: this.filteredSnapshotsLinks, pointer: id },
+      data,
     });
 
     // dialogRef.afterClosed().subscribe(result => {

@@ -9,10 +9,19 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material/material.module';
 import { TestCaseService } from './services/services';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
-import { AllSnapshotComponent } from './all-snapshot/all-snapshot.component';
+import { ScreenshotsComponent } from './screenshots/screenshots.component';
+import { ImageComponent } from './image/image.component';
+import { ShortTextPipe } from './short-text.pipe';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ImageDialogComponent, AllSnapshotComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    ImageDialogComponent,
+    ScreenshotsComponent,
+    ImageComponent,
+    ShortTextPipe,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

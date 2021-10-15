@@ -1,4 +1,5 @@
-import { Result, TestCase } from '../models/test-case';
+/* eslint-disable object-curly-newline */
+import { Screenshot, MediaType, Result, TestCase } from '../models/test-case';
 
 export const TEST_CASES: TestCase[] = [
   {
@@ -8,6 +9,7 @@ export const TEST_CASES: TestCase[] = [
     outcome: 'outcome 1',
     result: Result.Success,
     steps: ['step 1', 'step 2', 'step 3'],
+    screenshots: [],
   },
   {
     title: 'title 2',
@@ -16,6 +18,7 @@ export const TEST_CASES: TestCase[] = [
     outcome: 'outcome 2',
     result: Result.Success,
     steps: ['step 1', 'step 2', 'step 3'],
+    screenshots: [],
   },
   {
     title: 'title 3 title 3 title 3 title 3 title 3 title 3 title 3 title 3',
@@ -31,7 +34,13 @@ export const TEST_CASES: TestCase[] = [
       'step 2step 1 step 1step 1 step 1step 1 step 1',
       'step 3',
     ],
-    imageLinks: ['../../assets/screenshots/IMG_0094.PNG'],
+    screenshots: [
+      {
+        title: '../../assets/screenshots/IMG_0094.PNG',
+        link: '../../assets/screenshots/IMG_0094.PNG',
+        type: MediaType.IMAGE,
+      },
+    ],
   },
   {
     title: 'title 4',
@@ -40,6 +49,7 @@ export const TEST_CASES: TestCase[] = [
     outcome: 'outcome 4',
     result: Result.Success,
     steps: ['step 1', 'step 2', 'step 3'],
+    screenshots: [],
   },
   {
     title: 'title 5',
@@ -48,6 +58,7 @@ export const TEST_CASES: TestCase[] = [
     description: ' description 5',
     result: Result.Pending,
     steps: ['step 1', 'step 2', 'step 3'],
+    screenshots: [],
   },
   {
     title: 'title 6',
@@ -56,6 +67,7 @@ export const TEST_CASES: TestCase[] = [
     outcome: 'outcome 6',
     result: Result.Success,
     steps: ['step 1', 'step 2', 'step 3'],
+    screenshots: [],
   },
 ];
 
@@ -72,4 +84,32 @@ export const SNAPSHOTS_LINKS = [
   '../../assets/screenshots/IMG_0098.PNG',
   '../../assets/screenshots/AUTT1857.MP4',
   '../../assets/screenshots/AUTT1857.MP4',
+];
+
+export const SCREENSHOT_LIST: Screenshot[] = [
+  {
+    title: '../../assets/screenshots/IMG_0094.PNG',
+    link: '../../assets/screenshots/IMG_0094.PNG',
+    type: MediaType.IMAGE,
+  },
+  {
+    title: '../../assets/screenshots/AUTT1857.MP4',
+    link: '../../assets/screenshots/AUTT1857.MP4',
+    type: MediaType.VIDEO,
+  },
+  {
+    title: '../../assets/screenshots/IMG_0098.PNG',
+    link: '../../assets/screenshots/IMG_0098.PNG',
+    type: MediaType.IMAGE,
+  },
+  {
+    title: '../../assets/screenshots/AUTT1857.MP4',
+    link: '../../assets/screenshots/AUTT1857.MP4',
+    type: MediaType.VIDEO,
+  },
+  {
+    title: '../../assets/screenshots/IMG_0096.PNG',
+    link: '../../assets/screenshots/IMG_0096.PNG',
+    type: MediaType.IMAGE,
+  },
 ];

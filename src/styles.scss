@@ -19,7 +19,11 @@ button {
 .mat-dialog-container {
   resize: both !important;
   overflow: auto !important;
+  width: 500px;
+  max-width: 700px;
   border: 2px solid;
+  padding: 5px;
+  background-color: gray;
 }
 .cdk-overlay-pane {
   &.mat-tooltip-panel {

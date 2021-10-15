@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllSnapshotComponent } from './all-snapshot.component';
+import { ImageComponent } from './image.component';
 
-describe('AllSnapshotComponent', () => {
-  let component: AllSnapshotComponent;
-  let fixture: ComponentFixture<AllSnapshotComponent>;
+describe('ImageComponent', () => {
+  let component: ImageComponent;
+  let fixture: ComponentFixture<ImageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AllSnapshotComponent],
+      declarations: [ImageComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AllSnapshotComponent);
+    fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

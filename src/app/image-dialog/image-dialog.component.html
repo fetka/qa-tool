@@ -1,6 +1,5 @@
-<div class="resizable-input">
+<!-- <div class="resizable-input">
   <p>{{ screenshotLink }}</p>
-  <!-- <img [src]="screenshotLink" alt="" srcset="" (click)="next()" /> -->
   <input
     *ngIf="screenshotLink.endsWith('PNG')"
     type="image"
@@ -15,4 +14,13 @@
   >
     <source [src]="screenshotLink" type="video/mp4" />
   </video>
+</div> -->
+<div class="container">
+  <image
+    [controls]="'controls'"
+    [screenshot]="screenshot"
+    [autoplay]="'autoplay'"
+    (flowDirection)="showNextImage($event)"
+    [copyButtonDisplayed]="true"
+  ></image>
 </div>

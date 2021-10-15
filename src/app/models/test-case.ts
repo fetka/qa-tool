@@ -1,3 +1,4 @@
+// import { Screenshot } from './test-case';
 /* eslint-disable linebreak-style */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
@@ -10,7 +11,7 @@ export interface TestCase {
   steps: string[];
   outcome: string;
   result: Result;
-  imageLinks?: string[];
+  screenshots: Screenshot[];
 }
 export enum Result {
   Pending = 0,
@@ -21,4 +22,17 @@ export enum Result {
 export enum Direction {
   LEFT = -1,
   RIGHT = 1,
+}
+export interface Screenshot {
+  title: string;
+  link: string;
+  type: MediaType;
+}
+export enum MediaType {
+  VIDEO = 'video',
+  IMAGE = 'image',
+}
+export interface DialogData {
+  list: Screenshot[];
+  pointer: number;
 }

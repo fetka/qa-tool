@@ -1,9 +1,14 @@
+import {
+  SCREENSHOT_LIST,
+  SNAPSHOTS_LINKS,
+  TEST_CASES,
+} from '../mocks/test_case_mocks';
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable function-paren-newline */
 /* eslint-disable comma-dangle */
 import { Injectable } from '@angular/core';
-import { SNAPSHOTS_LINKS, TEST_CASES } from '../mocks/test_case_mocks';
-import { TestCase } from '../models/test-case';
+
+import { Screenshot, TestCase } from '../models/test-case';
 
 @Injectable({
   providedIn: 'root',
@@ -11,19 +16,19 @@ import { TestCase } from '../models/test-case';
 export class TestCaseService {
   testCases: TestCase[] = TEST_CASES;
 
-  snapshots: string[] = SNAPSHOTS_LINKS;
+  screenshots: Screenshot[] = SCREENSHOT_LIST;
 
   getTestCasesAll(): TestCase[] {
     return this.testCases;
   }
 
-  getSnapshotsLinksAll(): string[] {
-    return this.snapshots;
+  getScreenshotsAll(): Screenshot[] {
+    return this.screenshots;
   }
 
-  getSnapshotLinks(id: number) {
-    if (!this.testCases[id].imageLinks) return this.getSnapshotsLinksAll();
-    const uniq = [...new Set(this.snapshots)];
-    return uniq.filter((link) => this.testCases[id].imageLinks?.includes(link));
+  getScreenshot(id: number): Screenshot[] {
+    if (!this.testCases[id].screenshots) return this.getScreenshotsAll();
+    // const uniq = [...new Set(this.screenshots)];
+    return this.testCases[id].screenshots;
   }
 }

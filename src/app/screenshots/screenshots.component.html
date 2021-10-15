@@ -1,0 +1,23 @@
+<div class="example-button-row mat-expansion-panel">
+  <a routerLink="/"> <button mat-raised-button color="warn">Home</button></a>
+  <!-- <button mat-raised-button color="warn">Show only video</button> -->
+  <mat-slide-toggle color="warn" (change)="showOnlyVideo()"
+    >Video only</mat-slide-toggle
+  >
+  <mat-slide-toggle color="warn" (change)="showOnlyScreenshot()"
+    >Screenshot only</mat-slide-toggle
+  >
+</div>
+<div class="container mat-expansion-panel">
+  <div
+    class="image-container"
+    *ngFor="let screenshot of filteredScreenshots; let i = index"
+  >
+    <image
+      [muted]="'muted'"
+      [controls]="''"
+      [screenshot]="screenshot"
+      (click)="openDialogWithScreenshots(i)"
+    ></image>
+  </div>
+</div>
