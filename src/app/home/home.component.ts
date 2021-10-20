@@ -1,16 +1,17 @@
-import { DialogData, Screenshot, TestCase } from '../models/test-case';
+/* eslint-disable no-param-reassign */
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatAccordion } from '@angular/material/expansion';
+import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
+
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { DialogData, Result, Screenshot, TestCase } from '../models/test-case';
+import { TestCaseService } from '../services/services';
+
 /* eslint-disable operator-linebreak */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 /* eslint-disable function-paren-newline */
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
-
-import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
-
-import { TestCaseService } from '../services/services';
-
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 100,
@@ -23,22 +24,23 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  @ViewChild(MatAccordion) accordion!: MatAccordion;
   panelOpenState: boolean = false;
-
   showFiller = false;
-
   testCases!: TestCase[];
-
   snapshotsLinks!: string[];
-
   filteredScreenshots: Screenshot[] = [];
-
   selectedCase!: TestCase;
 
   constructor(
     private testCaseService: TestCaseService,
     public dialog: MatDialog
   ) {}
+
+  selectChange(selectedResult: any, id: any) {
+    this.testCases[id].result = selectedResult;
+    console.log(selectedResult);
+  }
 
   ngOnInit(): void {
     this.testCases = this.testCaseService.getTestCasesAll();

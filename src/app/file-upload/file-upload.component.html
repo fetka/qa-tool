@@ -1,0 +1,21 @@
+<div class="example-button-row">
+  <a routerLink="/">
+    <button mat-raised-button color="warn">
+      <span style="font-size: 2rem">
+        <b>&LeftArrowBar;</b>
+      </span>
+    </button></a
+  >
+</div>
+<input
+  class="custom-file-input"
+  type="file"
+  id="myFile"
+  #file
+  name="filename"
+/>
+<input (click)="readFile($event, file.files)" type="submit" />
+
+<div class="mat-expansion-panel">
+  <pre>{{ text }}</pre>
+</div>

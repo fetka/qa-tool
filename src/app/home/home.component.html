@@ -11,6 +11,9 @@
       Navigate to All Screenshots
     </button></a
   >
+  <a routerLink="/file-upload">
+    <button mat-raised-button color="warn">File upload</button></a
+  >
 </div>
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
@@ -18,12 +21,6 @@
       <mat-list-item
         *ngFor="let screenshot of filteredScreenshots; let i = index"
       >
-        <!-- <img
-          (click)="openDialog(i)"
-          src="{{ screenshot.link }}"
-          alt=""
-          srcset=""
-        /> -->
         <image
           style="width: 300px"
           [screenshot]="screenshot"
@@ -32,13 +29,13 @@
       </mat-list-item>
     </mat-list>
   </mat-drawer>
-
+  <div class="example-action-buttons">
+    <button mat-button (click)="accordion.openAll()">Expand All</button>
+    <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+  </div>
   <div class="example-sidenav-content">
-    <mat-accordion *ngFor="let case of testCases; let i = index">
-      <mat-expansion-panel
-        (opened)="panelOpenState = true"
-        (closed)="panelOpenState = false"
-      >
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let case of testCases; let i = index">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <span [matTooltip]="case.description" matTooltipPosition="above">{{
@@ -46,7 +43,6 @@
             }}</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <!-- <hr /> -->
         <div class="discription__section">{{ case.description }}</div>
         <div class="hidden-part" *ngFor="let step of case.steps; let i = index">
           <p>
@@ -67,7 +63,7 @@
             >
               Toggle {{ getSnapshotCount(i) }}
             </button>
-            <mat-radio-group
+            <!-- <mat-radio-group
               value="{{ case.result }}"
               aria-label="Select an option"
               (change)="case.result = $event.value"
@@ -93,7 +89,12 @@
                 value="2"
                 >success</mat-radio-button
               >
-            </mat-radio-group>
+            </mat-radio-group> -->
+
+            <standard-select
+              [result]="case.result"
+              (resultChanged)="selectChange($event, i)"
+            ></standard-select>
           </div>
         </div>
       </mat-expansion-panel>

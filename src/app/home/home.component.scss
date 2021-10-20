@@ -55,7 +55,7 @@ img {
   border: 1px solid black;
 }
 
-mat-accordion {
+mat-expansion-panel {
   margin-bottom: 2px;
 }
 .hidden-part {
@@ -76,18 +76,48 @@ mat-accordion {
   letter-spacing: 0.7px;
 }
 .yellow {
-  color: #cddc39;
+  color: #cddc39 !important;
 }
 .red {
-  color: red;
+  color: red !important;
 }
 .green {
-  color: green;
+  color: green !important;
+}
+.yellow__border {
+  border: #cddc39 solid 1px !important;
+}
+.red__border {
+  border: solid 1px red !important;
+}
+.green__border {
+  border: solid 1px green !important;
 }
 .gray {
   color: gray;
 }
 
+.pending {
+  color: #a56615;
+  background-color: #f8fb44;
+  font-weight: 600;
+  padding: 2px;
+  letter-spacing: 0.5px;
+}
+.failed {
+  color: red;
+  background-color: #fbbbbb;
+  padding: 2px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.success {
+  font-weight: 600;
+  color: rgb(7, 85, 7);
+  background-color: greenyellow;
+  letter-spacing: 0.5px;
+  padding: 2px;
+}
 .example-button-row {
   display: block;
   width: 100%;
@@ -99,4 +129,39 @@ button {
 }
 .step__index {
   color: rgba(255, 255, 255, 0.5);
+}
+
+mat-select {
+  border: solid red 1px;
+  width: 100px;
+}
+
+option {
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+  font-size: 15px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 5px 0;
+  line-height: 20px;
+}
+option[value="0"] {
+  color: #a56615;
+  background-color: #f8fb44;
+}
+option[value="1"] {
+  color: red;
+  background-color: #fbbbbb;
+}
+option[value="2"] {
+  color: rgb(7, 85, 7);
+  background-color: greenyellow;
+  font-family: inherit;
+}
+select {
+  border-radius: 3px;
+  width: 100px;
+  height: 36px;
+  font-size: 14px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
-import { Screenshot, Direction, MediaType } from '../models/test-case';
+import { Screenshot, Direction, MediaType } from '../../models/test-case';
 import {
   Component,
   EventEmitter,
@@ -50,9 +50,9 @@ export class ImageComponent {
 
   copyTitle(text: string): void {
     navigator.clipboard.writeText(text);
-    const msg = `${text} is copied to clipboard!!! 🍕`;
+    const msg = 'Copied to clipboard!!! 🍕';
     this._snackBar.open(msg, '', {
-      duration: 2100,
+      duration: 2500,
       // panelClass: ['example-pizza-party'],
     });
     this.copiedUrl = msg;

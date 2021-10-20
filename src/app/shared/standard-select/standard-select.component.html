@@ -1,0 +1,16 @@
+<select
+  [class.success]="result == 2"
+  [class.failed]="result == 1"
+  [class.pending]="result == 0"
+  name="result"
+  id="result"
+  (change)="selectChange($event)"
+>
+  <option
+    *ngFor="let option of resultOptions"
+    [value]="option.value"
+    [selected]="option.value == result"
+  >
+    {{ option.viewValue }}
+  </option>
+</select>

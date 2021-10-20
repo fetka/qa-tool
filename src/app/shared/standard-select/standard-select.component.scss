@@ -1,0 +1,57 @@
+$pending-color: #a56615;
+$pending-background-color: #f8fb44;
+$failed-color: red;
+$failed-background-color: #fbbbbb;
+$success-color: rgb(7, 85, 7);
+$success-background-color: greenyellow;
+
+option {
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+  font-size: 15px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 5px 0;
+  line-height: 20px;
+}
+option[value="0"] {
+  color: $pending-color;
+  background-color: $pending-background-color;
+}
+option[value="1"] {
+  color: $failed-color;
+  background-color: $failed-background-color;
+}
+option[value="2"] {
+  color: $success-color;
+  background-color: $success-background-color;
+  font-family: inherit;
+}
+select {
+  border-radius: 3px;
+  width: 100px;
+  height: 36px;
+  font-size: 14px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.pending {
+  color: $pending-color;
+  background-color: $pending-background-color;
+  font-weight: 600;
+  padding: 2px;
+  letter-spacing: 0.5px;
+}
+.failed {
+  color: $failed-color;
+  background-color: $failed-background-color;
+  padding: 2px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.success {
+  font-weight: 600;
+  color: $success-color;
+  background-color: $success-background-color;
+  letter-spacing: 0.5px;
+  padding: 2px;
+}

@@ -1,0 +1,17 @@
+<mat-select
+  [class.green__border]="result == 2"
+  [class.red__border]="result == 1"
+  [class.yellow__border]="result == 0"
+  (selectionChange)="selectChange($event)"
+  [value]="result"
+>
+  <mat-option *ngFor="let option of resultOptions" [value]="result">
+    <span
+      [class.green]="result == 2"
+      [class.red]="result == 1"
+      [class.yellow]="result == 0"
+    >
+      {{ option.viewValue }}
+    </span>
+  </mat-option>
+</mat-select>

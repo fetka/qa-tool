@@ -24,6 +24,11 @@
     "no-unused-vars": "off",
     "no-undef": "off",
     "no-empty-function": "off",
-    "import/order": "off"
+    "import/order": "off",
+    "lines-between-class-members": "off",
+    "padded-blocks": "off",
+    "no-trailing-spaces": "off",
+    "object-curly-newline": "off",
+    "no-return-assign": "off"
   }
 }
