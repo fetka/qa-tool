@@ -6,6 +6,9 @@
       </span>
     </button></a
   >
+  <button (click)="navigate()" mat-raised-button color="warn">
+    Preview file
+  </button>
 </div>
 <input
   class="custom-file-input"
@@ -13,9 +16,14 @@
   id="myFile"
   #file
   name="filename"
+  (change)="readFile(file.files)"
 />
-<input (click)="readFile($event, file.files)" type="submit" />
-
+<input (click)="readFile(file.files)" type="submit" />
 <div class="mat-expansion-panel">
+  <p>{{ file.files?.item(0)?.name }}</p>
   <pre>{{ text }}</pre>
 </div>
+<br />
+<a routerLink="/preview-json" [state]="{ text: text }">
+  routerLink with data
+</a>

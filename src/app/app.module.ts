@@ -14,6 +14,7 @@ import { ImageComponent } from './shared/image/image.component';
 import { SharedModule } from './shared/shared.module';
 import { ShortTextPipe } from './short-text.pipe';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { PreviewJsonComponent } from './preview-json/preview-json.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     ImageComponent,
     ShortTextPipe,
     FileUploadComponent,
+    PreviewJsonComponent,
   ],
   imports: [
     BrowserModule,

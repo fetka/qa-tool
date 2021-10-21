@@ -4,6 +4,10 @@
   padding: 3px;
   // background-color: rgb(48, 48, 48);
 }
+
+button {
+  margin: 5px;
+}
 .custom-file-input {
   color: transparent;
 }
@@ -36,4 +40,7 @@
 }
 .custom-file-input:active::before {
   //   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+a {
+  color: aliceblue;
 }
