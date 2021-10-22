@@ -3,9 +3,6 @@ import { Injectable } from '@angular/core';
 import { SCREENSHOT_LIST, TEST_CASES } from '../mocks/test_case_mocks';
 import { Screenshot, TestCase } from '../models/test-case';
 
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable function-paren-newline */
-/* eslint-disable comma-dangle */
 @Injectable({
   providedIn: 'root',
 })

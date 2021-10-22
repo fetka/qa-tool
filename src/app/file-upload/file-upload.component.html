@@ -9,21 +9,34 @@
   <button (click)="navigate()" mat-raised-button color="warn">
     Preview file
   </button>
+  <button (click)="save()" mat-raised-button color="warn">
+    Save uploaded file
+  </button>
 </div>
-<input
-  class="custom-file-input"
-  type="file"
-  id="myFile"
-  #file
-  name="filename"
-  (change)="readFile(file.files)"
-/>
-<input (click)="readFile(file.files)" type="submit" />
-<div class="mat-expansion-panel">
-  <p>{{ file.files?.item(0)?.name }}</p>
-  <pre>{{ text }}</pre>
-</div>
+
+<mat-card>
+  <mat-card-title
+    ><input
+      class="custom-file-input"
+      type="file"
+      id="file__input"
+      accept=".json"
+      #file
+      name="filename"
+      (change)="readFile(file.files)"
+  /></mat-card-title>
+  <mat-card-subtitle>Uploaded: {{ filename }} </mat-card-subtitle>
+  <mat-card-actions>
+    <div *ngFor="let file of fileList; let i = index">
+      <button (click)="downloadFile(file)" mat-button color="warn">
+        {{ file.filename }} DOWNLOAD
+      </button>
+    </div>
+    <!-- <button mat-button>SHARE</button> -->
+  </mat-card-actions>
+</mat-card>
+
 <br />
-<a routerLink="/preview-json" [state]="{ text: text }">
-  routerLink with data
-</a>
+<div class="mat-expansion-panel mat-card" style="min-height: 50%">
+  <pre style="padding: 30px">  {{ fileContent }}</pre>
+</div>

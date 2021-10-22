@@ -15,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 import { ShortTextPipe } from './short-text.pipe';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { PreviewJsonComponent } from './preview-json/preview-json.component';
+import { FileService } from './services/file.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { PreviewJsonComponent } from './preview-json/preview-json.component';
     ReactiveFormsModule,
     SharedModule,
   ],
-  providers: [TestCaseService],
+  providers: [TestCaseService, FileService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
