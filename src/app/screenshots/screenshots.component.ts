@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 import { DialogData, MediaType, Screenshot } from '../models/test-case';
 /* eslint-disable comma-dangle */
-import { TestCaseService } from '../services/services';
+import { TestCaseService } from '../services/test-case.service';
 import { Component, OnInit } from '@angular/core';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { MatDialog } from '@angular/material/dialog';

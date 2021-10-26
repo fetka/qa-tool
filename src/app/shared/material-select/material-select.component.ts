@@ -1,4 +1,6 @@
+import { FileSelectOption } from '../../models/test-case';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { Result } from 'src/app/models/test-case';
 
 @Component({
@@ -7,16 +9,21 @@ import { Result } from 'src/app/models/test-case';
   styleUrls: ['./material-select.component.scss'],
 })
 export class MaterialSelectComponent {
-  @Input('result') result!: number;
+  @Input('options') options!: FileSelectOption[];
+  @Input('labelText') labelText: string = 'Selected file';
 
-  @Output('resultChanged') resultChanged: EventEmitter<string> =
+  @Output('selectionChanged') selectionChanged: EventEmitter<string> =
     new EventEmitter();
-  resultOptions: any[] = [
-    { value: Result.Pending, viewValue: 'Pending' },
-    { value: Result.Failed, viewValue: 'Failed' },
-    { value: Result.Success, viewValue: 'Success' },
-  ];
-  selectChange(event: any) {
-    this.resultChanged.emit(event.target.value);
+
+  constructor() {
+    this.options = [
+      { value: 'Result.Pending', viewValue: 'Pending' },
+      { value: 'Result.Failed', viewValue: 'Failed safsf asfsaf.fd' },
+      { value: 'Result.Success', viewValue: 'Success' },
+    ];
+  }
+  selectChange(event: MatSelectChange) {
+    // console.log(event.source);
+    this.selectionChanged.emit(event.value);
   }
 }

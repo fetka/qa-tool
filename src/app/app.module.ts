@@ -9,13 +9,13 @@ import { HomeComponent } from './home/home.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { MaterialModule } from './material/material.module';
 import { ScreenshotsComponent } from './screenshots/screenshots.component';
-import { TestCaseService } from './services/services';
+import { TestCaseService } from './services/test-case.service';
 import { ImageComponent } from './shared/image/image.component';
 import { SharedModule } from './shared/shared.module';
 import { ShortTextPipe } from './short-text.pipe';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { PreviewJsonComponent } from './preview-json/preview-json.component';
-import { FileService } from './services/file.service';
+import { FileStoreService } from './services/file-store.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { FileService } from './services/file.service';
     ReactiveFormsModule,
     SharedModule,
   ],
-  providers: [TestCaseService, FileService],
+  providers: [TestCaseService, FileStoreService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

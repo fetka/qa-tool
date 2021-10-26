@@ -29,12 +29,30 @@
       </mat-list-item>
     </mat-list>
   </mat-drawer>
-  <div class="example-action-buttons">
+  <!-- <div class="example-action-buttons">
     <button mat-button (click)="accordion.openAll()">Expand All</button>
     <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-  </div>
+  </div> -->
   <div class="example-sidenav-content">
     <mat-accordion multi>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Control panel </mat-panel-title>
+          <mat-panel-description> </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="example-action-buttons">
+          <button mat-button (click)="accordion.openAll()">Expand All</button>
+          <button mat-button (click)="accordion.closeAll()">
+            Collapse All
+          </button>
+          <material-select
+            (selectionChanged)="fileSelectionChanged($event)"
+            [options]="fileSelectOptions"
+          ></material-select>
+        </div>
+      </mat-expansion-panel>
+
       <mat-expansion-panel *ngFor="let case of testCases; let i = index">
         <mat-expansion-panel-header>
           <mat-panel-title>

@@ -2,15 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PreviewJsonComponent } from './preview-json.component';
 
-describe('PreviewJsonComponent', () => {
+xdescribe('PreviewJsonComponent', () => {
   let component: PreviewJsonComponent;
   let fixture: ComponentFixture<PreviewJsonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PreviewJsonComponent ]
-    })
-    .compileComponents();
+      declarations: [PreviewJsonComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

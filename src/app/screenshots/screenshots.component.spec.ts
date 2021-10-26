@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScreenshotsComponent } from './screenshots.component';
 
-describe('AllSnapshotComponent', () => {
+xdescribe('AllSnapshotComponent', () => {
   let component: ScreenshotsComponent;
   let fixture: ComponentFixture<ScreenshotsComponent>;
 

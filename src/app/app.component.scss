@@ -7,11 +7,9 @@ mat-toolbar {
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
-}
-
-mat-toolbar {
   display: flex;
   align-items: center;
+  height: 45px;
 }
 
 .flex-stretch {
@@ -28,4 +26,9 @@ mat-card {
 }
 .mr-8 {
   margin-right: 8px;
+}
+material-select {
+  margin-right: 20px;
+  padding-top: 15px;
+  font-size: 12px;
 }

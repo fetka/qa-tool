@@ -2,15 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StandardSelectComponent } from './standard-select.component';
 
-describe('StandardSelectComponent', () => {
+xdescribe('StandardSelectComponent', () => {
   let component: StandardSelectComponent;
   let fixture: ComponentFixture<StandardSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StandardSelectComponent ]
-    })
-    .compileComponents();
+      declarations: [StandardSelectComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

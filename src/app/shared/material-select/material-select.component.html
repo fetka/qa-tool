@@ -1,17 +1,21 @@
-<mat-select
-  [class.green__border]="result == 2"
-  [class.red__border]="result == 1"
-  [class.yellow__border]="result == 0"
-  (selectionChange)="selectChange($event)"
-  [value]="result"
->
-  <mat-option *ngFor="let option of resultOptions" [value]="result">
-    <span
-      [class.green]="result == 2"
-      [class.red]="result == 1"
-      [class.yellow]="result == 0"
-    >
+<!-- <mat-select (selectionChange)="selectChange($event)">
+  <mat-option
+    *ngFor="let option of options"
+    [selected]="option.value == 2"
+    [value]="option.value"
+  >
+    <span>
       {{ option.viewValue }}
     </span>
   </mat-option>
-</mat-select>
+</mat-select> -->
+<mat-form-field appearance="fill">
+  <!-- <mat-label>{{ labelText }}</mat-label> -->
+  <mat-select (selectionChange)="selectChange($event)">
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      <span>
+        {{ option.viewValue }}
+      </span>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

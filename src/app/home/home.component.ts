@@ -1,3 +1,11 @@
+import {
+  FileSelectOption,
+  DialogData,
+  Result,
+  Screenshot,
+  TestCase,
+} from '../models/test-case';
+import { FileStoreService } from '../services/file-store.service';
 /* eslint-disable no-param-reassign */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -5,8 +13,8 @@ import { MatAccordion } from '@angular/material/expansion';
 import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
 
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
-import { DialogData, Result, Screenshot, TestCase } from '../models/test-case';
-import { TestCaseService } from '../services/services';
+
+import { TestCaseService } from '../services/test-case.service';
 
 /* eslint-disable operator-linebreak */
 /* eslint-disable implicit-arrow-linebreak */
@@ -31,10 +39,12 @@ export class HomeComponent implements OnInit {
   snapshotsLinks!: string[];
   filteredScreenshots: Screenshot[] = [];
   selectedCase!: TestCase;
+  fileSelectOptions: FileSelectOption[] = [];
 
   constructor(
     private testCaseService: TestCaseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private fileService: FileStoreService
   ) {}
 
   selectChange(selectedResult: any, id: any) {
@@ -44,8 +54,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.testCases = this.testCaseService.getTestCasesAll();
+    this.fileSelectOptions = this.testCaseService.getFileSelectOption();
   }
-
+  fileSelectionChanged(fileName: string) {
+    console.log(fileName);
+    this.testCaseService.loadTestCases(fileName);
+  }
   changed(ev: any, result: any) {
     console.log('radio button change event', ev.value, result);
   }

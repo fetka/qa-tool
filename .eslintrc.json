@@ -29,6 +29,7 @@
     "padded-blocks": "off",
     "no-trailing-spaces": "off",
     "object-curly-newline": "off",
-    "no-return-assign": "off"
+    "no-return-assign": "off",
+    "comma-dangle": "off"
   }
 }

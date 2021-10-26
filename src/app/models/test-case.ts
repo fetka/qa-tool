@@ -36,10 +36,15 @@ export interface DialogData {
   list: Screenshot[];
   pointer: number;
 }
-export type FileType = 'json' | 'xlsx' | 'txt';
-export interface JsonFileObject {
+export interface FileSelectOption {
+  value: string;
+  viewValue: string;
+}
+export type FileType = 'json';
+export interface FileObject {
   filename: string;
   text: string;
   type: FileType;
+  isOpened: boolean;
   uploadedAt?: Date;
 }

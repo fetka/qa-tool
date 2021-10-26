@@ -2,13 +2,13 @@
 /* eslint-disable prefer-template */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable indent */
-import { FileService } from '../services/file.service';
+import { FileStoreService } from '../services/file-store.service';
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-expressions */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { JsonFileObject } from '../models/test-case';
+import { FileObject } from '../models/test-case';
 
 @Component({
   selector: 'file-upload',
@@ -22,12 +22,12 @@ export class FileUploadComponent implements OnInit {
   filename: string = '...';
   reader = new FileReader();
   blob!: Blob;
-  fileList!: JsonFileObject[];
+  fileList!: FileObject[];
 
   constructor(
     private router: Router,
     private _snackBar: MatSnackBar,
-    private fileService: FileService
+    private fileService: FileStoreService
   ) {}
   ngOnInit(): void {
     this.fetchFileList();
@@ -63,17 +63,18 @@ export class FileUploadComponent implements OnInit {
   }
 
   save() {
-    this.fileService.addUploadedJSON({
+    this.fileService.storeJSON({
       filename: this.filename as string,
       text: this.fileContent as string,
       type: 'json',
+      isOpened: false,
     });
     this.fetchFileList();
   }
 
-  downloadFile(obj: JsonFileObject) {
+  downloadFile(obj: FileObject) {
     try {
-      this.fileService.downloadFile(obj);
+      this.fileService.downloadJson(obj);
     } catch (error: any) {
       const msg = (error as string) + ' !!';
       this._snackBar.open(msg, 'Dismiss', {
