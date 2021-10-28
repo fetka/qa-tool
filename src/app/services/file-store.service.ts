@@ -1,6 +1,8 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-underscore-dangle */
 import { Injectable, OnInit } from '@angular/core';
 
-import { FileObject } from '../models/test-case';
+import { ErrorType, TestCasesFileBox } from '../models/test-case';
 
 /* eslint-disable nonblock-statement-body-position */
 /* eslint-disable comma-dangle */
@@ -8,9 +10,9 @@ import { FileObject } from '../models/test-case';
   providedIn: 'root',
 })
 export class FileStoreService implements OnInit {
-  uploadedFileList: FileObject[] = [];
-  dirtyFileList: FileObject[] = [];
-  actualFile!: FileObject;
+  uploadedFileList: TestCasesFileBox[] = [];
+  dirtyFileList: TestCasesFileBox[] = [];
+  actualFile!: TestCasesFileBox;
   localStorageKeyToFileList = 'testCase_fileList';
   constructor() {
     this.ngOnInit();
@@ -26,13 +28,14 @@ export class FileStoreService implements OnInit {
   }
 
   clearStorage() {
+    console.log('clearStorage is called');
     localStorage.removeItem(this.localStorageKeyToFileList);
   }
-  getFileList(): FileObject[] {
+  getFileList(): TestCasesFileBox[] {
     return this.uploadedFileList;
   }
-  getFile(filename: string): FileObject | null {
-    const foundFiles: FileObject[] = this.uploadedFileList.filter(
+  getFile(filename: string): TestCasesFileBox | null {
+    const foundFiles: TestCasesFileBox[] = this.uploadedFileList.filter(
       (file) => file.filename === filename
     );
     if (foundFiles.length === 0) return null;
@@ -41,8 +44,7 @@ export class FileStoreService implements OnInit {
     }
     return foundFiles[0];
   }
-  downloadJson(fileObject: FileObject): void {
-    if (fileObject.isOpened) throw new Error('This file is not saved yet!!');
+  downloadJson(fileObject: { filename: string; text: string }): void {
     if (fileObject.text === '' || fileObject.filename === '') {
       throw new Error('content or filename empty');
     }
@@ -66,30 +68,43 @@ export class FileStoreService implements OnInit {
     anchor.click();
   }
   /* return index of stored file */
-  storeJSON(fileObj: FileObject): number {
+  storeJSON(fileObj: TestCasesFileBox): number | ErrorType {
     if (fileObj.isOpened) {
-      throw new Error('File should be closed');
+      return { error: 'File should be closed' };
     }
-    if (this.searchForFileWithTheSameFilename(fileObj.filename)) {
-      throw new Error('The filename should be unique!');
+    if (
+      // eslint-disable-next-line operator-linebreak
+      this.uploadedFileList.length >= 1 &&
+      this.searchForFileWithTheSameFilename(fileObj.filename)
+    ) {
+      return { error: 'The filename should be unique!' };
     }
-    const fileToStore = JSON.parse(JSON.stringify(fileObj));
+
+    const fileToStore: TestCasesFileBox = new TestCasesFileBox(
+      fileObj.filename,
+      fileObj.text,
+      fileObj.uploadedAt
+    );
 
     const newLength = this.uploadedFileList.push(fileToStore);
+    const indexOfStoredObject = newLength - 1;
     localStorage.setItem(
       this.localStorageKeyToFileList,
       JSON.stringify(this.uploadedFileList)
     );
-    return newLength - 1;
+    return indexOfStoredObject;
   }
 
   /* return false when not found  */
   searchForFileWithTheSameFilename(filename: string): boolean {
     if (this.uploadedFileList.length === 0) return false;
-    const searchResult = this.uploadedFileList.every(
-      (f) => f.filename === filename
-    );
-
+    let searchResult = false;
+    this.uploadedFileList.forEach((f) => {
+      if (f.filename.toLocaleUpperCase() === filename.toLocaleUpperCase()) {
+        searchResult = true;
+      }
+    });
+    console.log(searchResult);
     return searchResult;
   }
   removeFile(filename: string): boolean {

@@ -1,3 +1,8 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-labels */
+/* eslint-disable no-labels */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-underscore-dangle */
 // import { Screenshot } from './test-case';
 /* eslint-disable linebreak-style */
 /* eslint-disable no-unused-vars */
@@ -41,10 +46,47 @@ export interface FileSelectOption {
   viewValue: string;
 }
 export type FileType = 'json';
-export interface FileObject {
-  filename: string;
-  text: string;
-  type: FileType;
+export type ErrorType = {
+  error?:
+    | 'The filename should be unique!'
+    | 'File should be closed'
+    | 'File should be opened first'
+    | undefined;
+};
+
+export class TestCasesFileBox {
+  _text: string;
   isOpened: boolean;
-  uploadedAt?: Date;
+  // uploadedAt?: Date | undefined;
+  type: FileType;
+  constructor(
+    public filename: string,
+    text: string,
+    public uploadedAt?: Date | number
+  ) {
+    this.filename = filename;
+    this._text = text;
+    this.type = 'json';
+    this.isOpened = false;
+    this.uploadedAt = uploadedAt;
+  }
+  close() {
+    this.isOpened = false;
+    return this;
+  }
+  open() {
+    this.isOpened = true;
+    return this;
+  }
+
+  updateText(text: string): boolean | ErrorType {
+    if (this.isOpened) {
+      this._text = text;
+      return true;
+    }
+    return { error: 'File should be opened first' };
+  }
+  get text() {
+    return this._text;
+  }
 }

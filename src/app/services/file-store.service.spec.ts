@@ -1,18 +1,18 @@
+import { TestBed } from '@angular/core/testing';
+
+import { ErrorType, TestCasesFileBox } from '../models/test-case';
+import { FileStoreService } from './file-store.service';
+
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-new */
 /* eslint-disable prefer-arrow-callback */
-import { FileObject } from '../models/test-case';
-import { FileStoreService } from './file-store.service';
-import { TestBed } from '@angular/core/testing';
-
 describe('FileStoreService', () => {
   let storeService: FileStoreService;
-  const fileObject: FileObject = {
-    filename: 'test-filename.json',
-    isOpened: false,
-    text: 'some text',
-    type: 'json',
-  };
+  const fileObject: TestCasesFileBox = new TestCasesFileBox(
+    'test-filename.json',
+    'some text'
+  );
+
   const key = 'testClearStorageFn';
   const jsonContent =
     '{"movie": {"title": "Jaws", "genre": ["thriller", "adventure" ], "date": "1975" }}';
@@ -47,21 +47,10 @@ describe('FileStoreService', () => {
   });
 
   describe('downloadJson fn', () => {
-    it('should throw error when file is opened', () => {
-      const fn = storeService.downloadJson;
-      const fileObj = { ...fileObject };
-      fileObj.isOpened = true;
-      expect(() => {
-        fn(fileObj);
-      }).toThrow(new Error('This file is not saved yet!!'));
-    });
-
     it('should throw error when content or filename are empty string', () => {
       const fn = storeService.downloadJson;
       const emptyString = '';
-      const fileObj = { ...fileObject };
-      fileObj.text = emptyString;
-      fileObj.filename = emptyString;
+      const fileObj = new TestCasesFileBox(emptyString, emptyString);
       expect(() => {
         fn(fileObj);
       }).toThrow(new Error('content or filename empty'));
@@ -90,26 +79,28 @@ describe('FileStoreService', () => {
   });
 
   describe('storeJSON fn', () => {
-    it('should throw error when filename is used by another file', () => {
-      storeService.uploadedFileList = [fileObject];
-      expect(() => {
-        storeService.storeJSON(fileObject);
-      }).toThrowError('The filename should be unique!');
-    });
-    it('should throw error when file is opened', () => {
-      fileObject.isOpened = true;
-      expect(() => {
-        storeService.storeJSON(fileObject);
-      }).toThrowError('File should be closed');
+    it('should return error message when filename is used by another file', () => {
+      storeService.storeJSON(fileObject);
+      const errorObj = storeService.storeJSON(fileObject) as ErrorType;
+      expect(errorObj.error).toEqual('The filename should be unique!');
     });
 
-    it('should be stored when filename is unique', () => {
-      storeService.uploadedFileList = [fileObject];
-      const anotherFile = { ...fileObject };
+    it('should return an error object when file is opened', () => {
+      fileObject.isOpened = true;
+      const errorObj = storeService.storeJSON(fileObject) as ErrorType;
+      expect(errorObj.error).toEqual('File should be closed');
+    });
+
+    it('should store file when filename is unique', () => {
+      storeService.storeJSON(fileObject);
+      const anotherFile = JSON.parse(JSON.stringify(fileObject));
       anotherFile.filename = 'new.json';
       storeService.storeJSON(anotherFile);
-      const newStoredObj = storeService.uploadedFileList[1];
-      expect(newStoredObj.filename).toEqual(anotherFile.filename);
+      storeService.storeJSON(fileObject);
+      console.log(storeService.uploadedFileList);
+      const newStoredObj: string | undefined =
+        storeService.uploadedFileList[2]?.filename;
+      expect(newStoredObj).toBeFalsy();
     });
 
     it('should be called the push fn on uploadedFileList ', () => {
@@ -137,7 +128,7 @@ describe('FileStoreService', () => {
     });
 
     it('should be "isOpened" set to false before store file', () => {
-      const index = storeService.storeJSON(fileObject);
+      const index = storeService.storeJSON(fileObject) as number;
       expect(storeService.uploadedFileList[index].isOpened).toBeFalse();
     });
   });
@@ -165,7 +156,7 @@ describe('FileStoreService', () => {
 
   describe('searchForFileWithTheSameFilename()', () => {
     it('should return false when no file was found with the given name', () => {
-      const file2 = { ...fileObject };
+      const file2 = JSON.parse(JSON.stringify(fileObject));
       file2.filename = 'newFilename';
       storeService.uploadedFileList = [fileObject, file2];
       const searchResult =
@@ -193,7 +184,7 @@ describe('FileStoreService', () => {
     });
   });
   describe('removeFile()', () => {
-    const fileB = { ...fileObject };
+    const fileB = JSON.parse(JSON.stringify(fileObject));
     const filename = 'remove.json';
     let removeResult!: boolean;
     beforeEach(() => {

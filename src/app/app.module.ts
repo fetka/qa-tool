@@ -1,21 +1,28 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import {
+  MatSnackBarRef,
+  MAT_SNACK_BAR_DATA,
+} from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {
+  FileUploadComponent,
+  PizzaPartyComponent,
+} from './file-upload/file-upload.component';
 import { HomeComponent } from './home/home.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { MaterialModule } from './material/material.module';
+import { PreviewJsonComponent } from './preview-json/preview-json.component';
 import { ScreenshotsComponent } from './screenshots/screenshots.component';
+import { FileStoreService } from './services/file-store.service';
 import { TestCaseService } from './services/test-case.service';
 import { ImageComponent } from './shared/image/image.component';
 import { SharedModule } from './shared/shared.module';
 import { ShortTextPipe } from './short-text.pipe';
-import { FileUploadComponent } from './file-upload/file-upload.component';
-import { PreviewJsonComponent } from './preview-json/preview-json.component';
-import { FileStoreService } from './services/file-store.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +34,7 @@ import { FileStoreService } from './services/file-store.service';
     ShortTextPipe,
     FileUploadComponent,
     PreviewJsonComponent,
+    PizzaPartyComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +44,18 @@ import { FileStoreService } from './services/file-store.service';
     ReactiveFormsModule,
     SharedModule,
   ],
-  providers: [TestCaseService, FileStoreService],
+  providers: [
+    TestCaseService,
+    FileStoreService,
+    {
+      provide: MatSnackBarRef,
+      useValue: {},
+    },
+    {
+      provide: MAT_SNACK_BAR_DATA,
+      useValue: {}, // Add any data you wish to test if it is passed/used correctly
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

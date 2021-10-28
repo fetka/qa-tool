@@ -1,14 +1,13 @@
-import {
-  FileSelectOption,
-  FileObject,
-  Screenshot,
-  TestCase,
-} from '../models/test-case';
-
-import { FileStoreService } from './file-store.service';
 import { Injectable } from '@angular/core';
 
 import { SCREENSHOT_LIST, TEST_CASES } from '../mocks/test_case_mocks';
+import {
+  FileSelectOption,
+  Screenshot,
+  TestCase,
+  TestCasesFileBox,
+} from '../models/test-case';
+import { FileStoreService } from './file-store.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +17,7 @@ export class TestCaseService {
 
   screenshots: Screenshot[] = SCREENSHOT_LIST;
 
-  private fileList!: FileObject[];
+  private fileList!: TestCasesFileBox[];
   constructor(private fileService: FileStoreService) {
     this.fileList = this.fileService.getFileList();
   }

@@ -9,8 +9,15 @@
   <button (click)="navigate()" mat-raised-button color="warn">
     Preview file
   </button>
-  <button (click)="save()" mat-raised-button color="warn">
+  <button
+    (click)="save(); fileInput.files = null"
+    mat-raised-button
+    color="warn"
+  >
     Save uploaded file
+  </button>
+  <button (click)="clearStorage()" mat-raised-button color="warn">
+    Clear storage
   </button>
 </div>
 
@@ -21,15 +28,24 @@
       type="file"
       id="file__input"
       accept=".json"
-      #file
+      #fileInput
       name="filename"
-      (change)="readFile(file.files)"
+      (change)="readFile(fileInput.files)"
   /></mat-card-title>
-  <mat-card-subtitle>Uploaded: {{ filename }} </mat-card-subtitle>
+  <mat-card-subtitle
+    >Uploaded: {{ recentFileBox?.filename }}
+  </mat-card-subtitle>
   <mat-card-actions>
-    <div *ngFor="let file of fileList; let i = index">
-      <button (click)="downloadFile(file)" mat-button color="warn">
-        {{ file.filename }} DOWNLOAD
+    <div *ngFor="let file of fileBoxList; let i = index">
+      {{ file.filename }}
+      <button (click)="displayContent(i)" mat-button color="warn">
+        - show content -
+      </button>
+      <button (click)="downloadFile(i)" mat-button color="warn">
+        - Download -
+      </button>
+      <button (click)="deleteFile(i)" mat-button color="warn">
+        - delete -
       </button>
     </div>
     <!-- <button mat-button>SHARE</button> -->
@@ -38,5 +54,6 @@
 
 <br />
 <div class="mat-expansion-panel mat-card" style="min-height: 50%">
-  <pre style="padding: 30px">  {{ fileContent }}</pre>
+  <p>{{ recentFileBox?.uploadedAt }}</p>
+  <pre style="padding: 30px">  {{ recentFileBox?.text }}</pre>
 </div>
