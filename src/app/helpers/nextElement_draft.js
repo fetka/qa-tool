@@ -1,51 +1,62 @@
+/* eslint-disable import/newline-after-import */
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable comma-dangle */
 /* eslint-disable prefer-const */
 /* eslint-disable quotes */
 /* eslint-disable no-plusplus */
-// const colors = require("colors"); // uncomment when run test
-function getNextPointer(arrLength, oldPointer, direction) {
-  const BAD_REQUEST = 400;
-  let pointer = oldPointer;
-  let arrayLength = arrLength;
-  let pointerQueue = Array.from({ length: arrLength }, (x, i) => i);
+const colors = require("colors"); // uncomment when run test
+// function getNextPointer(arrLength, oldPointer, direction) {
+//   const BAD_REQUEST = 400;
+//   let pointer = oldPointer;
+//   let arrayLength = arrLength;
+//   let pointerQueue = Array.from({ length: arrLength }, (x, i) => i);
 
-  function initQueue() {
-    if (arrayLength === 1) return;
-    for (let i = 0; i <= pointer; i++) {
-      const firstElement = pointerQueue.shift() || 0;
-      pointerQueue.push(firstElement);
-    }
-  }
+//   function initQueue() {
+//     if (arrayLength === 1) return;
+//     for (let i = 0; i <= pointer; i++) {
+//       const firstElement = pointerQueue.shift() || 0;
+//       pointerQueue.push(firstElement);
+//     }
+//   }
 
-  function dequeue() {
-    const firstElement = pointerQueue.shift() || 0;
-    pointerQueue.push(firstElement);
-    if (firstElement === pointer) {
-      return dequeue();
-    }
-    return firstElement;
-  }
+//   function dequeue() {
+//     const firstElement = pointerQueue.shift() || 0;
+//     pointerQueue.push(firstElement);
+//     if (firstElement === pointer) {
+//       return dequeue();
+//     }
+//     return firstElement;
+//   }
 
-  function enqueue() {
-    const lastElement = pointerQueue.pop() || 0;
-    pointerQueue.unshift(lastElement);
-    if (lastElement === pointer) {
-      return enqueue();
-    }
-    return lastElement;
-  }
+//   function enqueue() {
+//     const lastElement = pointerQueue.pop() || 0;
+//     pointerQueue.unshift(lastElement);
+//     if (lastElement === pointer) {
+//       return enqueue();
+//     }
+//     return lastElement;
+//   }
 
-  initQueue();
+//   initQueue();
 
-  if (direction > 0) {
-    return dequeue();
-  }
-  if (direction < 0) {
-    // pointerQueue = pointerQueue.reverse();
-    return enqueue();
-  }
+//   if (direction > 0) {
+//     return dequeue();
+//   }
+//   if (direction < 0) {
+//     // pointerQueue = pointerQueue.reverse();
+//     return enqueue();
+//   }
 
-  return BAD_REQUEST;
+//   return BAD_REQUEST;
+// }
+
+// direction -1 / +1
+function getNextPointer(LENGTH, PREVIOUS, DIRECTION) {
+  const SUM = PREVIOUS + DIRECTION;
+  const NEXT = SUM % LENGTH;
+  if (SUM > LENGTH && NEXT === 1) return 0;
+  if (NEXT < 0) return LENGTH - 1;
+  return NEXT;
 }
 const selfTest = () => {
   let countGood = 0;
@@ -62,7 +73,7 @@ const selfTest = () => {
       testCount++;
       ++badCount;
       console.log(
-        testCount,
+        `${testCount}`.cyan,
         `- expected: ${expected}, received: ${received}`.red
       );
     }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatSnackBarRef,
   MAT_SNACK_BAR_DATA,
@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
   FileUploadComponent,
-  PizzaPartyComponent,
+  ConfirmSnackBarComponent,
 } from './file-upload/file-upload.component';
 import { HomeComponent } from './home/home.component';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
@@ -34,7 +34,7 @@ import { ShortTextPipe } from './short-text.pipe';
     ShortTextPipe,
     FileUploadComponent,
     PreviewJsonComponent,
-    PizzaPartyComponent,
+    ConfirmSnackBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +43,7 @@ import { ShortTextPipe } from './short-text.pipe';
     MaterialModule,
     ReactiveFormsModule,
     SharedModule,
+    FormsModule,
   ],
   providers: [
     TestCaseService,

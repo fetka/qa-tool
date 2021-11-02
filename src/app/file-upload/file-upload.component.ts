@@ -76,17 +76,10 @@ export class FileUploadComponent implements OnInit {
 
   save() {
     if (!this.recentFileBox) return;
-    // if (!this.fileContent || !this.filename) return;
-    // const fileToStore = new TestCasesFileBox(
-    //   this.filename as string,
-    //   this.fileContent as string
-    // );
     const index: number | ErrorType = this.storage.storeJSON(
       this.recentFileBox as TestCasesFileBox
     );
     if (typeof index === 'number') {
-      // this.fileContent = this.filename = undefined;
-      // this.fileList = [];
       this.recentFileBox = null;
       this.fetchFileList();
     } else {
@@ -136,8 +129,8 @@ export class FileUploadComponent implements OnInit {
   }
 
   clearStorage() {
-    const ref: MatSnackBarRef<PizzaPartyComponent> =
-      this._snackBar.openFromComponent(PizzaPartyComponent, {
+    const ref: MatSnackBarRef<ConfirmSnackBarComponent> =
+      this._snackBar.openFromComponent(ConfirmSnackBarComponent, {
         data: 'Please confirm Clear storage. ',
         ...this.configSuccess,
       });
@@ -167,7 +160,6 @@ export class FileUploadComponent implements OnInit {
 }
 @Component({
   selector: 'snack-bar-component-example-snack',
-  // templateUrl: 'snack-bar-component-example-snack.html',
   template: `
     <span class="example-pizza-party"> {{ data }} 🍕 </span>
     <button
@@ -186,13 +178,12 @@ export class FileUploadComponent implements OnInit {
       Cancel
     </button>
   `,
-  // outputs: ['confirmed: confirmed($event)'],
 })
-export class PizzaPartyComponent {
+export class ConfirmSnackBarComponent {
   @Output('confirmed') confirmed = new EventEmitter<boolean>();
 
   constructor(
-    public snackBarRef: MatSnackBarRef<PizzaPartyComponent>,
+    public snackBarRef: MatSnackBarRef<ConfirmSnackBarComponent>,
     @Inject(MAT_SNACK_BAR_DATA) public data: any
   ) {}
 }

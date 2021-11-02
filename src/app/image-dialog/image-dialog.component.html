@@ -1,20 +1,3 @@
-<!-- <div class="resizable-input">
-  <p>{{ screenshotLink }}</p>
-  <input
-    *ngIf="screenshotLink.endsWith('PNG')"
-    type="image"
-    [src]="screenshotLink"
-    (keydown)="showNextImage($event)"
-  />
-  <video
-    *ngIf="screenshotLink.endsWith('MP4')"
-    (keydown)="showNextImage($event)"
-    controls
-    muted
-  >
-    <source [src]="screenshotLink" type="video/mp4" />
-  </video>
-</div> -->
 <div class="container">
   <image
     [controls]="'controls'"

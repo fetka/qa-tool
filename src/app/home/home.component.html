@@ -56,17 +56,22 @@
       <mat-expansion-panel *ngFor="let case of testCases; let i = index">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <span [matTooltip]="case.description" matTooltipPosition="above">{{
-              case.title
-            }}</span>
+            <span
+              [matTooltip]="case.description + '/\n' + case.steps"
+              matTooltipPosition="above"
+              >{{ case.title }}</span
+            >
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="discription__section">{{ case.description }}</div>
         <div class="hidden-part" *ngFor="let step of case.steps; let i = index">
-          <p>
-            <span class="step__index">[{{ i + 1 }}]</span>
+          <span class="step__index">[{{ i + 1 }}] &nbsp;&nbsp;</span>
+
+          <span (blur)="log($event, case.steps, i)" contenteditable="true">
             {{ step }}
-          </p>
+          </span>
+
+          <!-- <editable-field [(text)]="step"></editable-field> -->
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <div>{{ case.outcome }}</div>
@@ -79,7 +84,7 @@
               color="basic"
               aria-label="open and preselect Snapshots"
             >
-              Toggle {{ getSnapshotCount(i) }}
+              Toggle {{ getScreenshotCount(i) }}
             </button>
             <!-- <mat-radio-group
               value="{{ case.result }}"

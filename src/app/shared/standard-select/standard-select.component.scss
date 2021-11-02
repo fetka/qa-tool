@@ -1,14 +1,15 @@
-$pending-color: #a56615;
-$pending-background-color: #f8fb44;
-$failed-color: red;
-$failed-background-color: #fbbbbb;
-$success-color: rgb(7, 85, 7);
-$success-background-color: greenyellow;
+$pending-color: #cddc39;
+$pending-background-color: #424242;
+$failed-color: #ff5252;
+$failed-background-color: #424242;
+$success-color: #4caf50;
+$success-background-color: #424242;
+// $success-background-color: greenyellow;
 
 option {
   font-weight: 600;
 
-  letter-spacing: 0.5px;
+  letter-spacing: 1.2px;
   font-size: 15px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 5px 0;
@@ -39,19 +40,19 @@ select {
   background-color: $pending-background-color;
   font-weight: 600;
   padding: 2px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.2px;
 }
 .failed {
   color: $failed-color;
   background-color: $failed-background-color;
   padding: 2px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.2px;
 }
 .success {
   font-weight: 600;
   color: $success-color;
   background-color: $success-background-color;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.2px;
   padding: 2px;
 }

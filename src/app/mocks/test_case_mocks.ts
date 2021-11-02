@@ -5,10 +5,14 @@ export const TEST_CASES: TestCase[] = [
   {
     title: 'title 1',
     id: 'T1',
-    description: ' description 1',
+    description: `<html><pre> description 1  description 1 \\n description 1  description 1  description 1 
+    description 1  description 1  description 1  description 1  description 1 
+    description 1  description 1  description 1  description 1  description 1 
+    description 1  description 1  description 1  description 1  description 1 
+    description 1  description 1  description 1  description 1  description 1 </pre></html> `,
     outcome: 'outcome 1',
     result: Result.Success,
-    steps: ['step 1', 'step 2', 'step 3'],
+    steps: ['step 1'],
     screenshots: [],
   },
   {
@@ -24,7 +28,7 @@ export const TEST_CASES: TestCase[] = [
     title: 'title 3 title 3 title 3 title 3 title 3 title 3 title 3 title 3',
     id: 'T3',
     description: ` description 3 description 3 description 3 description 3 description 3
-       description 3 description 3 description 3 description 3 description 3 description 3 description 3
+       description 3 description <p>hello</p> 3 description 3 description 3 description 3 description 3 description 3
        description 3 description 3 description 3 description 3
         description 3 description 3 description 3 description 3 description 3`,
     outcome: 'outcome 3',

@@ -43,13 +43,12 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private testCaseService: TestCaseService,
-    public dialog: MatDialog,
-    private fileService: FileStoreService
+    public dialog: MatDialog
   ) {}
 
   selectChange(selectedResult: any, id: any) {
     this.testCases[id].result = selectedResult;
-    console.log(selectedResult);
+    // console.log(selectedResult);
   }
 
   ngOnInit(): void {
@@ -72,7 +71,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  getSnapshotCount(index: number) {
+  getScreenshotCount(index: number) {
     const count = this.testCases[index].screenshots?.length || 'all';
     return `( ${count} )`;
   }
@@ -89,5 +88,9 @@ export class HomeComponent implements OnInit {
     //   console.log('The dialog was closed');
     //   this.animal = result;
     // });
+  }
+  log(event: any, steps: any[], i: number) {
+    steps[i] = event.target.textContent;
+    // console.log(event.target.innerText);
   }
 }

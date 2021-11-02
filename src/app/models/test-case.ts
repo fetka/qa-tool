@@ -59,6 +59,8 @@ export class TestCasesFileBox {
   isOpened: boolean;
   // uploadedAt?: Date | undefined;
   type: FileType;
+  uploadedAtFormatted?: string;
+
   constructor(
     public filename: string,
     text: string,
@@ -69,6 +71,33 @@ export class TestCasesFileBox {
     this.type = 'json';
     this.isOpened = false;
     this.uploadedAt = uploadedAt;
+    this.createDateString(this.uploadedAt as number);
+  }
+
+  private createDateString(date: number) {
+    const d = new Date();
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const day = d.getDate();
+    const monthIndex = d.getMonth();
+    const monthName = monthNames[monthIndex];
+    const year = d.getFullYear();
+    const hour = d.getHours();
+    const minutes = d.getMinutes();
+    const seconds = d.getSeconds();
+    this.uploadedAtFormatted = `${year}-${monthName}-${day} ${hour}:${minutes}:${seconds}`;
   }
   close() {
     this.isOpened = false;
