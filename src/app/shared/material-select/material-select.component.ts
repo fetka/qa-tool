@@ -4,13 +4,13 @@ import { MatSelectChange } from '@angular/material/select';
 import { Result } from 'src/app/models/test-case';
 
 @Component({
-  selector: 'material-select',
+  selector: 'my-material-select',
   templateUrl: './material-select.component.html',
   styleUrls: ['./material-select.component.scss'],
 })
 export class MaterialSelectComponent {
   @Input('options') options!: FileSelectOption[];
-  @Input('labelText') labelText: string = 'Selected file';
+  @Input('label') labelText: string = 'label';
 
   @Output('selectionChanged') selectionChanged: EventEmitter<string> =
     new EventEmitter();
@@ -18,7 +18,7 @@ export class MaterialSelectComponent {
   constructor() {
     this.options = [
       { value: 'Result.Pending', viewValue: 'Pending' },
-      { value: 'Result.Failed', viewValue: 'Failed safsf asfsaf.fd' },
+      { value: 'Result.Failed', viewValue: 'Failed' },
       { value: 'Result.Success', viewValue: 'Success' },
     ];
   }

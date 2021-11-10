@@ -55,7 +55,7 @@ export type ErrorType = {
 };
 
 export class TestCasesFileBox {
-  _text: string;
+  text: string;
   isOpened: boolean;
   // uploadedAt?: Date | undefined;
   type: FileType;
@@ -67,11 +67,13 @@ export class TestCasesFileBox {
     public uploadedAt?: Date | number
   ) {
     this.filename = filename;
-    this._text = text;
+    this.text = text;
     this.type = 'json';
     this.isOpened = false;
     this.uploadedAt = uploadedAt;
-    this.createDateString(this.uploadedAt as number);
+    if (this.uploadedAt) {
+      this.createDateString(this.uploadedAt as number);
+    }
   }
 
   private createDateString(date: number) {
@@ -110,12 +112,9 @@ export class TestCasesFileBox {
 
   updateText(text: string): boolean | ErrorType {
     if (this.isOpened) {
-      this._text = text;
+      this.text = text;
       return true;
     }
     return { error: 'File should be opened first' };
-  }
-  get text() {
-    return this._text;
   }
 }

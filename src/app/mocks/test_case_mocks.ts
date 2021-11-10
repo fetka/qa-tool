@@ -13,7 +13,13 @@ export const TEST_CASES: TestCase[] = [
     outcome: 'outcome 1',
     result: Result.Success,
     steps: ['step 1'],
-    screenshots: [],
+    screenshots: [
+      {
+        title: '../../assets/screenshots/IMG_0098.PNG',
+        link: '../../assets/screenshots/IMG_0098.PNG',
+        type: MediaType.IMAGE,
+      },
+    ],
   },
   {
     title: 'title 2',

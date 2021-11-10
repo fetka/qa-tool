@@ -1,3 +1,10 @@
+<mat-progress-bar
+  mode="determinate"
+  [value]="successResultPercent"
+  color="primary"
+  #progressBar
+  [matTooltip]="successResultPercent + ''"
+></mat-progress-bar>
 <div class="example-button-row">
   <button
     (click)="drawer.toggle(); selectTestCase('all')"
@@ -13,6 +20,9 @@
   >
   <a routerLink="/file-upload">
     <button mat-raised-button color="warn">File upload</button></a
+  >
+  <mat-checkbox (change)="enableEdit = !enableEdit" class="example-margin"
+    >Allow edit test suite</mat-checkbox
   >
 </div>
 <mat-drawer-container class="example-container" autosize>
@@ -37,19 +47,40 @@
     <mat-accordion multi>
       <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
-          <mat-panel-title> Control panel </mat-panel-title>
+          <mat-panel-title class="align__title">
+            <span> Control panel</span>
+            <button
+              mat-button
+              *ngIf="fileShouldBeSave"
+              (click)="saveTestCases()"
+              color="warn"
+            >
+              [ changed ]
+            </button>
+          </mat-panel-title>
           <mat-panel-description> </mat-panel-description>
         </mat-expansion-panel-header>
 
         <div class="example-action-buttons">
-          <button mat-button (click)="accordion.openAll()">Expand All</button>
-          <button mat-button (click)="accordion.closeAll()">
+          <button mat-button (click)="accordion.openAll()" color="warn">
+            Expand All
+          </button>
+          <button mat-button (click)="accordion.closeAll()" color="warn">
             Collapse All
           </button>
-          <material-select
+
+          <my-material-select
             (selectionChanged)="fileSelectionChanged($event)"
             [options]="fileSelectOptions"
-          ></material-select>
+          ></my-material-select>
+
+          <section class="example-section">
+            <mat-checkbox
+              (change)="enableEdit = !enableEdit"
+              class="example-margin"
+              >Allow edit test suite</mat-checkbox
+            >
+          </section>
         </div>
       </mat-expansion-panel>
 
@@ -57,17 +88,29 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             <span
-              [matTooltip]="case.description + '/\n' + case.steps"
-              matTooltipPosition="above"
+              [attr.contenteditable]="enableEdit"
+              [matTooltip]="case.description + case.steps"
+              (blur)="updateTitle($event, case)"
               >{{ case.title }}</span
             >
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div class="discription__section">{{ case.description }}</div>
-        <div class="hidden-part" *ngFor="let step of case.steps; let i = index">
-          <span class="step__index">[{{ i + 1 }}] &nbsp;&nbsp;</span>
+        <div
+          (blur)="updateDescription($event, case)"
+          [attr.contenteditable]="enableEdit"
+          class="discription__section"
+        >
+          <span (blur)="updateDescription($event, case)">
+            {{ case.description }}
+          </span>
+        </div>
+        <div class="hidden-part" *ngFor="let step of case.steps; let k = index">
+          <span class="step__index">[{{ k + 1 }}] &nbsp;&nbsp;</span>
 
-          <span (blur)="log($event, case.steps, i)" contenteditable="true">
+          <span
+            (blur)="updateSteps($event, case.steps, k)"
+            [attr.contenteditable]="enableEdit"
+          >
             {{ step }}
           </span>
 
@@ -116,7 +159,7 @@
 
             <standard-select
               [result]="case.result"
-              (resultChanged)="selectChange($event, i)"
+              (resultChanged)="resultChanged($event, i)"
             ></standard-select>
           </div>
         </div>

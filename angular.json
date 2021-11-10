@@ -38,9 +38,7 @@
               "src/styles.scss",
               "src/customTheme.scss"
             ],
-            "scripts": [
-              "src/app/helpers/utilities.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

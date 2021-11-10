@@ -3,7 +3,13 @@
   //   height: 15%;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
-
+.example-action-buttons {
+  display: flex;
+  flex-direction: row;
+}
+.example-action-buttons > * {
+  margin-right: 15px;
+}
 .example-sidenav-content {
   display: flex;
   flex-direction: column;
@@ -16,7 +22,9 @@
 .example-sidenav {
   padding: 20px;
 }
-
+.example-section {
+  margin: 12px 0;
+}
 mat-accordion {
   width: 100%;
 }
@@ -164,4 +172,14 @@ select {
   height: 36px;
   font-size: 14px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.align__title {
+  justify-content: space-between;
+  width: 100%;
+}
+
+mat-progress-bar {
+  // margin-bottom: 5px;
+  height: 5px;
 }

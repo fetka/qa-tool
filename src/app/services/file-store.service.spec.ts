@@ -230,4 +230,15 @@ describe('FileStoreService', () => {
       });
     });
   });
+
+  describe('createNewFilename', () => {
+    it('should be version number concatenated to filename', () => {
+      const name = storeService.createNewFilename('name.json');
+      expect(name).toEqual('name@1.json');
+    });
+    it('should be the new version number concatenated to filename ', () => {
+      const name = storeService.createNewFilename('name@2.json');
+      expect(name).toEqual('name@3.json');
+    });
+  });
 });

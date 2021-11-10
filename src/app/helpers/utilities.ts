@@ -8,9 +8,13 @@ export function nextPointer(
 ) {
   const SUM = previousPosition + direction;
   const NEXT_POSITION = SUM % length;
+
+  /* returns pointer zero 
+      if direction is positive and previous is the last element */
   if (SUM > length && NEXT_POSITION === 1) return 0;
+
+  /* returns pointer on the last element, 
+      if direction is negative and previous is the first element */
   if (NEXT_POSITION < 0) return length - 1;
   return NEXT_POSITION;
 }
-
-// module.exports = nextPointer;

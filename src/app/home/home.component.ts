@@ -1,67 +1,86 @@
+/* eslint-disable no-plusplus */
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatAccordion } from '@angular/material/expansion';
 import {
-  FileSelectOption,
+  MatTooltipDefaultOptions,
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+} from '@angular/material/tooltip';
+
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import {
   DialogData,
+  FileSelectOption,
   Result,
   Screenshot,
   TestCase,
 } from '../models/test-case';
-import { FileStoreService } from '../services/file-store.service';
-/* eslint-disable no-param-reassign */
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatAccordion } from '@angular/material/expansion';
-import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
-
-import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
-
 import { TestCaseService } from '../services/test-case.service';
 
+/* eslint-disable no-param-reassign */
 /* eslint-disable operator-linebreak */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable comma-dangle */
 /* eslint-disable function-paren-newline */
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
-  showDelay: 100,
+  showDelay: 700,
   hideDelay: 1000,
   touchendHideDelay: 100,
+  position: 'above',
 };
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  providers: [
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
+  ],
 })
 export class HomeComponent implements OnInit {
   @ViewChild(MatAccordion) accordion!: MatAccordion;
   panelOpenState: boolean = false;
   showFiller = false;
   testCases!: TestCase[];
+  cloneTestCases!: TestCase[];
+
   snapshotsLinks!: string[];
   filteredScreenshots: Screenshot[] = [];
   selectedCase!: TestCase;
   fileSelectOptions: FileSelectOption[] = [];
+  enableEdit: boolean = false;
+  fileShouldBeSave: boolean = false;
+  selectedFilename: string = 'test-cases - Copy@1.json';
+  successResultPercent: number = 0;
 
   constructor(
     private testCaseService: TestCaseService,
     public dialog: MatDialog
   ) {}
 
-  selectChange(selectedResult: any, id: any) {
+  resultChanged(selectedResult: any, id: any) {
     this.testCases[id].result = selectedResult;
-    // console.log(selectedResult);
   }
 
   ngOnInit(): void {
-    this.testCases = this.testCaseService.getTestCasesAll();
+    this.testCases = this.testCaseService.getTestCases(this.selectedFilename);
+    this.cloneTestCases = JSON.parse(JSON.stringify(this.testCases));
     this.fileSelectOptions = this.testCaseService.getFileSelectOption();
+    let counter: number = 0;
+    this.testCases.forEach((t) => {
+      if (t.result === Result.Success) {
+        counter++;
+      }
+    });
+    this.successResultPercent = (counter / this.testCases.length) * 100;
   }
   fileSelectionChanged(fileName: string) {
-    console.log(fileName);
-    this.testCaseService.loadTestCases(fileName);
+    this.selectedFilename = fileName;
+    this.testCases = this.testCaseService.getTestCases(fileName);
   }
-  changed(ev: any, result: any) {
-    console.log('radio button change event', ev.value, result);
-  }
+  // changed(ev: any, result: any) {
+  //   console.log('radio button change event', ev.value, result);
+  // }
 
   selectTestCase(index: any) {
     if (index === 'all') {
@@ -77,20 +96,38 @@ export class HomeComponent implements OnInit {
   }
 
   openDialog(id: number): void {
-    console.log(id);
+    // console.log(id);
     const data: DialogData = { list: this.filteredScreenshots, pointer: id };
     const dialogRef = this.dialog.open(ImageDialogComponent, {
       width: '250px',
       data,
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   this.animal = result;
-    // });
   }
-  log(event: any, steps: any[], i: number) {
-    steps[i] = event.target.textContent;
-    // console.log(event.target.innerText);
+  updateSteps(event: any, steps: any[], i: number) {
+    const text = (event.target as HTMLSpanElement).innerText as string;
+    if (steps[i] !== text) {
+      console.log(text, steps[i]);
+      steps[i] = text;
+      this.fileShouldBeSave = true;
+    }
+  }
+
+  updateDescription(event: any, testCase: TestCase): void {
+    const text = (event.target as HTMLSpanElement).innerText as string;
+    if (testCase.description !== text) {
+      testCase.description = text;
+      this.fileShouldBeSave = true;
+    }
+  }
+  updateTitle(event: any, testCase: TestCase): void {
+    const text = (event.target as HTMLSpanElement).innerText as string;
+    if (testCase.title !== text) {
+      testCase.title = text;
+      this.fileShouldBeSave = true;
+    }
+  }
+
+  saveTestCases() {
+    this.testCaseService.save(this.testCases, this.selectedFilename);
   }
 }

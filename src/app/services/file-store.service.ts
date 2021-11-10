@@ -1,29 +1,40 @@
+/* eslint-disable prefer-destructuring */
+import { TestCase, ErrorType, TestCasesFileBox } from '../models/test-case';
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-underscore-dangle */
 import { Injectable, OnInit } from '@angular/core';
-
-import { ErrorType, TestCasesFileBox } from '../models/test-case';
 
 /* eslint-disable nonblock-statement-body-position */
 /* eslint-disable comma-dangle */
 @Injectable({
   providedIn: 'root',
 })
-export class FileStoreService implements OnInit {
+export class FileStoreService {
   uploadedFileList: TestCasesFileBox[] = [];
   dirtyFileList: TestCasesFileBox[] = [];
   actualFile!: TestCasesFileBox;
   localStorageKeyToFileList = 'testCase_fileList';
+
   constructor() {
-    this.ngOnInit();
+    this.getFileFromLocalStorage();
   }
-  ngOnInit(): void {
+
+  getFileFromLocalStorage() {
     const value: string | null = localStorage.getItem(
       this.localStorageKeyToFileList
     );
-
     if (value) {
-      this.uploadedFileList = JSON.parse(value);
+      const savedFiles: TestCasesFileBox[] = JSON.parse(value);
+      savedFiles.forEach((element) => {
+        const box = new TestCasesFileBox(
+          element.filename,
+          element.text,
+          element.uploadedAt
+        );
+        this.uploadedFileList.push(box);
+      });
+
+      console.log(this.uploadedFileList[0]);
     }
   }
 
@@ -31,9 +42,11 @@ export class FileStoreService implements OnInit {
     console.log('clearStorage is called');
     localStorage.removeItem(this.localStorageKeyToFileList);
   }
+
   getFileList(): TestCasesFileBox[] {
     return this.uploadedFileList;
   }
+
   getFile(filename: string): TestCasesFileBox | null {
     const foundFiles: TestCasesFileBox[] = this.uploadedFileList.filter(
       (file) => file.filename === filename
@@ -72,19 +85,21 @@ export class FileStoreService implements OnInit {
     if (fileObj.isOpened) {
       return { error: 'File should be closed' };
     }
-    if (
-      // eslint-disable-next-line operator-linebreak
-      this.uploadedFileList.length >= 1 &&
-      this.searchForFileWithTheSameFilename(fileObj.filename)
-    ) {
-      return { error: 'The filename should be unique!' };
-    }
+    // if (
+    //   // eslint-disable-next-line operator-linebreak
+    //   this.uploadedFileList.length >= 1 &&
+    //   this.searchForFileWithTheSameFilename(fileObj.filename)
+    // ) {
+    //   return { error: 'The filename should be unique!' };
+    // }
 
     const fileToStore: TestCasesFileBox = new TestCasesFileBox(
-      fileObj.filename,
+      this.createNewFilename(fileObj.filename),
       fileObj.text,
       fileObj.uploadedAt
     );
+    fileToStore.close();
+    console.log('storejson called');
 
     const newLength = this.uploadedFileList.push(fileToStore);
     const indexOfStoredObject = newLength - 1;
@@ -104,7 +119,7 @@ export class FileStoreService implements OnInit {
         searchResult = true;
       }
     });
-    console.log(searchResult);
+    // console.log(searchResult);
     return searchResult;
   }
   removeFile(filename: string): boolean {
@@ -118,5 +133,25 @@ export class FileStoreService implements OnInit {
       JSON.stringify(this.uploadedFileList)
     );
     return true;
+  }
+
+  createNewFilename(name: string): string {
+    let tempArray = name.split('.');
+    const ext = tempArray.pop();
+    let root = tempArray.join('');
+
+    if (name.indexOf('@') >= 0) {
+      tempArray = name.split('@');
+      root = tempArray[0];
+    }
+
+    const version = name.match(/@\d*/g);
+    let updated: number = 1;
+
+    if (version) {
+      updated = Number(version[0].substr(1)) + 1;
+    }
+
+    return root.concat(`@${updated}.${ext}`);
   }
 }

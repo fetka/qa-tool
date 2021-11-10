@@ -1,5 +1,15 @@
 /* eslint-disable import/no-useless-path-segments */
 /* eslint-disable max-classes-per-file */
+/* eslint-disable no-multi-assign */
+/* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-param-reassign */
+/* eslint-disable prefer-template */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable indent */
+/* eslint-disable comma-dangle */
+/* eslint-disable no-unused-expressions */
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
@@ -13,24 +23,14 @@ import { TestCasesFileBox } from '../models/test-case';
 import { FileStoreService } from '../services/file-store.service';
 import { ErrorType } from './../models/test-case';
 
-/* eslint-disable no-multi-assign */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable operator-linebreak */
-/* eslint-disable no-param-reassign */
-/* eslint-disable prefer-template */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable indent */
-/* eslint-disable comma-dangle */
-/* eslint-disable no-unused-expressions */
 @Component({
   selector: 'file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
   displayedFileContent!: string;
-  reader = new FileReader();
+
   fileBoxList!: TestCasesFileBox[];
   recentFileBox!: TestCasesFileBox | null;
   configSuccess: MatSnackBarConfig = {
@@ -45,22 +45,21 @@ export class FileUploadComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private storage: FileStoreService,
     @Inject(MAT_SNACK_BAR_DATA) public data: any
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.fetchFileList();
   }
 
   readFile(fileList: FileList | null) {
     let file!: File | null;
+    const reader = new FileReader();
     if (fileList) {
       file = fileList.item(0);
       const filename = fileList.item(0)?.name as string;
-      console.log(fileList.item(0)?.lastModified);
-      file ? this.reader.readAsText(file) : null;
-      this.reader.addEventListener('loadend', (event) => {
-        const fileContent = (this.displayedFileContent = this.reader
-          .result as string);
+      // console.log(222, fileList.item(0)?.lastModified);
+      file ? reader.readAsText(file as Blob) : null;
+      reader.addEventListener('loadend', (event) => {
+        const fileContent = (this.displayedFileContent =
+          reader.result as string);
         this.recentFileBox = new TestCasesFileBox(
           filename,
           fileContent,
@@ -95,7 +94,7 @@ export class FileUploadComponent implements OnInit {
     } as TestCasesFileBox;
     this.recentFileBox = new TestCasesFileBox(
       fb.filename,
-      fb._text,
+      fb.text,
       fb.uploadedAt
     );
 
@@ -107,13 +106,14 @@ export class FileUploadComponent implements OnInit {
   }
 
   downloadFile(index: number) {
-    this.fileBoxList[index].open();
+    // console.log(this.fileBoxList[index]);
+    // this.fileBoxList[index].open();
     if (this.fileBoxList[index].isOpened) return;
     try {
       const copyBox: TestCasesFileBox = {
         ...this.fileBoxList[index],
       } as TestCasesFileBox;
-      const fileProps = { filename: copyBox.filename, text: copyBox._text };
+      const fileProps = { filename: copyBox.filename, text: copyBox.text };
 
       console.log(fileProps);
       this.storage.downloadJson(fileProps);
