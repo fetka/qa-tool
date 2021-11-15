@@ -81,25 +81,18 @@ export class FileStoreService {
     anchor.click();
   }
   /* return index of stored file */
-  storeJSON(fileObj: TestCasesFileBox): number | ErrorType {
-    if (fileObj.isOpened) {
+  storeJSON(fileBox: TestCasesFileBox): number | ErrorType {
+    if (fileBox.isOpened) {
       return { error: 'File should be closed' };
     }
-    // if (
-    //   // eslint-disable-next-line operator-linebreak
-    //   this.uploadedFileList.length >= 1 &&
-    //   this.searchForFileWithTheSameFilename(fileObj.filename)
-    // ) {
-    //   return { error: 'The filename should be unique!' };
-    // }
 
     const fileToStore: TestCasesFileBox = new TestCasesFileBox(
-      this.createNewFilename(fileObj.filename),
-      fileObj.text,
-      fileObj.uploadedAt
+      this.createNewFilename(fileBox.filename),
+      fileBox.text,
+      fileBox.uploadedAt
     );
     fileToStore.close();
-    console.log('storejson called');
+    console.log('storeJson called');
 
     const newLength = this.uploadedFileList.push(fileToStore);
     const indexOfStoredObject = newLength - 1;

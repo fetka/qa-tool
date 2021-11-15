@@ -31,7 +31,6 @@ export class TestCaseService {
     );
     if (!fileBox || fileBox.length === 0) return [];
     this.testCases = JSON.parse(fileBox[0].text) as TestCase[];
-
     return this.testCases;
   }
 
@@ -63,6 +62,7 @@ export class TestCaseService {
   }
   save(testCases: TestCase[], filename: string) {
     console.log('save called');
+
     const text = JSON.stringify(testCases);
     const fileBox = new TestCasesFileBox(filename, text);
 

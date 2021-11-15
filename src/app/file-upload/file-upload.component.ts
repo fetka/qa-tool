@@ -22,7 +22,9 @@ import { Router } from '@angular/router';
 import { TestCasesFileBox } from '../models/test-case';
 import { FileStoreService } from '../services/file-store.service';
 import { ErrorType } from './../models/test-case';
+import * as utilities from '../helpers/utilities';
 
+const jsonFormat = utilities.jsonFormatExp();
 @Component({
   selector: 'file-upload',
   templateUrl: './file-upload.component.html',
@@ -97,8 +99,8 @@ export class FileUploadComponent {
       fb.text,
       fb.uploadedAt
     );
-
-    this.displayedFileContent = this.recentFileBox.text;
+    // console.log(jsonFormat(JSON.parse(copyBox.text)));
+    this.displayedFileContent = jsonFormat(JSON.parse(this.recentFileBox.text));
   }
 
   deleteFile(index: number) {
@@ -113,7 +115,10 @@ export class FileUploadComponent {
       const copyBox: TestCasesFileBox = {
         ...this.fileBoxList[index],
       } as TestCasesFileBox;
-      const fileProps = { filename: copyBox.filename, text: copyBox.text };
+      const fileProps = {
+        filename: copyBox.filename,
+        text: jsonFormat(JSON.parse(copyBox.text)),
+      };
 
       console.log(fileProps);
       this.storage.downloadJson(fileProps);

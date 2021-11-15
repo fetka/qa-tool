@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { SCREENSHOT_LIST, TEST_CASES } from '../mocks/test_case_mocks';
 import {
-  ErrorType,
   FileSelectOption,
   MediaType,
   Result,
@@ -34,8 +33,9 @@ describe('TestCasesService', () => {
     // beforeEach(() => service.getTestCases('tests.json'));
 
     it('should enumerate test cases into an array which belong to the file defined by passed in filename', () => {
-      service.getTestCases('tests.json');
-      expect(service.testCases).toEqual(testCasesMock);
+      const testCases = service.getTestCases('tests.json');
+      console.error(testCases);
+      expect(testCases).toEqual(testCasesMock);
     });
 
     it('should return empty array if not found', () => {
@@ -106,6 +106,7 @@ const testCasesMock: TestCase[] = [
     result: Result.Success,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
+    editable: false,
   },
   {
     title: 'title 2',
@@ -121,6 +122,7 @@ const testCasesMock: TestCase[] = [
         type: MediaType.IMAGE,
       },
     ],
+    editable: false,
   },
 ];
 const getFileListSpy = jasmine
@@ -130,7 +132,9 @@ const getFileListSpy = jasmine
   ]);
 
 const fileStoreServiceStub: Partial<FileStoreService> = {
-  uploadedFileList: [new TestCasesFileBox('tests.json', 'some test text')],
+  uploadedFileList: [
+    new TestCasesFileBox('tests.json', JSON.stringify(testCasesMock)),
+  ],
   localStorageKeyToFileList: 'test_test',
   getFileList: getFileListSpy,
 

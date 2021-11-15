@@ -32,12 +32,13 @@ button {
     .mat-tooltip {
       color: #68c4f7;
       background-color: rgb(46, 46, 46);
-      border: 1px solid #eeeeee;
+      border: 1px solid #727272;
       border-radius: 5px;
-      font-size: 1rem;
-      padding: 5px;
+      font-size: 15px;
+      padding: 15px;
       letter-spacing: 0.5px;
       max-width: 80%;
+      white-space: pre-line !important;
     }
   }
 }
@@ -50,4 +51,11 @@ button {
 // }
 .mat-snack-bar-container {
   max-width: none !important;
+}
+
+.darkMode .mat-progress-bar.mat-warn .mat-progress-bar-fill::after {
+  background-color: #296801 !important;
+}
+.darkMode .mat-progress-bar.mat-warn .mat-progress-bar-buffer {
+  background-color: #538d49 !important;
 }

@@ -1,5 +1,8 @@
+import { map } from 'rxjs/operators';
+/* eslint-disable arrow-body-style */
 /* eslint-disable no-plusplus */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import {
@@ -24,8 +27,8 @@ import { TestCaseService } from '../services/test-case.service';
 /* eslint-disable function-paren-newline */
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
-  showDelay: 700,
-  hideDelay: 1000,
+  showDelay: 600,
+  hideDelay: 300,
   touchendHideDelay: 100,
   position: 'above',
 };
@@ -41,46 +44,104 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatAccordion) accordion!: MatAccordion;
   panelOpenState: boolean = false;
   showFiller = false;
-  testCases!: TestCase[];
+  testCasesFiltered: TestCase[] = [];
   cloneTestCases!: TestCase[];
-
+  changedTestCases!: TestCase[];
+  searchValue: string = '';
   snapshotsLinks!: string[];
   filteredScreenshots: Screenshot[] = [];
   selectedCase!: TestCase;
   fileSelectOptions: FileSelectOption[] = [];
-  enableEdit: boolean = false;
+  isEditableAll: boolean = false;
   fileShouldBeSave: boolean = false;
   selectedFilename: string = 'test-cases - Copy@1.json';
-  successResultPercent: number = 0;
+  progressPercent: number = 0;
+  displayResult: string = '';
 
   constructor(
     private testCaseService: TestCaseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private elementRef: ElementRef
   ) {}
 
   resultChanged(selectedResult: any, id: any) {
-    this.testCases[id].result = selectedResult;
+    this.testCasesFiltered[id].result = selectedResult;
+    this.displayResult = this.calculateTestingProgress();
+  }
+
+  searchByWords(event: Event | any) {
+    const key = (event.target as HTMLInputElement).value as string;
+    this.testCasesFiltered = this.search(this.cloneTestCases, key);
+  }
+
+  search(tests: TestCase[], word: string) {
+    return tests.filter((t) => {
+      return (
+        t.title.match(word) != null ||
+        t.description.match(word) != null ||
+        t.outcome.match(word) != null ||
+        t.steps.some((s) => {
+          return s.match(word) != null;
+        })
+      );
+    });
+  }
+
+  calculateTestingProgress(): string {
+    let counterSuccess: number = 0;
+    let counterFailed: number = 0;
+    let counterPending: number = 0;
+    this.testCasesFiltered.forEach((t) => {
+      if (Number(t.result) === Number(Result.Success)) {
+        counterSuccess++;
+      }
+      if (Number(t.result) === Number(Result.Failed)) {
+        counterFailed++;
+      }
+      if (Number(t.result) === Number(Result.Pending)) {
+        counterPending++;
+      }
+    });
+    this.progressPercent =
+      ((counterSuccess + counterFailed) / this.testCasesFiltered.length) * 100;
+
+    return `
+     Success: ${counterSuccess}  
+     Failed: ${counterFailed}   
+     Pending: ${counterPending}
+     Progress: ${this.progressPercent}%`;
+  }
+
+  enableEditOnAll(event: MatCheckboxChange) {
+    this.isEditableAll = event.checked;
+    this.elementRef.nativeElement
+      .querySelectorAll('.isCaseEditable')
+      .forEach((element: { value: boolean }) => {
+        element.value = event.checked;
+      });
+  }
+
+  displayDescriptionAndSteps(caseIndex: number): string {
+    let displayContent =
+      this.testCasesFiltered[caseIndex].description.concat('\n');
+    this.testCasesFiltered[caseIndex].steps.forEach((s) => {
+      displayContent = displayContent.concat(s).concat('\n');
+    });
+
+    return displayContent;
   }
 
   ngOnInit(): void {
-    this.testCases = this.testCaseService.getTestCases(this.selectedFilename);
-    this.cloneTestCases = JSON.parse(JSON.stringify(this.testCases));
     this.fileSelectOptions = this.testCaseService.getFileSelectOption();
-    let counter: number = 0;
-    this.testCases.forEach((t) => {
-      if (t.result === Result.Success) {
-        counter++;
-      }
-    });
-    this.successResultPercent = (counter / this.testCases.length) * 100;
   }
+
   fileSelectionChanged(fileName: string) {
     this.selectedFilename = fileName;
-    this.testCases = this.testCaseService.getTestCases(fileName);
+    this.testCasesFiltered = this.testCaseService.getTestCases(fileName);
+    this.cloneTestCases = JSON.parse(JSON.stringify(this.testCasesFiltered));
+    this.fileSelectOptions = this.testCaseService.getFileSelectOption();
+    this.calculateTestingProgress();
   }
-  // changed(ev: any, result: any) {
-  //   console.log('radio button change event', ev.value, result);
-  // }
 
   selectTestCase(index: any) {
     if (index === 'all') {
@@ -91,7 +152,7 @@ export class HomeComponent implements OnInit {
   }
 
   getScreenshotCount(index: number) {
-    const count = this.testCases[index].screenshots?.length || 'all';
+    const count = this.testCasesFiltered[index].screenshots?.length || 'all';
     return `( ${count} )`;
   }
 
@@ -103,12 +164,18 @@ export class HomeComponent implements OnInit {
       data,
     });
   }
+  logIt(s: any) {
+    if ((s.value === 'true' && this.isEditableAll) || s.value === 'true') {
+      console.log(s.value);
+    }
+  }
   updateSteps(event: any, steps: any[], i: number) {
     const text = (event.target as HTMLSpanElement).innerText as string;
     if (steps[i] !== text) {
-      console.log(text, steps[i]);
+      // console.log(text, steps[i]);
       steps[i] = text;
       this.fileShouldBeSave = true;
+      this.changedTestCases = this.testCasesFiltered;
     }
   }
 
@@ -117,17 +184,38 @@ export class HomeComponent implements OnInit {
     if (testCase.description !== text) {
       testCase.description = text;
       this.fileShouldBeSave = true;
+      this.changedTestCases = this.testCasesFiltered;
     }
   }
-  updateTitle(event: any, testCase: TestCase): void {
-    const text = (event.target as HTMLSpanElement).innerText as string;
+  updateTitle(ev: any, testCase: TestCase): void {
+    const text = (ev.target as HTMLSpanElement).innerText as string;
     if (testCase.title !== text) {
       testCase.title = text;
       this.fileShouldBeSave = true;
+
+      this.changedTestCases = this.testCasesFiltered;
+    }
+  }
+  updateOutcome(event: any, testCase: TestCase): void {
+    const text = (event.target as HTMLSpanElement).innerText as string;
+    if (testCase.outcome !== text) {
+      testCase.outcome = text;
+      this.fileShouldBeSave = true;
+      this.changedTestCases = this.testCasesFiltered;
     }
   }
 
-  saveTestCases() {
-    this.testCaseService.save(this.testCases, this.selectedFilename);
+  saveTestCases(event: Event) {
+    event.stopPropagation();
+    this.testCaseService.save(this.testCasesFiltered, this.selectedFilename);
   }
+
+  // cancelEditableProps() {
+  //   const canceledEditable: TestCase[] = [];
+  //   this.testCasesFiltered.forEach((tc) => {
+  //     tc.editable = false;
+  //     canceledEditable.push(tc);
+  //   });
+  //   return canceledEditable;
+  // }
 }

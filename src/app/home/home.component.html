@@ -1,9 +1,9 @@
 <mat-progress-bar
   mode="determinate"
-  [value]="successResultPercent"
-  color="primary"
+  [value]="progressPercent"
+  color="warn"
   #progressBar
-  [matTooltip]="successResultPercent + ''"
+  [matTooltip]="displayResult"
 ></mat-progress-bar>
 <div class="example-button-row">
   <button
@@ -21,8 +21,8 @@
   <a routerLink="/file-upload">
     <button mat-raised-button color="warn">File upload</button></a
   >
-  <mat-checkbox (change)="enableEdit = !enableEdit" class="example-margin"
-    >Allow edit test suite</mat-checkbox
+  <mat-checkbox (change)="enableEditOnAll($event)" class="example-margin"
+    >EDIT</mat-checkbox
   >
 </div>
 <mat-drawer-container class="example-container" autosize>
@@ -45,23 +45,41 @@
   </div> -->
   <div class="example-sidenav-content">
     <mat-accordion multi>
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel hideToggle expanded="true">
         <mat-expansion-panel-header>
           <mat-panel-title class="align__title">
             <span> Control panel</span>
             <button
               mat-button
               *ngIf="fileShouldBeSave"
-              (click)="saveTestCases()"
+              (click)="saveTestCases($event)"
               color="warn"
             >
-              [ changed ]
+              [ Save ]
             </button>
           </mat-panel-title>
           <mat-panel-description> </mat-panel-description>
         </mat-expansion-panel-header>
 
         <div class="example-action-buttons">
+          <mat-form-field class="example-form-field" appearance="fill">
+            <mat-label>Clearable input</mat-label>
+            <input
+              (input)="searchByWords($event)"
+              matInput
+              type="text"
+              [(ngModel)]="searchValue"
+            />
+            <button
+              *ngIf="searchValue"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="searchValue = ''"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
           <button mat-button (click)="accordion.openAll()" color="warn">
             Expand All
           </button>
@@ -73,31 +91,55 @@
             (selectionChanged)="fileSelectionChanged($event)"
             [options]="fileSelectOptions"
           ></my-material-select>
-
-          <section class="example-section">
-            <mat-checkbox
-              (change)="enableEdit = !enableEdit"
-              class="example-margin"
-              >Allow edit test suite</mat-checkbox
-            >
-          </section>
         </div>
       </mat-expansion-panel>
 
-      <mat-expansion-panel *ngFor="let case of testCases; let i = index">
+      <mat-expansion-panel
+        *ngFor="let case of testCasesFiltered; let i = index"
+      >
         <mat-expansion-panel-header>
-          <mat-panel-title>
+          <mat-panel-title class="align__title">
+            <input
+              #isCaseEditable
+              type="text"
+              [style.display]="'none'"
+              value="false"
+              class="isCaseEditable"
+            />
             <span
-              [attr.contenteditable]="enableEdit"
-              [matTooltip]="case.description + case.steps"
+              [attr.contenteditable]="
+                (isCaseEditable.value === 'true' && isEditableAll) ||
+                isCaseEditable.value === 'true'
+              "
+              [matTooltip]="displayDescriptionAndSteps(i)"
               (blur)="updateTitle($event, case)"
-              >{{ case.title }}</span
-            >
+              (keydown)="
+                $event.keyCode === 32 ? $event.stopPropagation() : null
+              "
+              (click)="$event.stopPropagation()"
+              >{{ case.title }}
+            </span>
+
+            <div class="case__checkbox">
+              <mat-checkbox
+                (change)="
+                  $event.checked === true
+                    ? (isCaseEditable.value = 'true')
+                    : (isCaseEditable.value = 'false')
+                "
+                (change)="logIt(isCaseEditable)"
+                (click)="$event.stopPropagation()"
+                [checked]="isEditableAll"
+              ></mat-checkbox>
+            </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div
           (blur)="updateDescription($event, case)"
-          [attr.contenteditable]="enableEdit"
+          [attr.contenteditable]="
+            (isCaseEditable.value === 'true' && isEditableAll) ||
+            isCaseEditable.value === 'true'
+          "
           class="discription__section"
         >
           <span (blur)="updateDescription($event, case)">
@@ -109,7 +151,10 @@
 
           <span
             (blur)="updateSteps($event, case.steps, k)"
-            [attr.contenteditable]="enableEdit"
+            [attr.contenteditable]="
+              (isCaseEditable.value === 'true' && isEditableAll) ||
+              isCaseEditable.value === 'true'
+            "
           >
             {{ step }}
           </span>
@@ -117,7 +162,14 @@
           <!-- <editable-field [(text)]="step"></editable-field> -->
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between center">
-          <div>{{ case.outcome }}</div>
+          <span
+            [attr.contenteditable]="
+              (isCaseEditable.value === 'true' && isEditableAll) ||
+              isCaseEditable.value === 'true'
+            "
+            (blur)="updateOutcome($event, case)"
+            >{{ case.outcome }}</span
+          >
           <div>
             <button
               style="margin-right: 10px"

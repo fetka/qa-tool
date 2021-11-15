@@ -9,7 +9,7 @@ import { FileStoreService } from './file-store.service';
 describe('FileStoreService', () => {
   let storeService: FileStoreService;
   const fileObject: TestCasesFileBox = new TestCasesFileBox(
-    'test-filename.json',
+    'test-filename@1.json',
     'some text'
   );
 
@@ -40,9 +40,12 @@ describe('FileStoreService', () => {
 
   describe('getFileList()', () => {
     it('should return the uploadedFileList', () => {
+      fileObject.filename = 'test-filename.json';
       storeService.storeJSON(fileObject);
       const list = storeService.getFileList();
-      expect(list[0]).toEqual(fileObject);
+      const fileBox = fileObject;
+      fileBox.filename = 'test-filename@1.json';
+      expect(list[0]).toEqual(fileBox);
     });
   });
 
@@ -64,7 +67,7 @@ describe('FileStoreService', () => {
       const spyObj = jasmine.createSpyObj('a', ['click']);
       // spy on document.createElement() and return the spy object
       spyOn(document, 'createElement').and.returnValue(spyObj);
-
+      fileObject.filename = 'test-filename@1.json';
       storeService.downloadJson(fileObject);
 
       expect(document.createElement).toHaveBeenCalledTimes(1);
@@ -73,41 +76,25 @@ describe('FileStoreService', () => {
         'data:application/json;charset=utf-8,some%20text'
       );
       expect(spyObj.target).toBe('_self');
-      expect(spyObj.download).toBe('test-filename.json');
+      expect(spyObj.download).toBe('test-filename@1.json');
       expect(spyObj.click).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('storeJSON fn', () => {
-    it('should return error message when filename is used by another file', () => {
-      storeService.storeJSON(fileObject);
-      const errorObj = storeService.storeJSON(fileObject) as ErrorType;
-      expect(errorObj.error).toEqual('The filename should be unique!');
-    });
-
     it('should return an error object when file is opened', () => {
       fileObject.isOpened = true;
       const errorObj = storeService.storeJSON(fileObject) as ErrorType;
       expect(errorObj.error).toEqual('File should be closed');
     });
 
-    it('should store file when filename is unique', () => {
-      storeService.storeJSON(fileObject);
-      const anotherFile = JSON.parse(JSON.stringify(fileObject));
-      anotherFile.filename = 'new.json';
-      storeService.storeJSON(anotherFile);
-      storeService.storeJSON(fileObject);
-      console.log(storeService.uploadedFileList);
-      const newStoredObj: string | undefined =
-        storeService.uploadedFileList[2]?.filename;
-      expect(newStoredObj).toBeFalsy();
-    });
-
-    it('should be called the push fn on uploadedFileList ', () => {
+    it('push fn should be called on uploadedFileList ', () => {
       spyOn(storeService.uploadedFileList, 'push');
       storeService.storeJSON(fileObject);
+      const fileBox = fileObject;
+      fileBox.filename = 'test-filename@2.json';
       expect(storeService.uploadedFileList.push).toHaveBeenCalledOnceWith(
-        fileObject
+        fileBox
       );
     });
 
@@ -233,12 +220,12 @@ describe('FileStoreService', () => {
 
   describe('createNewFilename', () => {
     it('should be version number concatenated to filename', () => {
-      const name = storeService.createNewFilename('name.json');
-      expect(name).toEqual('name@1.json');
+      const createdName = storeService.createNewFilename('name.json');
+      expect(createdName).toEqual('name@1.json');
     });
     it('should be the new version number concatenated to filename ', () => {
-      const name = storeService.createNewFilename('name@2.json');
-      expect(name).toEqual('name@3.json');
+      const createdName = storeService.createNewFilename('name@2.json');
+      expect(createdName).toEqual('name@3.json');
     });
   });
 });
