@@ -2,6 +2,7 @@ import { FileSelectOption } from '../../models/test-case';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Result } from 'src/app/models/test-case';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'my-material-select',
@@ -10,19 +11,19 @@ import { Result } from 'src/app/models/test-case';
 })
 export class MaterialSelectComponent {
   @Input('options') options!: FileSelectOption[];
-  @Input('label') labelText: string = 'label';
+  @Input('selected') selected?: string;
 
   @Output('selectionChanged') selectionChanged: EventEmitter<string> =
     new EventEmitter();
-
   constructor() {
     this.options = [
-      { value: 'Result.Pending', viewValue: 'Pending' },
-      { value: 'Result.Failed', viewValue: 'Failed' },
-      { value: 'Result.Success', viewValue: 'Success' },
+      { value: 'Result.Pending', viewValue: 'Pending', selected: true },
+      { value: 'Result.Failed', viewValue: 'Failed', selected: false },
+      { value: 'Result.Success', viewValue: 'Success', selected: false },
     ];
+    this.selected = this.options[0].value;
   }
-  selectChange(event: MatSelectChange) {
+  selectChanged(event: MatSelectChange) {
     // console.log(event.source);
     this.selectionChanged.emit(event.value);
   }

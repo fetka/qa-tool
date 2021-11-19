@@ -1,15 +1,3 @@
-/* eslint-disable import/no-useless-path-segments */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable no-multi-assign */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable max-classes-per-file */
-/* eslint-disable operator-linebreak */
-/* eslint-disable no-param-reassign */
-/* eslint-disable prefer-template */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable indent */
-/* eslint-disable comma-dangle */
-/* eslint-disable no-unused-expressions */
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
@@ -21,6 +9,7 @@ import { Router } from '@angular/router';
 
 import { TestCasesFileBox } from '../models/test-case';
 import { FileStoreService } from '../services/file-store.service';
+// eslint-disable-next-line import/no-useless-path-segments
 import { ErrorType } from './../models/test-case';
 import * as utilities from '../helpers/utilities';
 
@@ -60,11 +49,10 @@ export class FileUploadComponent {
       // console.log(222, fileList.item(0)?.lastModified);
       file ? reader.readAsText(file as Blob) : null;
       reader.addEventListener('loadend', (event) => {
-        const fileContent = (this.displayedFileContent =
-          reader.result as string);
+        this.displayedFileContent = reader.result as string;
         this.recentFileBox = new TestCasesFileBox(
           filename,
-          fileContent,
+          this.displayedFileContent,
           fileList.item(0)?.lastModified
         );
       });
@@ -156,9 +144,7 @@ export class FileUploadComponent {
       (route) => route.path === 'preview-json'
     );
     routeToPreview
-      ? (routeToPreview.data = {
-          name: this.displayedFileContent,
-        })
+      ? (routeToPreview.data = { name: this.displayedFileContent })
       : null;
     this.router.navigateByUrl('/preview-json');
   }

@@ -49,13 +49,14 @@ export class TestCaseService {
   }
   getFileSelectOption(): FileSelectOption[] {
     const options: FileSelectOption[] = [];
-    this.fileBoxList.forEach((file) => {
+    this.fileBoxList.forEach((file, i) => {
       const tempArray = file.filename.split('.');
       const ext = tempArray.pop();
       const viewVal = tempArray.join('').toUpperCase().concat(`.${ext}`);
       options.push({
         value: file.filename,
         viewValue: viewVal,
+        selected: false,
       });
     });
     return options;
@@ -66,7 +67,10 @@ export class TestCaseService {
     const text = JSON.stringify(testCases);
     const fileBox = new TestCasesFileBox(filename, text);
 
-    const error = this.fileService.storeJSON(fileBox);
-    console.log(error);
+    const result = this.fileService.storeJSON(fileBox);
+    if (result > 0) {
+      return true;
+    }
+    return false;
   }
 }

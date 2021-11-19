@@ -78,7 +78,7 @@ describe('TestCasesService', () => {
     it('should return file select option list create from TestCasesFileBox[] ', () => {
       const options: FileSelectOption[] = service.getFileSelectOption();
       expect(options).toEqual([
-        { value: 'tests.json', viewValue: 'TESTS.json' },
+        { value: 'tests.json', viewValue: 'TESTS.json', selected: false },
       ]);
     });
   });
@@ -106,7 +106,6 @@ const testCasesMock: TestCase[] = [
     result: Result.Success,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
-    editable: false,
   },
   {
     title: 'title 2',
@@ -122,7 +121,6 @@ const testCasesMock: TestCase[] = [
         type: MediaType.IMAGE,
       },
     ],
-    editable: false,
   },
 ];
 const getFileListSpy = jasmine

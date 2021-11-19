@@ -12,7 +12,7 @@
 <mat-form-field appearance="fill">
   <!-- <mat-label>{{ labelText }}</mat-label> -->
   <mat-label>File name</mat-label>
-  <mat-select (selectionChange)="selectChange($event)">
+  <mat-select (selectionChange)="selectChanged($event)" [(value)]="selected">
     <mat-option *ngFor="let option of options" [value]="option.value">
       <span>
         {{ option.viewValue }}

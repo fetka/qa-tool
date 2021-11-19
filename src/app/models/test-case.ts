@@ -44,6 +44,7 @@ export interface DialogData {
 export interface FileSelectOption {
   value: string;
   viewValue: string;
+  selected?: boolean;
 }
 export type FileType = 'json';
 export type ErrorType = {
@@ -54,6 +55,7 @@ export type ErrorType = {
     | undefined;
 };
 
+export type PropertyType = 'title' | 'description' | 'step' | 'outcome';
 export class TestCasesFileBox {
   text: string;
   isOpened: boolean;

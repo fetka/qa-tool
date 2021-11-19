@@ -21,7 +21,10 @@
   <a routerLink="/file-upload">
     <button mat-raised-button color="warn">File upload</button></a
   >
-  <mat-checkbox (change)="enableEditOnAll($event)" class="example-margin"
+  <mat-checkbox
+    id="enableEditAll"
+    (change)="enableEditOnAll($event)"
+    class="example-margin"
     >EDIT</mat-checkbox
   >
 </div>
@@ -29,7 +32,7 @@
   <mat-drawer #drawer class="example-sidenav" mode="side">
     <mat-list>
       <mat-list-item
-        *ngFor="let screenshot of filteredScreenshots; let i = index"
+        *ngFor="let screenshot of filteredScreenshotList; let i = index"
       >
         <image
           style="width: 300px"
@@ -63,7 +66,7 @@
 
         <div class="example-action-buttons">
           <mat-form-field class="example-form-field" appearance="fill">
-            <mat-label>Clearable input</mat-label>
+            <mat-label>Search input</mat-label>
             <input
               (input)="searchByWords($event)"
               matInput
@@ -90,12 +93,13 @@
           <my-material-select
             (selectionChanged)="fileSelectionChanged($event)"
             [options]="fileSelectOptions"
+            [selected]="selectedOption"
           ></my-material-select>
         </div>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        *ngFor="let case of testCasesFiltered; let i = index"
+        *ngFor="let case of filteredTestCaseList; let i = index"
       >
         <mat-expansion-panel-header>
           <mat-panel-title class="align__title">
@@ -107,6 +111,7 @@
               class="isCaseEditable"
             />
             <span
+              class="case_property_span"
               [attr.contenteditable]="
                 (isCaseEditable.value === 'true' && isEditableAll) ||
                 isCaseEditable.value === 'true'
@@ -117,8 +122,8 @@
                 $event.keyCode === 32 ? $event.stopPropagation() : null
               "
               (click)="$event.stopPropagation()"
-              >{{ case.title }}
-            </span>
+              >{{ case.title }}</span
+            >
 
             <div class="case__checkbox">
               <mat-checkbox
@@ -127,30 +132,30 @@
                     ? (isCaseEditable.value = 'true')
                     : (isCaseEditable.value = 'false')
                 "
-                (change)="logIt(isCaseEditable)"
                 (click)="$event.stopPropagation()"
                 [checked]="isEditableAll"
+                class="testCase_checkbox"
               ></mat-checkbox>
             </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div
-          (blur)="updateDescription($event, case)"
-          [attr.contenteditable]="
-            (isCaseEditable.value === 'true' && isEditableAll) ||
-            isCaseEditable.value === 'true'
-          "
-          class="discription__section"
-        >
-          <span (blur)="updateDescription($event, case)">
-            {{ case.description }}
-          </span>
+        <div class="discription__section">
+          <span
+            class="case_property_span"
+            (blur)="updateDescription($event, case)"
+            [attr.contenteditable]="
+              (isCaseEditable.value === 'true' && isEditableAll) ||
+              isCaseEditable.value === 'true'
+            "
+            >{{ case.description }}</span
+          >
         </div>
         <div class="hidden-part" *ngFor="let step of case.steps; let k = index">
           <span class="step__index">[{{ k + 1 }}] &nbsp;&nbsp;</span>
 
           <span
-            (blur)="updateSteps($event, case.steps, k)"
+            class="case_property_span"
+            (blur)="updateSteps($event, case, k)"
             [attr.contenteditable]="
               (isCaseEditable.value === 'true' && isEditableAll) ||
               isCaseEditable.value === 'true'
@@ -158,11 +163,11 @@
           >
             {{ step }}
           </span>
-
-          <!-- <editable-field [(text)]="step"></editable-field> -->
         </div>
+
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <span
+            class="case_property_span"
             [attr.contenteditable]="
               (isCaseEditable.value === 'true' && isEditableAll) ||
               isCaseEditable.value === 'true'
@@ -177,37 +182,10 @@
               (click)="drawer.toggle(); selectTestCase(i)"
               mat-raised-button
               color="basic"
-              aria-label="open and preselect Snapshots"
+              aria-label="open and preselect Screenshots"
             >
               Toggle {{ getScreenshotCount(i) }}
             </button>
-            <!-- <mat-radio-group
-              value="{{ case.result }}"
-              aria-label="Select an option"
-              (change)="case.result = $event.value"
-            >
-              <mat-radio-button
-                color="warn"
-                [class.yellow]="case.result == 0"
-                [class.gray]="case.result != 0"
-                value="0"
-                >pending</mat-radio-button
-              >
-              <mat-radio-button
-                color="accent"
-                [class.red]="case.result == 1"
-                [class.gray]="case.result != 1"
-                value="1"
-                >failed</mat-radio-button
-              >
-              <mat-radio-button
-                color="primary"
-                [class.green]="case.result == 2"
-                [class.gray]="case.result != 2"
-                value="2"
-                >success</mat-radio-button
-              >
-            </mat-radio-group> -->
 
             <standard-select
               [result]="case.result"

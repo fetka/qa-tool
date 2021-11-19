@@ -4,7 +4,7 @@
   [class.pending]="result == 0"
   name="result"
   id="result"
-  (change)="selectChange($event)"
+  (change)="selectChanged($event); $event.stopPropagation()"
 >
   <option
     *ngFor="let option of resultOptions"

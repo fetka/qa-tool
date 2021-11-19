@@ -16,7 +16,7 @@ export class StandardSelectComponent {
     { value: Result.Failed, viewValue: 'Failed' },
     { value: Result.Success, viewValue: 'Success' },
   ];
-  selectChange(event: any) {
+  selectChanged(event: Event | any) {
     this.resultChanged.emit(event.target.value);
   }
 }
