@@ -1,5 +1,11 @@
 /* eslint-disable dot-notation */
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -166,6 +172,34 @@ export class HomeComponent implements OnInit {
       data,
     });
   }
+  addTestCase(index: number) {
+    const newTestCase: TestCase = {
+      id: '',
+      title: 'title',
+      description: 'description',
+      outcome: 'outcome',
+      result: Result.Pending,
+      screenshots: [],
+      steps: ['step 1', 'step 2', 'step 3'],
+    };
+    this.filteredTestCaseList.splice(index + 1, 0, newTestCase);
+  }
+  deleteTestCase(index: number) {
+    this.filteredTestCaseList.splice(index, 1);
+  }
+
+  moveUp(index: number) {
+    if (index === 0 || this.filteredTestCaseList.length === 1) return;
+    const swap: TestCase = this.filteredTestCaseList[index];
+    this.filteredTestCaseList[index] = this.filteredTestCaseList[index - 1];
+    this.filteredTestCaseList[index - 1] = swap;
+  }
+  moveDown(index: number) {
+    if (this.filteredTestCaseList.length === index + 1) return;
+    const swap: TestCase = this.filteredTestCaseList[index];
+    this.filteredTestCaseList[index] = this.filteredTestCaseList[index + 1];
+    this.filteredTestCaseList[index + 1] = swap;
+  }
 
   updateSteps(event: Event | any, testCase: TestCase, k: number) {
     const el = event.target as HTMLSpanElement;
@@ -200,8 +234,12 @@ export class HomeComponent implements OnInit {
   }
 
   updateElement(el: HTMLSpanElement) {
-    el.classList.add('edited');
+    if (el.classList.contains('edited')) {
+      this.changedTestCaseList = this.filteredTestCaseList;
+      return;
+    }
     this.fileShouldBeSave = true;
+    el.classList.add('edited');
     this.changedTestCaseList = this.filteredTestCaseList;
   }
 

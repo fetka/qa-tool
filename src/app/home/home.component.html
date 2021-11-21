@@ -108,7 +108,6 @@
               type="text"
               [style.display]="'none'"
               value="false"
-              class="isCaseEditable"
             />
             <span
               class="case_property_span"
@@ -150,7 +149,49 @@
             >{{ case.description }}</span
           >
         </div>
-        <div class="hidden-part" *ngFor="let step of case.steps; let k = index">
+        <div class="hidden-part">
+          <span class="step__index">[1] &nbsp;&nbsp;</span>
+
+          <span
+            class="case_property_span"
+            (blur)="updateSteps($event, case, 0)"
+            [attr.contenteditable]="
+              (isCaseEditable.value === 'true' && isEditableAll) ||
+              isCaseEditable.value === 'true'
+            "
+          >
+            {{ case.steps[0] }}
+          </span>
+        </div>
+        <div class="hidden-part">
+          <span class="step__index">[2] &nbsp;&nbsp;</span>
+
+          <span
+            class="case_property_span"
+            (blur)="updateSteps($event, case, 1)"
+            [attr.contenteditable]="
+              (isCaseEditable.value === 'true' && isEditableAll) ||
+              isCaseEditable.value === 'true'
+            "
+          >
+            {{ case.steps[1] }}
+          </span>
+        </div>
+        <div class="hidden-part">
+          <span class="step__index">[3] &nbsp;&nbsp;</span>
+
+          <span
+            class="case_property_span"
+            (blur)="updateSteps($event, case, 2)"
+            [attr.contenteditable]="
+              (isCaseEditable.value === 'true' && isEditableAll) ||
+              isCaseEditable.value === 'true'
+            "
+          >
+            {{ case.steps[2] }}
+          </span>
+        </div>
+        <!-- <div class="hidden-part" *ngFor="let step of case.steps; let k = index">
           <span class="step__index">[{{ k + 1 }}] &nbsp;&nbsp;</span>
 
           <span
@@ -163,9 +204,13 @@
           >
             {{ step }}
           </span>
-        </div>
+        </div> -->
 
-        <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div
+          class="case_property_span"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
           <span
             class="case_property_span"
             [attr.contenteditable]="
@@ -186,8 +231,52 @@
             >
               Toggle {{ getScreenshotCount(i) }}
             </button>
+            <ng-container *ngIf="isEditableAll">
+              <button
+                [matMenuTriggerFor]="menuDelete"
+                class="add__button"
+                mat-icon-button
+                color="warn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+              <mat-menu
+                #menuDelete="matMenu"
+                xPosition="before"
+                yPosition="below"
+              >
+                <button (click)="deleteTestCase(i)" mat-menu-item>
+                  Confirm
+                </button>
+              </mat-menu>
+              <button
+                [matMenuTriggerFor]="menuSort"
+                class="more"
+                mat-icon-button
+                color="warn"
+              >
+                <mat-icon>sort</mat-icon>
+              </button>
+              <mat-menu
+                #menuSort="matMenu"
+                xPosition="before"
+                yPosition="below"
+              >
+                <button (click)="moveUp(i)" mat-menu-item>UP</button>
+                <button (click)="moveDown(i)" mat-menu-item>DOWN</button>
+              </mat-menu>
+              <button
+                (click)="addTestCase(i)"
+                class="add__button"
+                mat-icon-button
+                color="warn"
+              >
+                <mat-icon>plus_one</mat-icon>
+              </button>
+            </ng-container>
 
             <standard-select
+              [disabled]="!isEditableAll"
               [result]="case.result"
               (resultChanged)="resultChanged($event, i)"
             ></standard-select>

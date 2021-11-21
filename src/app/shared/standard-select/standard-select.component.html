@@ -5,6 +5,7 @@
   name="result"
   id="result"
   (change)="selectChanged($event); $event.stopPropagation()"
+  [disabled]="disabled"
 >
   <option
     *ngFor="let option of resultOptions"

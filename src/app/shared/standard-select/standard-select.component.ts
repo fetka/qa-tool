@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class StandardSelectComponent {
   @Input('result') result!: number;
+  @Input('disabled') disabled!: boolean;
 
   @Output('resultChanged') resultChanged: EventEmitter<string> =
     new EventEmitter();

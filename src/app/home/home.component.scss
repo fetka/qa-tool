@@ -52,6 +52,7 @@ mat-panel-description {
 
 .case_property_span {
   padding: 3px 6px !important;
+  vertical-align: middle;
   letter-spacing: 0.7px !important;
 }
 
@@ -152,7 +153,7 @@ mat-expansion-panel {
 }
 .example-button-row {
   display: flex;
-  width: 100%;
+  width: auto;
   padding: 3px;
   background-color: rgb(48, 48, 48);
   align-items: center;
@@ -214,4 +215,9 @@ mat-progress-bar {
 }
 .case__checkbox {
   margin-right: 25px;
+}
+.add__button {
+  width: 20px !important;
+  min-width: unset !important;
+  margin-right: 10px;
 }
