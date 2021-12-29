@@ -1,4 +1,5 @@
 /* eslint-disable dot-notation */
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -68,11 +69,12 @@ export class HomeComponent implements OnInit {
     this.filteredTestCaseList[id].result = selectedResult;
     this.displayResult = this.calculateTestingProgress();
     this.fileShouldBeSave = true;
+    this.changedTestCaseList = this.filteredTestCaseList;
   }
 
   searchByWords(event: Event | any) {
     const key = (event.target as HTMLInputElement).value as string;
-    this.filteredTestCaseList = this.search(this.cloneTestCaseList, key);
+    this.filteredTestCaseList = this.search(this.changedTestCaseList, key);
   }
 
   search(tests: TestCase[], word: string) {
@@ -87,7 +89,9 @@ export class HomeComponent implements OnInit {
       );
     });
   }
-
+  createTestSuite(event: any) {
+    console.log(event);
+  }
   calculateTestingProgress(): string {
     let counterSuccess: number = 0;
     let counterFailed: number = 0;
@@ -117,10 +121,13 @@ export class HomeComponent implements OnInit {
   enableEditOnAll(event: MatCheckboxChange) {
     this.isEditableAll = event.checked;
     this.elementRef.nativeElement
-      .querySelectorAll('.isCaseEditable')
+      .querySelectorAll('.case__input')
       .forEach((element: { value: boolean }) => {
         element.value = event.checked;
       });
+  }
+  editClicked(str: any) {
+    alert(str);
   }
 
   displayDescriptionAndSteps(caseIndex: number): string {
@@ -138,6 +145,7 @@ export class HomeComponent implements OnInit {
     if (this.fileSelectOptions.length === 1) {
       this.selectedOption = this.fileSelectOptions[0].value;
       this.fileSelectionChanged(this.fileSelectOptions[0].value);
+      this.displayResult = this.calculateTestingProgress();
     }
   }
 
@@ -148,7 +156,8 @@ export class HomeComponent implements OnInit {
       JSON.stringify(this.filteredTestCaseList)
     );
     this.fileSelectOptions = this.testCaseService.getFileSelectOption();
-    this.calculateTestingProgress();
+    this.displayResult = this.calculateTestingProgress();
+    this.changedTestCaseList = this.filteredTestCaseList;
   }
 
   selectTestCase(index: any) {
@@ -183,9 +192,13 @@ export class HomeComponent implements OnInit {
       steps: ['step 1', 'step 2', 'step 3'],
     };
     this.filteredTestCaseList.splice(index + 1, 0, newTestCase);
+    this.fileShouldBeSave = true;
+    this.changedTestCaseList = this.filteredTestCaseList;
   }
   deleteTestCase(index: number) {
     this.filteredTestCaseList.splice(index, 1);
+    this.fileShouldBeSave = true;
+    this.changedTestCaseList = this.filteredTestCaseList;
   }
 
   moveUp(index: number) {
@@ -193,12 +206,16 @@ export class HomeComponent implements OnInit {
     const swap: TestCase = this.filteredTestCaseList[index];
     this.filteredTestCaseList[index] = this.filteredTestCaseList[index - 1];
     this.filteredTestCaseList[index - 1] = swap;
+    this.fileShouldBeSave = true;
+    this.changedTestCaseList = this.filteredTestCaseList;
   }
   moveDown(index: number) {
     if (this.filteredTestCaseList.length === index + 1) return;
     const swap: TestCase = this.filteredTestCaseList[index];
     this.filteredTestCaseList[index] = this.filteredTestCaseList[index + 1];
     this.filteredTestCaseList[index + 1] = swap;
+    this.fileShouldBeSave = true;
+    this.changedTestCaseList = this.filteredTestCaseList;
   }
 
   updateSteps(event: Event | any, testCase: TestCase, k: number) {
@@ -213,7 +230,7 @@ export class HomeComponent implements OnInit {
   updateDescription(event: Event | any, testCase: TestCase): void {
     const el = event.target as HTMLSpanElement;
     if (testCase.description !== el.innerText) {
-      this.updateElement(event.target as HTMLSpanElement);
+      this.updateElement(el);
       testCase.description = el.innerText;
     }
   }
@@ -221,14 +238,14 @@ export class HomeComponent implements OnInit {
   updateTitle(event: Event | any, testCase: TestCase): void {
     const el = event.target as HTMLSpanElement;
     if (testCase.title !== el.innerText) {
-      this.updateElement(event.target as HTMLSpanElement);
+      this.updateElement(el);
       testCase.title = el.innerText;
     }
   }
   updateOutcome(event: Event | any, testCase: TestCase): void {
     const el = event.target as HTMLSpanElement;
     if (testCase.outcome !== el.innerText) {
-      this.updateElement(event.target as HTMLSpanElement);
+      this.updateElement(el);
       testCase.outcome = el.innerText;
     }
   }
@@ -247,7 +264,7 @@ export class HomeComponent implements OnInit {
     event.stopPropagation();
 
     this.fileShouldBeSave = !this.testCaseService.save(
-      this.filteredTestCaseList,
+      this.search(this.changedTestCaseList, ''),
       this.selectedFilename
     );
   }

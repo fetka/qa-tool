@@ -10,18 +10,22 @@
     (click)="drawer.toggle(); selectTestCase('all')"
     mat-raised-button
     color="warn"
+    accesskey="t"
   >
-    Toggle All Screenshots
+    <u>T</u>oggle All Screenshots
   </button>
   <a routerLink="/screenshots">
-    <button mat-raised-button color="warn">
-      Navigate to All Screenshots
+    <button mat-raised-button color="warn" accesskey="g">
+      <u>G</u>o to All Screenshots
     </button></a
   >
   <a routerLink="/file-upload">
-    <button mat-raised-button color="warn">File upload</button></a
+    <button mat-raised-button color="warn" accesskey="u">
+      File <u>U</u>pload
+    </button></a
   >
   <mat-checkbox
+    #allowEdit
     id="enableEditAll"
     (change)="enableEditOnAll($event)"
     class="example-margin"
@@ -66,7 +70,7 @@
 
         <div class="example-action-buttons">
           <mat-form-field class="example-form-field" appearance="fill">
-            <mat-label>Search input</mat-label>
+            <mat-label>Search</mat-label>
             <input
               (input)="searchByWords($event)"
               matInput
@@ -83,6 +87,7 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
+
           <button mat-button (click)="accordion.openAll()" color="warn">
             Expand All
           </button>
@@ -108,6 +113,7 @@
               type="text"
               [style.display]="'none'"
               value="false"
+              class="case__input"
             />
             <span
               class="case_property_span"
@@ -120,7 +126,10 @@
               (keydown)="
                 $event.keyCode === 32 ? $event.stopPropagation() : null
               "
-              (click)="$event.stopPropagation()"
+              (click)="
+                (isCaseEditable.value === 'true' && isEditableAll) ||
+                  (isCaseEditable.value === 'true' && $event.stopPropagation())
+              "
               >{{ case.title }}</span
             >
 
@@ -231,7 +240,12 @@
             >
               Toggle {{ getScreenshotCount(i) }}
             </button>
-            <ng-container *ngIf="isEditableAll">
+            <ng-container
+              *ngIf="
+                (isCaseEditable.value === 'true' && isEditableAll) ||
+                isCaseEditable.value === 'true'
+              "
+            >
               <button
                 [matMenuTriggerFor]="menuDelete"
                 class="add__button"
@@ -276,7 +290,10 @@
             </ng-container>
 
             <standard-select
-              [disabled]="!isEditableAll"
+              [disabled]="
+                (isCaseEditable.value !== 'true' && !isEditableAll) ||
+                isCaseEditable.value !== 'true'
+              "
               [result]="case.result"
               (resultChanged)="resultChanged($event, i)"
             ></standard-select>

@@ -35,6 +35,32 @@
   <mat-card-subtitle
     >Uploaded: {{ recentFileBox?.filename }}
   </mat-card-subtitle>
+  <mat-card-title
+    ><input
+      class="custom-file-input"
+      type="file"
+      accept="image/*, video/*"
+      #imageInput
+      name="imageName"
+      multiple
+      (change)="readImage(imageInput.files)"
+  /></mat-card-title>
+  <mat-card-subtitle
+    >Uploaded:
+    <!-- <a [href]="imageUrl" target="_blank" rel="">{{ imageUrl }}</a> -->
+    <div class="image__preview">
+      <div *ngFor="let item of imageList">
+        <img *ngIf="item.type.includes('image')" [src]="item.content" alt="" />
+        <video
+          *ngIf="item.type.includes('video')"
+          [src]="item.content"
+          alt=""
+        ></video>
+      </div>
+    </div>
+    <button (click)="saveImage()">save image</button>
+  </mat-card-subtitle>
+
   <mat-card-actions>
     <div *ngFor="let file of fileBoxList; let i = index">
       {{ file.filename }}
@@ -50,12 +76,28 @@
     </div>
     <!-- <button mat-button>SHARE</button> -->
   </mat-card-actions>
+  <mat-form-field class="example-form-field" appearance="fill">
+    <mat-label>new</mat-label>
+    <input matInput type="text" [(ngModel)]="filenameValue" />
+    <button
+      *ngIf="filenameValue"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="filenameValue = ''"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <button (click)="createTestSuite()" mat-button color="warn">
+    - create test suite -
+  </button>
 </mat-card>
 
 <br />
 <div class="mat-expansion-panel mat-card" style="min-height: 50%">
-  <p>{{ recentFileBox?.uploadedAtFormatted }}</p>
-  <p>{{ recentFileBox?.isOpened }}</p>
+  <p>{{ recentFileBox?.getUploadedDate() }}</p>
+  <p>{{ recentFileBox?.type }}</p>
   <pre style="padding: 30px">  {{ displayedFileContent }}</pre>
   <!-- <pre style="padding: 30px">  {{ recentFileBox?.text }}</pre> -->
 </div>

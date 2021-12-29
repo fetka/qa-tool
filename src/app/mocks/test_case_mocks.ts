@@ -1,5 +1,10 @@
 /* eslint-disable object-curly-newline */
-import { Screenshot, MediaType, Result, TestCase } from '../models/test-case';
+import {
+  Screenshot,
+  DigitalFormatType,
+  Result,
+  TestCase,
+} from '../models/test-case';
 
 export const TEST_CASES: TestCase[] = [
   {
@@ -17,7 +22,7 @@ export const TEST_CASES: TestCase[] = [
       {
         title: '../../assets/screenshots/IMG_0098.PNG',
         link: '../../assets/screenshots/IMG_0098.PNG',
-        type: MediaType.IMAGE,
+        type: DigitalFormatType.IMAGE,
       },
     ],
   },
@@ -48,12 +53,12 @@ export const TEST_CASES: TestCase[] = [
       {
         title: '../../assets/screenshots/IMG_0094.PNG',
         link: '../../assets/screenshots/IMG_0094.PNG',
-        type: MediaType.IMAGE,
+        type: DigitalFormatType.IMAGE,
       },
       {
         title: '../../assets/screenshots/AUTT1857.MP4',
         link: '../../assets/screenshots/AUTT1857.MP4',
-        type: MediaType.VIDEO,
+        type: DigitalFormatType.VIDEO,
       },
     ],
   },
@@ -90,27 +95,27 @@ export const SCREENSHOT_LIST: Screenshot[] = [
   {
     title: '../../assets/screenshots/IMG_0094.PNG',
     link: '../../assets/screenshots/IMG_0094.PNG',
-    type: MediaType.IMAGE,
+    type: DigitalFormatType.IMAGE,
   },
   {
     title: '../../assets/screenshots/AUTT1857.MP4',
     link: '../../assets/screenshots/AUTT1857.MP4',
-    type: MediaType.VIDEO,
+    type: DigitalFormatType.VIDEO,
   },
   {
     title: '../../assets/screenshots/IMG_0098.PNG',
     link: '../../assets/screenshots/IMG_0098.PNG',
-    type: MediaType.IMAGE,
+    type: DigitalFormatType.IMAGE,
   },
   {
     title: '../../assets/screenshots/AUTT1857.MP4',
     link: '../../assets/screenshots/AUTT1857.MP4',
-    type: MediaType.VIDEO,
+    type: DigitalFormatType.VIDEO,
   },
   {
     title: '../../assets/screenshots/IMG_0096.PNG',
     link: '../../assets/screenshots/IMG_0096.PNG',
-    type: MediaType.IMAGE,
+    type: DigitalFormatType.IMAGE,
   },
 ];
 

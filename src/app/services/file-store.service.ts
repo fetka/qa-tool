@@ -28,13 +28,15 @@ export class FileStoreService {
       savedFiles.forEach((element) => {
         const box = new TestCasesFileBox(
           element.filename,
-          element.text,
+          element.content,
+          element.size,
+          element.type,
           element.uploadedAt
         );
         this.uploadedFileList.push(box);
       });
 
-      console.log(this.uploadedFileList[0]);
+      // console.log(this.uploadedFileList[0]);
     }
   }
 
@@ -82,16 +84,17 @@ export class FileStoreService {
   }
   /* return index of stored file */
   storeJSON(fileBox: TestCasesFileBox): number | ErrorType {
-    if (fileBox.isOpened) {
-      return { error: 'File should be closed' };
-    }
+    // if (fileBox.isOpened) {
+    //   return { error: 'File should be closed' };
+    // }
 
     const fileToStore: TestCasesFileBox = new TestCasesFileBox(
       this.createNewFilename(fileBox.filename),
-      fileBox.text,
+      fileBox.content,
+      fileBox.size,
+      fileBox.type,
       fileBox.uploadedAt
     );
-    fileToStore.close();
     console.log('storeJson called');
 
     const newLength = this.uploadedFileList.push(fileToStore);

@@ -8,6 +8,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable no-use-before-define */
+
+import { expressionType } from '@angular/compiler/src/output/output_ast';
+import { Type } from '@angular/core';
+
 /* eslint-disable linebreak-style */
 export interface TestCase {
   id: string;
@@ -29,11 +33,13 @@ export enum Direction {
   RIGHT = 1,
 }
 export interface Screenshot {
+  id?: number;
   title: string;
   link: string;
-  type: MediaType;
+  type: DigitalFormatType;
+  dataUrl?: string;
 }
-export enum MediaType {
+export enum DigitalFormatType {
   VIDEO = 'video',
   IMAGE = 'image',
 }
@@ -46,7 +52,11 @@ export interface FileSelectOption {
   viewValue: string;
   selected?: boolean;
 }
-export type FileType = 'json';
+export type FileType =
+  | 'application/json'
+  | 'image/png'
+  | 'image/jpeg'
+  | 'video/mp4';
 export type ErrorType = {
   error?:
     | 'The filename should be unique!'
@@ -57,22 +67,20 @@ export type ErrorType = {
 
 export type PropertyType = 'title' | 'description' | 'step' | 'outcome';
 export class TestCasesFileBox {
-  text: string;
-  isOpened: boolean;
   // uploadedAt?: Date | undefined;
-  type: FileType;
-  uploadedAtFormatted?: string;
-
+  public uploadedAtFormatted?: string;
   constructor(
     public filename: string,
-    text: string,
-    public uploadedAt?: Date | number
+    public content: string,
+    public size: number,
+    public type: FileType,
+    public uploadedAt: number
   ) {
     this.filename = filename;
-    this.text = text;
-    this.type = 'json';
-    this.isOpened = false;
+    this.content = content;
+    this.type = type;
     this.uploadedAt = uploadedAt;
+    this.size = size;
     if (this.uploadedAt) {
       this.createDateString(this.uploadedAt as number);
     }
@@ -103,20 +111,19 @@ export class TestCasesFileBox {
     const seconds = d.getSeconds();
     this.uploadedAtFormatted = `${year}-${monthName}-${day} ${hour}:${minutes}:${seconds}`;
   }
-  close() {
-    this.isOpened = false;
-    return this;
-  }
-  open() {
-    this.isOpened = true;
-    return this;
-  }
 
-  updateText(text: string): boolean | ErrorType {
-    if (this.isOpened) {
-      this.text = text;
-      return true;
-    }
-    return { error: 'File should be opened first' };
+  updateText(text: string) {
+    this.content = text;
   }
+  getUploadedDate() {
+    return this.uploadedAtFormatted;
+  }
+}
+
+export type LogLevel = 'info' | 'warning' | 'error' | 'debug';
+export interface Log {
+  code: number;
+  level: LogLevel;
+  date: Date;
+  message: string;
 }

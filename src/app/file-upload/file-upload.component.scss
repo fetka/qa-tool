@@ -48,3 +48,18 @@ a {
 .mat-button.mat-warn:hover {
   background: #5c5c5c;
 }
+
+.image__preview {
+  display: flex;
+  flex-direction: row;
+}
+.image__preview img {
+  height: 160px;
+  width: auto;
+  margin-left: 5px;
+}
+.image__preview video {
+  height: 160px;
+  width: auto;
+  margin-left: 5px;
+}

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SCREENSHOT_LIST, TEST_CASES } from '../mocks/test_case_mocks';
 import {
   FileSelectOption,
-  MediaType,
+  DigitalFormatType,
   Result,
   TestCase,
   TestCasesFileBox,
@@ -118,7 +118,7 @@ const testCasesMock: TestCase[] = [
       {
         title: '../../assets/screenshots/IMG_0094.PNG',
         link: '../../assets/screenshots/IMG_0094.PNG',
-        type: MediaType.IMAGE,
+        type: DigitalFormatType.IMAGE,
       },
     ],
   },

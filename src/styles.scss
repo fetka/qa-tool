@@ -59,6 +59,17 @@ button {
 .darkMode .mat-progress-bar.mat-warn .mat-progress-bar-buffer {
   background-color: #538d49 !important;
 }
+
+.darkMode .mat-progress-bar.mat-warn {
+  //height: 30px;
+  // transform: scaleY(1.5);
+  transition: height 0.5s;
+}
+.darkMode .mat-progress-bar.mat-warn:hover {
+  height: 30px;
+  // transform: scaleY(1.5);
+  transition: height 0.5s;
+}
 button.mat-menu-item {
   // width: auto !important;
   margin: auto !important;

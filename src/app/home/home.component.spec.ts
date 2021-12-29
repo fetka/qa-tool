@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import {
   FileSelectOption,
-  MediaType,
+  DigitalFormatType,
   Result,
   TestCase,
 } from '../models/test-case';
@@ -39,7 +39,7 @@ let testCasesMock: TestCase[] = [
       {
         title: '../../assets/screenshots/IMG_0094.PNG',
         link: '../../assets/screenshots/IMG_0094.PNG',
-        type: MediaType.IMAGE,
+        type: DigitalFormatType.IMAGE,
       },
     ],
   },

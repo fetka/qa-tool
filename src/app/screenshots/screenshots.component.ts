@@ -1,5 +1,5 @@
 /* eslint-disable operator-linebreak */
-import { DialogData, MediaType, Screenshot } from '../models/test-case';
+import { DialogData, DigitalFormatType, Screenshot } from '../models/test-case';
 /* eslint-disable comma-dangle */
 import { TestCaseService } from '../services/test-case.service';
 import { Component, OnInit } from '@angular/core';
@@ -35,11 +35,11 @@ export class ScreenshotsComponent implements OnInit {
     this.screenshots = this.testCaseService.getScreenshotsAll();
     this.filteredScreenshots = this.screenshots;
     this.screenshotsOnly = this.filteredScreenshots.filter(
-      (shots) => shots.type === MediaType.IMAGE
+      (shots) => shots.type === DigitalFormatType.IMAGE
     );
 
     this.videosOnly = this.filteredScreenshots.filter(
-      (shots) => shots.type === MediaType.VIDEO
+      (shots) => shots.type === DigitalFormatType.VIDEO
     );
   }
 
@@ -76,12 +76,12 @@ export class ScreenshotsComponent implements OnInit {
     switch (toggleState) {
       case 'onlyVideo':
         this.filteredScreenshots = this.screenshots.filter(
-          (shots) => shots.type === MediaType.VIDEO
+          (shots) => shots.type === DigitalFormatType.VIDEO
         );
         break;
       case 'onlyScreenshot':
         this.filteredScreenshots = this.screenshots.filter(
-          (shots) => shots.type === MediaType.IMAGE
+          (shots) => shots.type === DigitalFormatType.IMAGE
         );
         break;
       default:

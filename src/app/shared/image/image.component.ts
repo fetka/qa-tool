@@ -1,7 +1,11 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
-import { Screenshot, Direction, MediaType } from '../../models/test-case';
+import {
+  Screenshot,
+  Direction,
+  DigitalFormatType,
+} from '../../models/test-case';
 import {
   Component,
   EventEmitter,
@@ -21,7 +25,7 @@ export class ImageComponent {
   @Input('screenshot') screenshot: Screenshot = {
     title: '',
     link: '../../assets/screenshots/AUTT1857.MP4',
-    type: MediaType.VIDEO,
+    type: DigitalFormatType.VIDEO,
   };
 
   @Input('muted') muted: string = 'muted';

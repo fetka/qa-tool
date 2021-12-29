@@ -1,4 +1,16 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+/* eslint-disable no-loop-func */
+import {
+  FileType,
+  ErrorType,
+  DigitalFormatType,
+  Result,
+  Screenshot,
+  TestCase,
+  TestCasesFileBox,
+} from '../models/test-case';
+import { db } from '../db';
+/* eslint-disable function-paren-newline */
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import {
   MAT_SNACK_BAR_DATA,
   MatSnackBar,
@@ -6,12 +18,12 @@ import {
   MatSnackBarRef,
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { liveQuery } from 'dexie';
 
-import { TestCasesFileBox } from '../models/test-case';
-import { FileStoreService } from '../services/file-store.service';
-// eslint-disable-next-line import/no-useless-path-segments
-import { ErrorType } from './../models/test-case';
 import * as utilities from '../helpers/utilities';
+import { FileStoreService } from '../services/file-store.service';
+
+// eslint-disable-next-line import/no-useless-path-segments
 
 const jsonFormat = utilities.jsonFormatExp();
 @Component({
@@ -21,7 +33,7 @@ const jsonFormat = utilities.jsonFormatExp();
 })
 export class FileUploadComponent {
   displayedFileContent!: string;
-
+  filenameValue!: string;
   fileBoxList!: TestCasesFileBox[];
   recentFileBox!: TestCasesFileBox | null;
   configSuccess: MatSnackBarConfig = {
@@ -30,6 +42,8 @@ export class FileUploadComponent {
     horizontalPosition: 'center',
     verticalPosition: 'top',
   };
+  testCasesFileBoxList$ = liveQuery(() => db.testCasesFileBoxList.toArray());
+  imageList: TestCasesFileBox[] = [];
 
   constructor(
     private router: Router,
@@ -38,6 +52,54 @@ export class FileUploadComponent {
     @Inject(MAT_SNACK_BAR_DATA) public data: any
   ) {
     this.fetchFileList();
+  }
+
+  readImage(fileList: FileList | null) {
+    let file!: File | null;
+    if (fileList) {
+      // console.log('load start');
+      for (let index = 0; index < fileList.length; index++) {
+        const reader = new FileReader();
+        file = fileList.item(index);
+        file ? reader.readAsDataURL(file as Blob) : null;
+        console.log('load', file?.type);
+        reader.onloadend = () => {
+          const box = new TestCasesFileBox(
+            file?.name as string,
+            reader.result as string,
+            file?.size as number,
+            file?.type as FileType,
+            file?.lastModified as number
+          );
+          this.imageList.push(box);
+          console.log('loadend');
+        };
+      }
+    }
+    console.log('loadend', this.imageList);
+  }
+  async saveImage() {
+    await db
+      .open()
+      .catch((err) =>
+        console.error('Failed to open db: ' + (err.stack || err))
+      );
+
+    this.imageList.forEach(async (image) => {
+      await db.testCasesFileBoxList.add({
+        filename: image.filename,
+        content: image.content,
+        size: image.size,
+        type: image.type,
+        uploadedAt: image.uploadedAt,
+        uploadedAtFormatted: image.uploadedAtFormatted,
+      });
+    });
+    const box: TestCasesFileBox = (await db.testCasesFileBoxList.get(
+      5
+    )) as TestCasesFileBox;
+    // this.imageUrl = screenshot.dataUrl as string;
+    // await db.close();
   }
 
   readFile(fileList: FileList | null) {
@@ -50,10 +112,13 @@ export class FileUploadComponent {
       file ? reader.readAsText(file as Blob) : null;
       reader.addEventListener('loadend', (event) => {
         this.displayedFileContent = reader.result as string;
+        console.log(file?.type);
         this.recentFileBox = new TestCasesFileBox(
           filename,
-          this.displayedFileContent,
-          fileList.item(0)?.lastModified
+          reader.result as string,
+          file?.size as number,
+          file?.type as FileType,
+          file?.lastModified as number
         );
       });
     }
@@ -63,6 +128,29 @@ export class FileUploadComponent {
     this.fileBoxList = this.storage.getFileList();
   }
 
+  createTestSuite() {
+    console.log(this.filenameValue);
+    const newTestCase: TestCase = {
+      id: '',
+      title: 'title',
+      description: 'description',
+      outcome: 'outcome',
+      result: Result.Pending,
+      screenshots: [],
+      steps: ['step 1', 'step 2', 'step 3'],
+    };
+    this.recentFileBox = new TestCasesFileBox(
+      this.filenameValue,
+      JSON.stringify([newTestCase]),
+      0,
+      'application/json',
+      Date.now()
+    );
+    // this.fileBoxList.push(this.recentFileBox);
+    // this.displayContent(this.fileBoxList.length - 1);
+    this.filenameValue = '';
+    this.save();
+  }
   save() {
     if (!this.recentFileBox) return;
     const index: number | ErrorType = this.storage.storeJSON(
@@ -79,16 +167,13 @@ export class FileUploadComponent {
   }
 
   displayContent(index: number) {
-    const fb: TestCasesFileBox = {
+    this.recentFileBox = {
       ...this.fileBoxList[index],
     } as TestCasesFileBox;
-    this.recentFileBox = new TestCasesFileBox(
-      fb.filename,
-      fb.text,
-      fb.uploadedAt
-    );
     // console.log(jsonFormat(JSON.parse(copyBox.text)));
-    this.displayedFileContent = jsonFormat(JSON.parse(this.recentFileBox.text));
+    this.displayedFileContent = jsonFormat(
+      JSON.parse(this.recentFileBox.content)
+    );
   }
 
   deleteFile(index: number) {
@@ -98,14 +183,14 @@ export class FileUploadComponent {
   downloadFile(index: number) {
     // console.log(this.fileBoxList[index]);
     // this.fileBoxList[index].open();
-    if (this.fileBoxList[index].isOpened) return;
+    // if (this.fileBoxList[index].isOpened) return;
     try {
       const copyBox: TestCasesFileBox = {
         ...this.fileBoxList[index],
       } as TestCasesFileBox;
       const fileProps = {
         filename: copyBox.filename,
-        text: jsonFormat(JSON.parse(copyBox.text)),
+        text: jsonFormat(JSON.parse(copyBox.content)),
       };
 
       console.log(fileProps);
