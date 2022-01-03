@@ -25,6 +25,8 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   }
 }

@@ -1,47 +1,21 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-unused-labels */
-/* eslint-disable no-labels */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-underscore-dangle */
-// import { Screenshot } from './test-case';
-/* eslint-disable linebreak-style */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
-/* eslint-disable no-use-before-define */
+import { DigitalFormatTypeEnum, ResultEnum } from './enums';
+import { FileType, LogLevel } from './types';
 
-import { expressionType } from '@angular/compiler/src/output/output_ast';
-import { Type } from '@angular/core';
-
-/* eslint-disable linebreak-style */
 export interface TestCase {
   id: string;
   title: string;
   description: string;
   steps: string[];
   outcome: string;
-  result: Result;
+  result: ResultEnum;
   screenshots: Screenshot[];
-}
-export enum Result {
-  Pending = 0,
-  Failed = 1,
-  Success = 2,
-}
-
-export enum Direction {
-  LEFT = -1,
-  RIGHT = 1,
 }
 export interface Screenshot {
   id?: number;
   title: string;
   link: string;
-  type: DigitalFormatType;
+  type: DigitalFormatTypeEnum;
   dataUrl?: string;
-}
-export enum DigitalFormatType {
-  VIDEO = 'video',
-  IMAGE = 'image',
 }
 export interface DialogData {
   list: Screenshot[];
@@ -52,20 +26,14 @@ export interface FileSelectOption {
   viewValue: string;
   selected?: boolean;
 }
-export type FileType =
-  | 'application/json'
-  | 'image/png'
-  | 'image/jpeg'
-  | 'video/mp4';
-export type ErrorType = {
-  error?:
-    | 'The filename should be unique!'
-    | 'File should be closed'
-    | 'File should be opened first'
-    | undefined;
-};
 
-export type PropertyType = 'title' | 'description' | 'step' | 'outcome';
+export interface Log {
+  code: number;
+  level: LogLevel;
+  date: string;
+  message: string;
+}
+
 export class TestCasesFileBox {
   // uploadedAt?: Date | undefined;
   public uploadedAtFormatted?: string;
@@ -118,12 +86,4 @@ export class TestCasesFileBox {
   getUploadedDate() {
     return this.uploadedAtFormatted;
   }
-}
-
-export type LogLevel = 'info' | 'warning' | 'error' | 'debug';
-export interface Log {
-  code: number;
-  level: LogLevel;
-  date: Date;
-  message: string;
 }

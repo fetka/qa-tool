@@ -1,4 +1,3 @@
-import { Result } from '../../models/test-case';
 import {
   Component,
   EventEmitter,
@@ -9,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
+import { ResultEnum } from 'src/app/models/enums';
 
 @Component({
   selector: 'standard-select',
@@ -23,9 +23,9 @@ export class StandardSelectComponent {
   @HostBinding('class.edited') edited: boolean = false;
 
   resultOptions: any[] = [
-    { value: Result.Pending, viewValue: 'Pending' },
-    { value: Result.Failed, viewValue: 'Failed' },
-    { value: Result.Success, viewValue: 'Success' },
+    { value: ResultEnum.Pending, viewValue: 'Pending' },
+    { value: ResultEnum.Failed, viewValue: 'Failed' },
+    { value: ResultEnum.Success, viewValue: 'Success' },
   ];
 
   selectChanged(event: Event | any) {

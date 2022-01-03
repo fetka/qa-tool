@@ -1,8 +1,6 @@
 import { FileSelectOption } from '../../models/test-case';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { Result } from 'src/app/models/test-case';
-import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'my-material-select',

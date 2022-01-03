@@ -1,8 +1,9 @@
 /* eslint-disable prefer-destructuring */
-import { TestCase, ErrorType, TestCasesFileBox } from '../models/test-case';
+import { TestCase, TestCasesFileBox } from '../models/test-case';
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-underscore-dangle */
 import { Injectable, OnInit } from '@angular/core';
+import { ErrorType } from '../models/types';
 
 /* eslint-disable nonblock-statement-body-position */
 /* eslint-disable comma-dangle */

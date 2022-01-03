@@ -58,7 +58,7 @@
             <span> Control panel</span>
             <button
               mat-button
-              *ngIf="fileShouldBeSave"
+              *ngIf="fileMustBeSaved"
               (click)="saveTestCases($event)"
               color="warn"
             >

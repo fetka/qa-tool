@@ -1,10 +1,6 @@
 /* eslint-disable object-curly-newline */
-import {
-  Screenshot,
-  DigitalFormatType,
-  Result,
-  TestCase,
-} from '../models/test-case';
+import { ResultEnum, DigitalFormatTypeEnum } from '../models/enums';
+import { Screenshot, TestCase } from '../models/test-case';
 
 export const TEST_CASES: TestCase[] = [
   {
@@ -16,13 +12,13 @@ export const TEST_CASES: TestCase[] = [
     description 1  description 1  description 1  description 1  description 1 
     description 1  description 1  description 1  description 1  description 1 </pre></html> `,
     outcome: 'outcome 1',
-    result: Result.Success,
+    result: ResultEnum.Success,
     steps: ['step 1'],
     screenshots: [
       {
         title: '../../assets/screenshots/IMG_0098.PNG',
         link: '../../assets/screenshots/IMG_0098.PNG',
-        type: DigitalFormatType.IMAGE,
+        type: DigitalFormatTypeEnum.IMAGE,
       },
     ],
   },
@@ -31,7 +27,7 @@ export const TEST_CASES: TestCase[] = [
     id: 'T2',
     description: ' description 2',
     outcome: 'outcome 2',
-    result: Result.Success,
+    result: ResultEnum.Success,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
   },
@@ -43,7 +39,7 @@ export const TEST_CASES: TestCase[] = [
        description 3 description 3 description 3 description 3
         description 3 description 3 description 3 description 3 description 3`,
     outcome: 'outcome 3',
-    result: Result.Failed,
+    result: ResultEnum.Failed,
     steps: [
       'step 1 step 1 step 1 step 1 step 1 step 1',
       'step 2step 1 step 1step 1 step 1step 1 step 1',
@@ -53,12 +49,12 @@ export const TEST_CASES: TestCase[] = [
       {
         title: '../../assets/screenshots/IMG_0094.PNG',
         link: '../../assets/screenshots/IMG_0094.PNG',
-        type: DigitalFormatType.IMAGE,
+        type: DigitalFormatTypeEnum.IMAGE,
       },
       {
         title: '../../assets/screenshots/AUTT1857.MP4',
         link: '../../assets/screenshots/AUTT1857.MP4',
-        type: DigitalFormatType.VIDEO,
+        type: DigitalFormatTypeEnum.VIDEO,
       },
     ],
   },
@@ -67,7 +63,7 @@ export const TEST_CASES: TestCase[] = [
     id: 'T4',
     description: ' description 4',
     outcome: 'outcome 4',
-    result: Result.Success,
+    result: ResultEnum.Success,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
   },
@@ -76,7 +72,7 @@ export const TEST_CASES: TestCase[] = [
     id: 'T5',
     outcome: 'outcome 5',
     description: ' description 5',
-    result: Result.Pending,
+    result: ResultEnum.Pending,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
   },
@@ -85,7 +81,7 @@ export const TEST_CASES: TestCase[] = [
     description: ' description 6',
     id: 'T6',
     outcome: 'outcome 6',
-    result: Result.Success,
+    result: ResultEnum.Success,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
   },
@@ -95,27 +91,27 @@ export const SCREENSHOT_LIST: Screenshot[] = [
   {
     title: '../../assets/screenshots/IMG_0094.PNG',
     link: '../../assets/screenshots/IMG_0094.PNG',
-    type: DigitalFormatType.IMAGE,
+    type: DigitalFormatTypeEnum.IMAGE,
   },
   {
     title: '../../assets/screenshots/AUTT1857.MP4',
     link: '../../assets/screenshots/AUTT1857.MP4',
-    type: DigitalFormatType.VIDEO,
+    type: DigitalFormatTypeEnum.VIDEO,
   },
   {
     title: '../../assets/screenshots/IMG_0098.PNG',
     link: '../../assets/screenshots/IMG_0098.PNG',
-    type: DigitalFormatType.IMAGE,
+    type: DigitalFormatTypeEnum.IMAGE,
   },
   {
     title: '../../assets/screenshots/AUTT1857.MP4',
     link: '../../assets/screenshots/AUTT1857.MP4',
-    type: DigitalFormatType.VIDEO,
+    type: DigitalFormatTypeEnum.VIDEO,
   },
   {
     title: '../../assets/screenshots/IMG_0096.PNG',
     link: '../../assets/screenshots/IMG_0096.PNG',
-    type: DigitalFormatType.IMAGE,
+    type: DigitalFormatTypeEnum.IMAGE,
   },
 ];
 

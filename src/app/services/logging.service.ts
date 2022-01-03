@@ -13,7 +13,19 @@ export class LoggingService {
     if (logs) {
       this.logs = JSON.parse(logs) as Log[];
     } else {
-      this.logs = [];
+      const log1: Log = {
+        code: 1000,
+        level: 'info',
+        date: new Date().toLocaleString(),
+        message: 'message',
+      };
+      const log2: Log = {
+        code: 1000,
+        level: 'error',
+        date: new Date().toLocaleString(),
+        message: 'message',
+      };
+      this.logs = [log1, log2];
     }
   }
 
@@ -24,6 +36,10 @@ export class LoggingService {
 
   getLogs(): Log[] {
     return this.logs;
+  }
+
+  deleteAll() {
+    localStorage.removeItem(this.repoName);
   }
 
   private saveLog() {

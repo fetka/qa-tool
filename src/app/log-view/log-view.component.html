@@ -1,0 +1,16 @@
+<div class="example-button-row">
+  <button mat-raised-button color="warn">
+    <a
+      class="mat-button-wrapper"
+      style="color: #1b1d07; text-decoration: none"
+      routerLink="/file-upload"
+      >Back</a
+    >
+  </button>
+  <button mat-raised-button color="warn" (click)="deleteLogs()">
+    Delete all logs
+  </button>
+</div>
+<div style="background-color: #3d3d38; color: bisque; padding: 20px">
+  <mat-list-item *ngFor="let item of logView"> {{ item }} </mat-list-item>
+</div>

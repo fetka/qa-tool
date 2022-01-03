@@ -1,3 +1,4 @@
+import { LogViewComponent } from './log-view/log-view.component';
 import { PreviewJsonComponent } from './preview-json/preview-json.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ScreenshotsComponent } from './screenshots/screenshots.component';
@@ -9,6 +10,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'screenshots', component: ScreenshotsComponent },
   { path: 'file-upload', component: FileUploadComponent },
+  { path: 'log-view', component: LogViewComponent },
   {
     path: 'preview-json',
     component: PreviewJsonComponent,

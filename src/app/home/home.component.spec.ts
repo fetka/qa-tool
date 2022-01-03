@@ -1,3 +1,4 @@
+import { DigitalFormatTypeEnum, ResultEnum } from 'src/app/models/enums';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -7,12 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
-import {
-  FileSelectOption,
-  DigitalFormatType,
-  Result,
-  TestCase,
-} from '../models/test-case';
+import { FileSelectOption, TestCase } from '../models/test-case';
 import { TestCaseService } from '../services/test-case.service';
 import { HomeComponent } from './home.component';
 
@@ -24,7 +20,7 @@ let testCasesMock: TestCase[] = [
     id: '1',
     description: 'description 1',
     outcome: 'outcome 1',
-    result: Result.Failed,
+    result: ResultEnum.Failed,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [],
   },
@@ -33,13 +29,13 @@ let testCasesMock: TestCase[] = [
     id: '2',
     description: 'description 2',
     outcome: 'outcome 2',
-    result: Result.Success,
+    result: ResultEnum.Success,
     steps: ['step 1', 'step 2', 'step 3'],
     screenshots: [
       {
         title: '../../assets/screenshots/IMG_0094.PNG',
         link: '../../assets/screenshots/IMG_0094.PNG',
-        type: DigitalFormatType.IMAGE,
+        type: DigitalFormatTypeEnum.IMAGE,
       },
     ],
   },
@@ -122,19 +118,19 @@ describe('HomeComponent', () => {
       fixture.detectChanges();
     });
     it('should change the result value of test cases defined by index', () => {
-      testCasesMock[0].result = Result.Success.valueOf();
-      component.resultChanged(Result.Failed, 0);
-      expect(testCasesMock[0].result).toEqual(Result.Failed);
+      testCasesMock[0].result = ResultEnum.Success.valueOf();
+      component.resultChanged(ResultEnum.Failed, 0);
+      expect(testCasesMock[0].result).toEqual(ResultEnum.Failed);
     });
 
     it('should set fileShouldBeSave prop to true', () => {
-      testCasesMock[0].result = Result.Failed.valueOf();
-      component.resultChanged(Result.Success, 0);
-      expect(component.fileShouldBeSave).toBeTrue();
+      testCasesMock[0].result = ResultEnum.Failed.valueOf();
+      component.resultChanged(ResultEnum.Success, 0);
+      expect(component.fileMustBeSaved).toBeTrue();
     });
     it('should call calculateTestingProgress fn', () => {
       const spyFn = spyOn(component, 'calculateTestingProgress');
-      component.resultChanged(Result.Failed, 0);
+      component.resultChanged(ResultEnum.Failed, 0);
       expect(spyFn).toHaveBeenCalled();
     });
   });
@@ -195,23 +191,17 @@ describe('HomeComponent', () => {
 
     afterEach(() => {
       testCasesMock[indexOfTestCase].steps[indexOfStep] = savedStateOfStep;
-      component.fileShouldBeSave = false;
+      component.fileMustBeSaved = false;
     });
+
     it('should call updateElement', () => {
       const spyUpdateElement = spyOn(component, 'updateElement');
-      component.updateSteps(
-        event,
-        testCasesMock[indexOfTestCase].steps,
-        indexOfStep
-      );
+      component.updateSteps(event, testCasesMock[indexOfTestCase], indexOfStep);
       expect(spyUpdateElement).toHaveBeenCalled();
     });
+
     it('update the underlying step property', () => {
-      component.updateSteps(
-        event,
-        testCasesMock[indexOfTestCase].steps,
-        indexOfStep
-      );
+      component.updateSteps(event, testCasesMock[indexOfTestCase], indexOfStep);
       expect(testCasesMock[indexOfTestCase].steps[indexOfStep]).toEqual(
         innerText
       );
@@ -223,12 +213,12 @@ describe('HomeComponent', () => {
       };
       afterEach(() => {
         testCasesMock[indexOfTestCase].steps[indexOfStep] = savedStateOfStep;
-        component.fileShouldBeSave = false;
+        component.fileMustBeSaved = false;
       });
       it("should NOT update the underlying test case's steps property", () => {
         component.updateSteps(
           eventWithNoChange,
-          testCasesMock[indexOfTestCase].steps,
+          testCasesMock[indexOfTestCase],
           indexOfStep
         );
         expect(testCasesMock[indexOfTestCase].steps[indexOfStep]).toEqual(
@@ -240,7 +230,7 @@ describe('HomeComponent', () => {
 
         component.updateSteps(
           eventWithNoChange,
-          testCasesMock[indexOfTestCase].steps,
+          testCasesMock[indexOfTestCase],
           indexOfStep
         );
         expect(spyUpdateElement).not.toHaveBeenCalled();
@@ -259,7 +249,7 @@ describe('HomeComponent', () => {
     });
     afterEach(() => {
       testCasesMock[indexOfTestCase].title = savedStateOfTitle;
-      component.fileShouldBeSave = false;
+      component.fileMustBeSaved = false;
     });
 
     it("should update the underlying test case's title property", () => {
@@ -277,7 +267,7 @@ describe('HomeComponent', () => {
       };
       afterEach(() => {
         testCasesMock[indexOfTestCase].title = savedStateOfTitle;
-        component.fileShouldBeSave = false;
+        component.fileMustBeSaved = false;
       });
       it("should NOT update the underlying test case's title property", () => {
         component.updateTitle(
@@ -303,7 +293,7 @@ describe('HomeComponent', () => {
     const savedStateOfDescription = testCasesMock[indexOfTestCase].description;
     afterEach(() => {
       testCasesMock[indexOfTestCase].description = savedStateOfDescription;
-      component.fileShouldBeSave = false;
+      component.fileMustBeSaved = false;
     });
 
     it("should update the underlying test case's description property", () => {
@@ -322,7 +312,7 @@ describe('HomeComponent', () => {
       };
       afterEach(() => {
         testCasesMock[indexOfTestCase].description = savedStateOfDescription;
-        component.fileShouldBeSave = false;
+        component.fileMustBeSaved = false;
       });
       it("should NOT be updated the underlying test case's description property", () => {
         component.updateDescription(
@@ -349,7 +339,7 @@ describe('HomeComponent', () => {
     const savedStateOfOutcome = testCasesMock[indexOfTestCase].outcome;
     afterEach(() => {
       testCasesMock[indexOfTestCase].outcome = savedStateOfOutcome;
-      component.fileShouldBeSave = false;
+      component.fileMustBeSaved = false;
     });
 
     it("should update the underlying test case's outcome property", () => {
@@ -368,7 +358,7 @@ describe('HomeComponent', () => {
       };
       afterEach(() => {
         testCasesMock[indexOfTestCase].outcome = savedStateOfOutcome;
-        component.fileShouldBeSave = false;
+        component.fileMustBeSaved = false;
       });
       it("should NOT be updated the underlying test case's outcome property", () => {
         component.updateOutcome(
@@ -422,8 +412,8 @@ describe('HomeComponent', () => {
       fixture.detectChanges();
     });
     it('should return string that contains progress data set', () => {
-      testCasesMock[0].result = Result.Failed;
-      testCasesMock[1].result = Result.Success;
+      testCasesMock[0].result = ResultEnum.Failed;
+      testCasesMock[1].result = ResultEnum.Success;
       const success = 'Success: 1';
       const failed = 'Failed: 1';
       const pending = 'Pending: 0';
@@ -435,7 +425,7 @@ describe('HomeComponent', () => {
       expect(received.match(progress)).not.toBeNull();
     });
     it('should set progress percent property', () => {
-      testCasesMock[0].result = Result.Pending;
+      testCasesMock[0].result = ResultEnum.Pending;
       component.calculateTestingProgress();
       expect(component.progressPercent).toEqual(50);
     });

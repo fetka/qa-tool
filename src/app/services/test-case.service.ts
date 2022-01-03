@@ -1,5 +1,4 @@
 import {
-  ErrorType,
   FileSelectOption,
   Screenshot,
   TestCase,

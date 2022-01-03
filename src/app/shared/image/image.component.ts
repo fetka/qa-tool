@@ -1,19 +1,11 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
-import {
-  Screenshot,
-  Direction,
-  DigitalFormatType,
-} from '../../models/test-case';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DigitalFormatTypeEnum, DirectionEnum } from 'src/app/models/enums';
+
+import { Screenshot } from '../../models/test-case';
 
 @Component({
   selector: 'image',
@@ -25,7 +17,7 @@ export class ImageComponent {
   @Input('screenshot') screenshot: Screenshot = {
     title: '',
     link: '../../assets/screenshots/AUTT1857.MP4',
-    type: DigitalFormatType.VIDEO,
+    type: DigitalFormatTypeEnum.VIDEO,
   };
 
   @Input('muted') muted: string = 'muted';
@@ -45,10 +37,10 @@ export class ImageComponent {
   nextImage(event: any) {
     // console.log(event);
     if (event.key === 'ArrowLeft') {
-      this.flowDirection.emit(Direction.LEFT);
+      this.flowDirection.emit(DirectionEnum.LEFT);
     }
     if (event.key === 'ArrowRight') {
-      this.flowDirection.emit(Direction.RIGHT);
+      this.flowDirection.emit(DirectionEnum.RIGHT);
     }
   }
 

@@ -24,6 +24,7 @@ import { TestCaseService } from './services/test-case.service';
 import { ImageComponent } from './shared/image/image.component';
 import { SharedModule } from './shared/shared.module';
 import { ShortTextPipe } from './short-text.pipe';
+import { LogViewComponent } from './log-view/log-view.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ShortTextPipe } from './short-text.pipe';
     FileUploadComponent,
     PreviewJsonComponent,
     ConfirmSnackBarComponent,
+    LogViewComponent,
   ],
   imports: [
     BrowserModule,

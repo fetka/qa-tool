@@ -1,13 +1,5 @@
 /* eslint-disable no-loop-func */
-import {
-  FileType,
-  ErrorType,
-  DigitalFormatType,
-  Result,
-  Screenshot,
-  TestCase,
-  TestCasesFileBox,
-} from '../models/test-case';
+import { TestCase, TestCasesFileBox } from '../models/test-case';
 import { db } from '../db';
 /* eslint-disable function-paren-newline */
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
@@ -22,6 +14,8 @@ import { liveQuery } from 'dexie';
 
 import * as utilities from '../helpers/utilities';
 import { FileStoreService } from '../services/file-store.service';
+import { ResultEnum } from '../models/enums';
+import { FileType, ErrorType } from '../models/types';
 
 // eslint-disable-next-line import/no-useless-path-segments
 
@@ -135,7 +129,7 @@ export class FileUploadComponent {
       title: 'title',
       description: 'description',
       outcome: 'outcome',
-      result: Result.Pending,
+      result: ResultEnum.Pending,
       screenshots: [],
       steps: ['step 1', 'step 2', 'step 3'],
     };

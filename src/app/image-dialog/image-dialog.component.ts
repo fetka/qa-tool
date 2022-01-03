@@ -8,8 +8,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { DialogData, Direction, Screenshot } from '../models/test-case';
+import { DialogData, Screenshot } from '../models/test-case';
 import * as utilities from '../helpers/utilities';
+import { DirectionEnum } from '../models/enums';
 
 // declare const nextPointer: any;
 @Component({
@@ -40,16 +41,16 @@ export class ImageDialogComponent implements OnInit {
   showNextImage(direction: number) {
     if (this.screenshots.length === 1) return;
 
-    direction === Direction.LEFT
+    direction === DirectionEnum.LEFT
       ? (this.pointer = utilities.nextPointer(
           this.screenshots.length,
           this.pointer,
-          Direction.LEFT
+          DirectionEnum.LEFT
         ))
       : (this.pointer = utilities.nextPointer(
           this.screenshots.length,
           this.pointer,
-          Direction.RIGHT
+          DirectionEnum.RIGHT
         ));
 
     this.screenshot = this.screenshots[this.pointer];

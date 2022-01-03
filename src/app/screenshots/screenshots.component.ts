@@ -1,10 +1,11 @@
 /* eslint-disable operator-linebreak */
-import { DialogData, DigitalFormatType, Screenshot } from '../models/test-case';
+import { DialogData, Screenshot } from '../models/test-case';
 /* eslint-disable comma-dangle */
 import { TestCaseService } from '../services/test-case.service';
 import { Component, OnInit } from '@angular/core';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DigitalFormatTypeEnum } from '../models/enums';
 
 @Component({
   selector: 'screenshots',
@@ -35,11 +36,11 @@ export class ScreenshotsComponent implements OnInit {
     this.screenshots = this.testCaseService.getScreenshotsAll();
     this.filteredScreenshots = this.screenshots;
     this.screenshotsOnly = this.filteredScreenshots.filter(
-      (shots) => shots.type === DigitalFormatType.IMAGE
+      (shots) => shots.type === DigitalFormatTypeEnum.IMAGE
     );
 
     this.videosOnly = this.filteredScreenshots.filter(
-      (shots) => shots.type === DigitalFormatType.VIDEO
+      (shots) => shots.type === DigitalFormatTypeEnum.VIDEO
     );
   }
 
@@ -76,12 +77,12 @@ export class ScreenshotsComponent implements OnInit {
     switch (toggleState) {
       case 'onlyVideo':
         this.filteredScreenshots = this.screenshots.filter(
-          (shots) => shots.type === DigitalFormatType.VIDEO
+          (shots) => shots.type === DigitalFormatTypeEnum.VIDEO
         );
         break;
       case 'onlyScreenshot':
         this.filteredScreenshots = this.screenshots.filter(
-          (shots) => shots.type === DigitalFormatType.IMAGE
+          (shots) => shots.type === DigitalFormatTypeEnum.IMAGE
         );
         break;
       default:

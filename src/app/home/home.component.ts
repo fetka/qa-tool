@@ -16,10 +16,10 @@ import {
 } from '@angular/material/tooltip';
 
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { ResultEnum } from '../models/enums';
 import {
   DialogData,
   FileSelectOption,
-  Result,
   Screenshot,
   TestCase,
 } from '../models/test-case';
@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
   fileSelectOptions: FileSelectOption[] = [];
   selectedOption!: string;
   isEditableAll: boolean = false;
-  fileShouldBeSave: boolean = false;
+  fileMustBeSaved: boolean = false;
   selectedFilename: string = 'test-cases - Copy@1.json';
   progressPercent: number = 0;
   displayResult: string = '';
@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
   resultChanged(selectedResult: any, id: any) {
     this.filteredTestCaseList[id].result = selectedResult;
     this.displayResult = this.calculateTestingProgress();
-    this.fileShouldBeSave = true;
+    this.fileMustBeSaved = true;
     this.changedTestCaseList = this.filteredTestCaseList;
   }
 
@@ -89,21 +89,23 @@ export class HomeComponent implements OnInit {
       );
     });
   }
+
   createTestSuite(event: any) {
     console.log(event);
   }
+
   calculateTestingProgress(): string {
     let counterSuccess: number = 0;
     let counterFailed: number = 0;
     let counterPending: number = 0;
     this.filteredTestCaseList.forEach((t) => {
-      if (Number(t.result) === Number(Result.Success)) {
+      if (Number(t.result) === Number(ResultEnum.Success)) {
         counterSuccess++;
       }
-      if (Number(t.result) === Number(Result.Failed)) {
+      if (Number(t.result) === Number(ResultEnum.Failed)) {
         counterFailed++;
       }
-      if (Number(t.result) === Number(Result.Pending)) {
+      if (Number(t.result) === Number(ResultEnum.Pending)) {
         counterPending++;
       }
     });
@@ -126,6 +128,7 @@ export class HomeComponent implements OnInit {
         element.value = event.checked;
       });
   }
+
   editClicked(str: any) {
     alert(str);
   }
@@ -187,17 +190,17 @@ export class HomeComponent implements OnInit {
       title: 'title',
       description: 'description',
       outcome: 'outcome',
-      result: Result.Pending,
+      result: ResultEnum.Pending,
       screenshots: [],
       steps: ['step 1', 'step 2', 'step 3'],
     };
     this.filteredTestCaseList.splice(index + 1, 0, newTestCase);
-    this.fileShouldBeSave = true;
+    this.fileMustBeSaved = true;
     this.changedTestCaseList = this.filteredTestCaseList;
   }
   deleteTestCase(index: number) {
     this.filteredTestCaseList.splice(index, 1);
-    this.fileShouldBeSave = true;
+    this.fileMustBeSaved = true;
     this.changedTestCaseList = this.filteredTestCaseList;
   }
 
@@ -206,7 +209,7 @@ export class HomeComponent implements OnInit {
     const swap: TestCase = this.filteredTestCaseList[index];
     this.filteredTestCaseList[index] = this.filteredTestCaseList[index - 1];
     this.filteredTestCaseList[index - 1] = swap;
-    this.fileShouldBeSave = true;
+    this.fileMustBeSaved = true;
     this.changedTestCaseList = this.filteredTestCaseList;
   }
   moveDown(index: number) {
@@ -214,7 +217,7 @@ export class HomeComponent implements OnInit {
     const swap: TestCase = this.filteredTestCaseList[index];
     this.filteredTestCaseList[index] = this.filteredTestCaseList[index + 1];
     this.filteredTestCaseList[index + 1] = swap;
-    this.fileShouldBeSave = true;
+    this.fileMustBeSaved = true;
     this.changedTestCaseList = this.filteredTestCaseList;
   }
 
@@ -255,7 +258,7 @@ export class HomeComponent implements OnInit {
       this.changedTestCaseList = this.filteredTestCaseList;
       return;
     }
-    this.fileShouldBeSave = true;
+    this.fileMustBeSaved = true;
     el.classList.add('edited');
     this.changedTestCaseList = this.filteredTestCaseList;
   }
@@ -263,7 +266,7 @@ export class HomeComponent implements OnInit {
   saveTestCases(event: Event) {
     event.stopPropagation();
 
-    this.fileShouldBeSave = !this.testCaseService.save(
+    this.fileMustBeSaved = !this.testCaseService.save(
       this.search(this.changedTestCaseList, ''),
       this.selectedFilename
     );
