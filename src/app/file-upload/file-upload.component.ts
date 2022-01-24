@@ -16,6 +16,7 @@ import * as utilities from '../helpers/utilities';
 import { FileStoreService } from '../services/file-store.service';
 import { ResultEnum } from '../models/enums';
 import { FileType, ErrorType } from '../models/types';
+import { selectedFileName } from '../models/name-spaces';
 
 // eslint-disable-next-line import/no-useless-path-segments
 
@@ -200,6 +201,11 @@ export class FileUploadComponent {
     }
   }
 
+  showTestCases(index: number) {
+    localStorage.setItem(selectedFileName, this.fileBoxList[index].filename);
+    this.navigateToHome();
+  }
+
   clearStorage() {
     const ref: MatSnackBarRef<ConfirmSnackBarComponent> =
       this._snackBar.openFromComponent(ConfirmSnackBarComponent, {
@@ -217,6 +223,9 @@ export class FileUploadComponent {
 
   confirmed(event: boolean) {
     console.log(107, event);
+  }
+  navigateToHome() {
+    this.router.navigateByUrl('/');
   }
   navigate() {
     const routeToPreview = this.router.config.find(

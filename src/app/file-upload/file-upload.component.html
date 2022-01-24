@@ -68,12 +68,14 @@
 
   <mat-card-actions>
     <div *ngFor="let file of fileBoxList; let i = index">
-      {{ file.filename }}
+      <button (click)="showTestCases(i)" mat-button color="warn">
+        - {{ file.filename }} -
+      </button>
       <button (click)="displayContent(i)" mat-button color="warn">
         - show content -
       </button>
       <button (click)="downloadFile(i)" mat-button color="warn">
-        - Download -
+        - download -
       </button>
       <button (click)="deleteFile(i)" mat-button color="warn">
         - delete -

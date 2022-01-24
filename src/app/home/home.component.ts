@@ -1,12 +1,14 @@
-/* eslint-disable dot-notation */
-import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
 import {
+  OnDestroy,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnInit,
   ViewChild,
 } from '@angular/core';
+/* eslint-disable dot-notation */
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
+
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -14,9 +16,11 @@ import {
   MAT_TOOLTIP_DEFAULT_OPTIONS,
   MatTooltipDefaultOptions,
 } from '@angular/material/tooltip';
+import { interval, Observable, Subscription } from 'rxjs';
 
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { ResultEnum } from '../models/enums';
+import { selectedFileName } from '../models/name-spaces';
 import {
   DialogData,
   FileSelectOption,
@@ -40,13 +44,13 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatAccordion) accordion!: MatAccordion;
-  panelOpenState: boolean = false;
+  panelOpenStates: boolean = false;
   showFiller = false;
   filteredTestCaseList: TestCase[] = [];
   cloneTestCaseList!: TestCase[];
-  changedTestCaseList!: TestCase[];
+  changedTestCaseList: TestCase[] = [];
   searchValue: string = '';
   snapshotsLinkList!: string[];
   filteredScreenshotList: Screenshot[] = [];
@@ -58,13 +62,26 @@ export class HomeComponent implements OnInit {
   selectedFilename: string = 'test-cases - Copy@1.json';
   progressPercent: number = 0;
   displayResult: string = '';
+  fileName!: string;
+  autoSave$: Observable<number> = interval(5 * 60 * 5000);
+  autoSaveSubscribe!: Subscription;
 
   constructor(
     private testCaseService: TestCaseService,
     public dialog: MatDialog,
     private elementRef: ElementRef
   ) {}
+  ngOnDestroy(): void {
+    this.autoSaveSubscribe.unsubscribe();
+  }
 
+  scrollUp(str: string) {
+    // window.scrollTo(0, 0);
+    // document.getElementById('file_upload_button').scrollIntoView();
+    const el: HTMLElement = this.elementRef.nativeElement.querySelector(str);
+    console.log(el);
+    el.scrollIntoView();
+  }
   resultChanged(selectedResult: any, id: any) {
     this.filteredTestCaseList[id].result = selectedResult;
     this.displayResult = this.calculateTestingProgress();
@@ -129,10 +146,6 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  editClicked(str: any) {
-    alert(str);
-  }
-
   displayDescriptionAndSteps(caseIndex: number): string {
     let displayContent =
       this.filteredTestCaseList[caseIndex].description.concat('\n');
@@ -144,24 +157,32 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fileSelectOptions = this.testCaseService.getFileSelectOption();
-    if (this.fileSelectOptions.length === 1) {
-      this.selectedOption = this.fileSelectOptions[0].value;
-      this.fileSelectionChanged(this.fileSelectOptions[0].value);
-      this.displayResult = this.calculateTestingProgress();
+    this.fileName = localStorage.getItem(selectedFileName) || 'no file';
+    if (this.fileName) {
+      this.filteredTestCaseList = this.testCaseService.getTestCases(
+        this.fileName
+      );
     }
+    this.autoSaveSubscribe = this.autoSave$.subscribe((val) => this.save());
+
+    // this.fileSelectOptions = this.testCaseService.getFileSelectOption();
+    // if (this.fileSelectOptions.length === 1) {
+    //   this.selectedOption = this.fileSelectOptions[0].value;
+    //   this.fileSelectionChanged(this.fileSelectOptions[0].value);
+    //   this.displayResult = this.calculateTestingProgress();
+    // }
   }
 
-  fileSelectionChanged(fileName: string) {
-    this.selectedFilename = fileName;
-    this.filteredTestCaseList = this.testCaseService.getTestCases(fileName);
-    this.cloneTestCaseList = JSON.parse(
-      JSON.stringify(this.filteredTestCaseList)
-    );
-    this.fileSelectOptions = this.testCaseService.getFileSelectOption();
-    this.displayResult = this.calculateTestingProgress();
-    this.changedTestCaseList = this.filteredTestCaseList;
-  }
+  // fileSelectionChanged(fileName: string) {
+  //   this.selectedFilename = fileName;
+  //   this.filteredTestCaseList = this.testCaseService.getTestCases(fileName);
+  //   this.cloneTestCaseList = JSON.parse(
+  //     JSON.stringify(this.filteredTestCaseList)
+  //   );
+  //   this.fileSelectOptions = this.testCaseService.getFileSelectOption();
+  //   this.displayResult = this.calculateTestingProgress();
+  //   this.changedTestCaseList = this.filteredTestCaseList;
+  // }
 
   selectTestCase(index: any) {
     if (index === 'all') {
@@ -205,7 +226,7 @@ export class HomeComponent implements OnInit {
   }
 
   moveUp(index: number) {
-    if (index === 0 || this.filteredTestCaseList.length === 1) return;
+    if (index === 0 || this.filteredTestCaseList.length <= 1) return;
     const swap: TestCase = this.filteredTestCaseList[index];
     this.filteredTestCaseList[index] = this.filteredTestCaseList[index - 1];
     this.filteredTestCaseList[index - 1] = swap;
@@ -266,9 +287,14 @@ export class HomeComponent implements OnInit {
   saveTestCases(event: Event) {
     event.stopPropagation();
 
+    this.save();
+  }
+
+  save() {
+    console.log('auto save');
     this.fileMustBeSaved = !this.testCaseService.save(
       this.search(this.changedTestCaseList, ''),
-      this.selectedFilename
+      this.fileName
     );
   }
 }

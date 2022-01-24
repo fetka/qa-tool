@@ -76,8 +76,9 @@ img {
   border: 1px solid black;
 }
 .mat-drawer-container {
-  height: 95%;
+  // height: 95%;
 }
+
 .mat-list-base .mat-list-item,
 .mat-list-base .mat-list-option {
   display: contents;
@@ -91,9 +92,17 @@ img {
 mat-expansion-panel {
   margin-bottom: 2px;
 }
+mat-expansion-panel:last-of-type{
+margin-bottom: 5%;
+}
+
+.mat-expansion-panel-spacing {
+   margin: 6px 0; 
+}
 .hidden-part {
   padding: 5px 24px 6px 24px;
 }
+
 .discription__section {
   border: #6b6b6b 1px solid;
   padding: 8px;
@@ -225,4 +234,14 @@ mat-progress-bar {
 u {
   position: relative;
   top: -1px;
+}
+
+.up__button {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

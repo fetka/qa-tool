@@ -3,6 +3,7 @@
   [value]="progressPercent"
   color="warn"
   #progressBar
+  id="progressBar"
   [matTooltip]="displayResult"
 ></mat-progress-bar>
 <div class="example-button-row">
@@ -11,6 +12,7 @@
     mat-raised-button
     color="warn"
     accesskey="t"
+    
   >
     <u>T</u>oggle All Screenshots
   </button>
@@ -19,7 +21,7 @@
       <u>G</u>o to All Screenshots
     </button></a
   >
-  <a routerLink="/file-upload">
+  <a routerLink="/file-upload" >
     <button mat-raised-button color="warn" accesskey="u">
       File <u>U</u>pload
     </button></a
@@ -51,11 +53,24 @@
     <button mat-button (click)="accordion.closeAll()">Collapse All</button>
   </div> -->
   <div class="example-sidenav-content">
-    <mat-accordion multi>
+    <mat-accordion multi #top__panel>
       <mat-expansion-panel hideToggle expanded="true">
         <mat-expansion-panel-header>
           <mat-panel-title class="align__title">
-            <span> Control panel</span>
+            <span> Control panel </span>
+            <button
+              mat-button
+              (click)="
+                !panelOpenStates ? accordion.openAll() : accordion.closeAll()
+              "
+              (click)="panelOpenStates = !panelOpenStates"
+              (click)="$event.stopPropagation()"
+              color="warn"
+            >
+              <span *ngIf="!panelOpenStates"> Expand All </span>
+              <span *ngIf="panelOpenStates"> Collapse All </span>
+            </button>
+            <div>{{ fileName }}</div>
             <button
               mat-button
               *ngIf="fileMustBeSaved"
@@ -88,18 +103,26 @@
             </button>
           </mat-form-field>
 
-          <button mat-button (click)="accordion.openAll()" color="warn">
-            Expand All
-          </button>
-          <button mat-button (click)="accordion.closeAll()" color="warn">
+          <!-- <button
+            mat-button
+            (click)="
+              !panelOpenStates ? accordion.openAll() : accordion.closeAll()
+            "
+            (click)="panelOpenStates = !panelOpenStates"
+            color="warn"
+          >
+            <span *ngIf="!panelOpenStates"> Expand All </span>
+            <span *ngIf="panelOpenStates"> Collapse All </span>
+          </button> -->
+          <!-- <button mat-button (click)="accordion.closeAll()" color="warn">
             Collapse All
-          </button>
+          </button> -->
 
-          <my-material-select
+          <!-- <my-material-select
             (selectionChanged)="fileSelectionChanged($event)"
             [options]="fileSelectOptions"
             [selected]="selectedOption"
-          ></my-material-select>
+          ></my-material-select> -->
         </div>
       </mat-expansion-panel>
 
@@ -276,8 +299,16 @@
                 xPosition="before"
                 yPosition="below"
               >
-                <button (click)="moveUp(i)" mat-menu-item>UP</button>
-                <button (click)="moveDown(i)" mat-menu-item>DOWN</button>
+                <button *ngIf="i > 0" (click)="moveUp(i)" mat-menu-item>
+                  UP
+                </button>
+                <button
+                  *ngIf="i < filteredTestCaseList.length - 1"
+                  (click)="moveDown(i)"
+                  mat-menu-item
+                >
+                  DOWN
+                </button>
               </mat-menu>
               <button
                 (click)="addTestCase(i)"
@@ -300,6 +331,15 @@
           </div>
         </div>
       </mat-expansion-panel>
+      <div class="up__button">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="scrollUp('#progressBar')"
+        >
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+      </div>
     </mat-accordion>
   </div>
 </mat-drawer-container>
